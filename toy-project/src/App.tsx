@@ -1,12 +1,11 @@
 import React from "react";
-import Sidebar from "./components/Sidebar";
+import { Routes, Route } from "react-router-dom";
+import Gallery from "./pages/Gallery";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <Sidebar></Sidebar>
-    </div>
+    <Routes>
+      <Route path="/gallery" element={<Gallery />} />
+    </Routes>
   );
 }
-
-export default App;
