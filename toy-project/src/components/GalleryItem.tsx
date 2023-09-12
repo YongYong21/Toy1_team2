@@ -23,9 +23,9 @@ export default function GalleryItem({ image }: GalleryItemProps) {
       <Item onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div className="item-wrap" key={image.id}>
           <div className="image-container">
-            <img src={image.imageUrl} alt={image.name} />
+            <img className="image" src={image.imageUrl} alt={image.name} />
           </div>
-          <p>{image.name}</p>
+          <p className="image-name">{image.name}</p>
           {hovered && <MdClear className="clear-icon" />}
         </div>
       </Item>

@@ -37,7 +37,7 @@ export const Item = styled.div`
 
     margin: 0 auto;
 
-    img {
+    .image {
       position: absolute;
       top: 0;
       left: 0;
@@ -49,7 +49,7 @@ export const Item = styled.div`
     }
   }
 
-  p {
+  .image-name {
     font-size: 1.5rem;
   }
 
