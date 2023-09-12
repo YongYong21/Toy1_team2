@@ -6,6 +6,8 @@ export const Item = styled.div`
     width: 360px;
     height: 360px;
 
+    position: relative;
+
     margin: 10px;
 
     border-radius: 8px;
@@ -17,14 +19,14 @@ export const Item = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
-
     gap: 10%;
+  }
 
-    &:hover {
-      transform: scale(0.98);
-      opacity: 50%;
-      transition: 0.3s;
-    }
+  .item-wrap:hover {
+    opacity: 70%;
+
+    transform: scale(0.98);
+    transition: 0.3s;
   }
 
   .image-container {
@@ -49,5 +51,19 @@ export const Item = styled.div`
 
   p {
     font-size: 1.5rem;
+  }
+
+  .clear-icon {
+    width: 30px;
+    height: 30px;
+
+    position: absolute;
+
+    top: 30px;
+    right: 30px;
+
+    cursor: pointer;
+
+    color: #3a7bdf;
   }
 `;
