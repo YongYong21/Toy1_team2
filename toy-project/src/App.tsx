@@ -1,10 +1,12 @@
 import React from "react";
-import Sidebar from "./components/Sidebar";
+import CommuteModal from "./components/commuteModal";
 
 function App() {
   return (
     <div>
-      <Sidebar></Sidebar>
+      <header>
+        <CommuteModal /> {/* commuteModal 컴포넌트를 사용합니다. */}
+      </header>
     </div>
   );
 }
