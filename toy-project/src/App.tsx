@@ -1,11 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Gallery from "./pages/Gallery";
+import { Home } from "./pages/Home";
+import { Header } from "./components/Header";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/gallery" element={<Gallery />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </>
   );
 }
