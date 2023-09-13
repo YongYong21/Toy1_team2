@@ -1,55 +1,48 @@
 import { useEffect, useState } from "react";
 import { HomeContainer } from "./HomeSC";
 
-import { Swiper, SwiperSlide, useSwiper, SwiperProps } from "swiper/react";
-// import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Children, useCallback, useMemo } from "react";
+import { Swiper } from "swiper/react";
+import SwiperCore, { Pagination, Autoplay } from "swiper";
 
 import "swiper/css/bundle";
 import "swiper/css/scrollbar";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { url } from "inspector";
 
-declare module "swiper/react" {
-  interface SwiperProps {
-    // 원하는 프로퍼티를 추가합니다.
-    spaceBetween?: number;
-    slidesPerView?: number;
-    navigation?: boolean;
-    loop?: boolean;
-  }
+SwiperCore.use([Pagination, Autoplay]);
+
+interface CarouselProps {
+  children: React.ReactNode;
+  indicator: boolean;
 }
 
-function MySlider() {
-  const slideStyles = {
-    background: 'url("../assets/images/money.jpeg") center/contain no-repeat',
-    width: "200px",
-    height: "200px",
-  };
-}
+const Carousel = ({ item, indicator }: CarouselProps) => {
+  /** Swiper option 설정 */
+  /** on 메소드를 사용하지 않으면 useMemo<SwiperOptions>로 대체 가능 */
+  const settings = useMemo<Swiper>(
+    () => ({
+      spaceBetween: 10,
+      autoplay: {
+        delay: 4000,
+      },
+      pagination: indicator && {
+        clickable: true,
+      },
+    }),
+    [indicator]
+  );
+
+  return (
+    /** Swiper에 option값을 받아와서 적용 */
+    <Swiper {...settings}>{children}</Swiper>
+  );
+};
 
 export function Home() {
   return (
     <HomeContainer>
       <Carousel />
     </HomeContainer>
-  );
-}
-
-function Carousel() {
-  return (
-    <Swiper
-      spaceBetween={30} //
-      slidesPerView={1}
-      navigation={true}
-      loop={true}
-      onSlideChange={() => console.log("Slide change")}
-      wrapperTag="div"
-      className="swiper-container"
-    >
-      <SwiperSlide className="swiper-slide"></SwiperSlide>
-      <SwiperSlide className="swiper-slide"></SwiperSlide>
-      <SwiperSlide className="swiper-slide"></SwiperSlide>
-    </Swiper>
   );
 }
