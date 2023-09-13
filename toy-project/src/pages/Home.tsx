@@ -8,7 +8,6 @@ import "swiper/css/bundle";
 import "swiper/css/scrollbar";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { url } from "inspector";
 
 declare module "swiper/react" {
   interface SwiperProps {
