@@ -16,6 +16,7 @@ export let HeaderContainer = styled.div`
   top: 0;
   padding: 0 24px;
   z-index: 100;
+  background-color: ${theme.white};
 `;
 
 export let HeaderLeft = styled.div`
@@ -128,12 +129,13 @@ export let AngleUp = styled(FaAngleUp)`
 `;
 
 export let BtnSm = styled.button`
-  font-size: ${theme.textStyles.button.fontSize}
+  color: ${theme.white};
+  font-size: ${theme.textStyles.button.fontSize};
   padding: 6px 16px;
-  background-color: ${theme.blue700}
+  background-color: ${theme.blue700};
   border-radius: 8px;
 
-  &hover {
-    color: ${theme.blue800}
+  &:hover {
+    background-color: ${theme.blue800};
   }
 `;

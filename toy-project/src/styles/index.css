@@ -16,3 +16,16 @@ code {
 div {
   background-image: url();
 }
+
+.swiper-container {
+  background-color: #333333;
+  height: 400px;
+  width: 100%;
+}
+
+.swiper-slide {
+  background-image: url(../pages/money.jpeg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
