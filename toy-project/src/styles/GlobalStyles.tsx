@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-
+  
 const GlobalStyles= createGlobalStyle`
     // 적용시킬 css 입력
     a{
@@ -31,5 +31,5 @@ const GlobalStyles= createGlobalStyle`
         cursor: pointer;
     }
 `;
-
+ 
 export default GlobalStyles;
