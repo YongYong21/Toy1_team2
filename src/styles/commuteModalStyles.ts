@@ -101,7 +101,8 @@ export const TimeText = styled.p`
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 64px;
+  font-size: 50px;
+  margin-left: 10px;
   letter-spacing : 4px;
 `;
 
@@ -116,7 +117,7 @@ export const OnOffText = styled.p<OnOffTextProps>`
   padding: 0px 8px;
 
   font-size: ${({ theme }) => theme.textStyles.subtitle5.fontSize};
-  margin: 32px;
+  margin: 24px;
   color: ${({ theme }) => theme.white};
 
   display: flex;
@@ -164,4 +165,18 @@ export const CommuteButton = styled.button`
   &:hover {
     background: ${({ theme }) => theme.blue800};
   }
+`;
+
+export const PauseButton = styled.button`
+  // background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  // margin-left: 10px;
+
+  // &:hover {
+  //   background-color: #d32f2f;
+  // }
 `;

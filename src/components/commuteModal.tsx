@@ -18,7 +18,18 @@ import {
   ButtonContainer,
   TimerText,
   CommuteButton,
+  PauseButton
 } from "../styles/commuteModalStyles";
+
+// 초를 시, 분, 초로 변환하는 함수
+const formatTimeFromSeconds = (totalSeconds: number) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const formattedTime = `${hours.toString().padStart(2, "0")}시간 ${minutes.toString().padStart(2, "0")}분 ${seconds.toString().padStart(2, "0")}초`;
+  return formattedTime;
+};
 
 function CommuteModal() {
      // 모달창을 열고 닫는 상태를 관리
@@ -35,7 +46,16 @@ function CommuteModal() {
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
       };
-    
+
+      const pauseTimer = () => {
+        setIsTimerRunning(false); // 시간 측정X
+        if (timer) {
+          clearInterval(timer);
+          setTimer(null);
+        }
+        toggleTimer(); // 일시 중단 후에 toggleTimer 함수 호출
+      };
+
       const toggleTimer = () => {
         if (!isTimerRunning) {
           setIsTimerRunning(true);
@@ -44,15 +64,26 @@ function CommuteModal() {
               setSeconds((prevSeconds) => prevSeconds + 1);
             }, 1000)
           );
-        } else {
-          setIsTimerRunning(false);
-          if (timer) {
-            clearInterval(timer);
-            setTimer(null);
-            setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
+        } else if (isTimerRunning) {
+          if (seconds > 0) {
+            setIsTimerRunning(false);
+            if (timer) {
+              clearInterval(timer);
+              setTimer(null);
+            }
           }
         }
       };
+
+      
+  const resetTimer = () => {
+    setIsTimerRunning(false);
+    if (timer) {
+      clearInterval(timer);
+      setTimer(null);
+      setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
+    }
+  };
 
     useEffect(() => {
         const today = new Date();
@@ -104,19 +135,28 @@ function CommuteModal() {
                   <OnOffText isTimerRunning={isTimerRunning}>
                     {isTimerRunning ? `ON` : "OFF"}
                   </OnOffText>
-                  <TimeText>{currentTime}</TimeText> {/* 현재 시간 표시 */}
+                  현재 시간 : <TimeText>{currentTime}</TimeText> {/* 현재 시간 표시 */}
                 </TimeContainer>
 
                 <ButtonContainer>
-                  <TimerText>
-                    {isTimerRunning
-                      ? `${seconds}초 동안 일하는 중...`
-                      : "출근을 눌러 근무를 시작하세요!"}
-                  </TimerText>
+                <TimerText>
+                {formatTimeFromSeconds(seconds)} 동안 일하는 중...
+                </TimerText>
+                <PauseButton onClick={pauseTimer}>
+                  ⏯️
+                </PauseButton>
+                {isTimerRunning && seconds > 0 ? (
+                  <>
+                    <CommuteButton onClick={resetTimer}>
+                      퇴근
+                    </CommuteButton>
+                  </>
+                ) : (
                   <CommuteButton onClick={toggleTimer}>
                     {isTimerRunning ? "퇴근" : "출근"}
                   </CommuteButton>
-                </ButtonContainer>
+                )}
+              </ButtonContainer>
               </ModalContent>
             </ModalWrapper>
           )}
