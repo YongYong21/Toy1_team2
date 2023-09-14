@@ -1,15 +1,27 @@
 import styled from "styled-components";
 
 export const HeaderButton = styled.button`
-  font-size: 30px;
-  padding: 10px;
+  font-size: ${({ theme }) => theme.textStyles.button.fontSize};
+  border-radius: 12px;
 
-  background-color: ${props => props.theme.primaryColor};
-  color: white;
+  width: 127px;
+  height: 39px;
+  margin : 7px;
+
+  background-color: ${props => props.theme.gray200};
+  color: black;
+
+  line-height: 160%;
+  text-align: center; /* 텍스트를 가운데 정렬 */
+
+  &:hover {
+      background-color: ${props => props.theme.gray300};
+    }
 `;
 
 export const AppWrapper = styled.div`
-  background-color: black;
+  background-color: white;
+  height: 56px;
 
   display: flex;
   flex-direction: column;

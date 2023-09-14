@@ -117,7 +117,7 @@ function CommuteModal() {
       <>
         <AppWrapper>
           <header>
-            <HeaderButton onClick={toggleModal}>commute</HeaderButton>
+            <HeaderButton onClick={toggleModal}>Commute</HeaderButton>
           </header>
 
           {isModalOpen && (
