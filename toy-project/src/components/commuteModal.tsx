@@ -1,138 +1,24 @@
 import React, { useState, useEffect  } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import { theme } from "../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
 
-const HeaderButton = styled.button`
-  font-size: 30px;
-  padding: 10px;
-  border-radius: 14px;
-
-  background-color: black;
-  color: white;
-`;
-
-const AppWrapper = styled.div`
-    background-color: black;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
-
-const ModalWrapper = styled.div`
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 50px;
-    right: 0;
-    left: 0;
-    bottom: 0;
-
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    z-index: 1;
-`;
-
-const ModalHeaderContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-`;
-
-const ModalTitleText = styled.p`
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 150%;
-`;
-
-const DateText = styled.p`
-  font-weight: 500;
-  font-size: 16px;
-  margin-left: 20px;
-  color: #9199A4;
-`;
-
-
-const ModalContent = styled.div`
-  padding: 24px;
-
-  background-color: #F1F5F8;
-  border-radius: 14px;
-  line-height: 150%;
-  width: 490px;
-  height: 308px;
-
-  filter: drop-shadow(0px 12px 40px rgba(0, 0, 0, 0.12));
-
-  .triangle {
-    width: 30px;
-    background-color: #F1F5F8;
-    height: 30px;
-    border-radius: 4px;
-
-    transform: rotate(135deg);
-    right: 30px;
-    top: -10px;
-    position: absolute;
-}
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 18px;
-  cursor: pointer;
-`;
-
-const TimeText = styled.p`
-  font-size: 64px;
-  margin: 30px;
-`;
-
-const TimeContainer = styled.div`
-  display: flex; /* 내부 요소들을 가로로 정렬 */
-  align-items: center; /* 수직 정렬 (중앙 정렬) */
-  justify-content: space-between; /* 좌우 간격을 균등하게 배분 */
-`;
-
-const OnOffText = styled.p`
-  font-size: 16px;
-  margin: 20px;
-`;
-
-const TimerText = styled.p`
-  font-size: 16px;
-  margin: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: auto; /* 버튼을 아래로 이동 */
-`;
-
-const CommuteButton = styled.button`
-
-    background: #3A7BDF;
-    border-radius: 12px;
-    color: white; /* 흰색 텍스트 */
-    padding: 10px 24px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-size: 12px;
-    line-height: 150%;
-    text-align: center;
-
-  &:hover {
-    background: #2565C8;
-  }
-`;
+import GlobalStyles from "../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
+import {
+  HeaderButton,
+  AppWrapper,
+  ModalWrapper,
+  ModalHeaderContainer,
+  ModalTitleText,
+  DateText,
+  CloseButton,
+  ModalContent,
+  TimeContainer,
+  TimeText,
+  OnOffText,
+  ButtonContainer,
+  TimerText,
+  CommuteButton,
+} from "../styles/commuteModalStyles";
 
 function CommuteModal() {
      // 모달창을 열고 닫는 상태를 관리
@@ -194,42 +80,50 @@ function CommuteModal() {
         };
       }, []);
 
-
-
   return (
-    <AppWrapper>
-      <header>
-        <HeaderButton onClick={toggleModal}>commute</HeaderButton>
-      </header>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles /> {/* 전역 스타일을 적용합니다. */}
+      <>
+        <AppWrapper>
+          <header>
+            <HeaderButton onClick={toggleModal}>commute</HeaderButton>
+          </header>
 
-      {isModalOpen && (
-        <ModalWrapper onClick={toggleModal}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
-            <div className='triangle'></div>
-            <ModalHeaderContainer>
-                <CloseButton onClick={toggleModal}>&times;</CloseButton>
-                <ModalTitleText>출퇴근</ModalTitleText>
-                <DateText>{currentDate}</DateText>
-            </ModalHeaderContainer>
-            <TimeContainer>
-                <div>
-                    <OnOffText>{isTimerRunning ? `ON` : "OFF"}</OnOffText>
-                </div>
-                <TimeText>{currentTime}</TimeText> {/* 현재 시간 표시 */}   
-            </TimeContainer>
-            <ButtonContainer>
-                <div>
-                    <TimerText>{isTimerRunning ? `${seconds}초 동안 일하는 중...` : "출근을 눌러 근무를 시작하세요!"}</TimerText>
-                </div>
-                <CommuteButton onClick={toggleTimer}>
+          {isModalOpen && (
+            <ModalWrapper onClick={toggleModal}>
+              <ModalContent onClick={(e) => e.stopPropagation()}>
+                <div className='triangle'></div>
+
+                <ModalHeaderContainer>
+                  <ModalTitleText>출퇴근</ModalTitleText>
+                  <DateText>{currentDate}</DateText>
+                  <CloseButton onClick={toggleModal}>&times;</CloseButton>
+                </ModalHeaderContainer>
+
+                <TimeContainer>
+                  <OnOffText isTimerRunning={isTimerRunning}>
+                    {isTimerRunning ? `ON` : "OFF"}
+                  </OnOffText>
+                  <TimeText>{currentTime}</TimeText> {/* 현재 시간 표시 */}
+                </TimeContainer>
+
+                <ButtonContainer>
+                  <TimerText>
+                    {isTimerRunning
+                      ? `${seconds}초 동안 일하는 중...`
+                      : "출근을 눌러 근무를 시작하세요!"}
+                  </TimerText>
+                  <CommuteButton onClick={toggleTimer}>
                     {isTimerRunning ? "퇴근" : "출근"}
-                </CommuteButton>
-            </ButtonContainer>    
-          </ModalContent>
-        </ModalWrapper>
-      )}
-    </AppWrapper>
+                  </CommuteButton>
+                </ButtonContainer>
+              </ModalContent>
+            </ModalWrapper>
+          )}
+        </AppWrapper>
+      </>
+    </ThemeProvider>
   );
-}
+};
 
 export default CommuteModal;
