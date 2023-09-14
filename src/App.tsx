@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Gallery from "./pages/Gallery";
+import Gallery from "./pages/Gallery/Gallery";
 
 export default function App() {
   return (

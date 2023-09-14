@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { firestore, storage } from "../api/firebase";
+import { firestore, storage } from "../../api/firebase";
 import {
   AddButton,
   TitleWrap,
@@ -7,10 +7,10 @@ import {
   Main,
   ModalContent,
   DeleteButton,
-} from "../styles/Gallery";
-import GalleryList from "../components/GalleryList";
+} from "../../styles/Gallery/Gallery";
+import GalleryList from "../../components/Gallery/GalleryList";
 import Modal from "react-modal";
-import { modalStyle } from "../styles/GalleryModal";
+import { modalStyle } from "../../styles/Gallery/GalleryModal";
 import { MdClear } from "react-icons/md";
 
 export interface ImageData {

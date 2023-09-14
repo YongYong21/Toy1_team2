@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ImageData } from "../pages/Gallery";
-import { Item } from "../styles/GalleryItem";
+import { ImageData } from "../../pages/Gallery/Gallery";
+import { Item } from "../../styles/Gallery/GalleryItem";
 import { MdClear } from "react-icons/md";
-import { DeleteButton } from "../styles/Gallery";
+import { DeleteButton } from "../../styles/Gallery/Gallery";
 
 interface GalleryItemProps {
   image: ImageData;
