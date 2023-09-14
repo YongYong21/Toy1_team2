@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from "styled-components";
-import { theme } from "../styles/Theme";
+import { theme } from "./Theme";
 
 export let HomeContainer = styled.div`
   padding-top: 56px;
