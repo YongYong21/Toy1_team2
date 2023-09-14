@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { firestore, storage } from "../../api/firebase";
 import {
   AddButton,
   TitleWrap,
   Title,
   Main,
-  ModalContent,
-  DeleteButton,
 } from "../../styles/Gallery/Gallery";
 import GalleryList from "../../components/Gallery/GalleryList";
-import Modal from "react-modal";
-import { modalStyle } from "../../styles/Gallery/GalleryModal";
-import { MdClear } from "react-icons/md";
+
 import UploadModal from "../../components/UploadModal";
 
 export interface ImageData {
