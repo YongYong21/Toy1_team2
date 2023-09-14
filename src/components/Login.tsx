@@ -54,6 +54,17 @@ const LoginForm = () => {
     setPwd('');
   };
 
+  // 로그인 페이지가 로드될 때 로컬 스토리지에서 상태를 읽어옴
+  useEffect(() => {
+    const registrationSuccess = localStorage.getItem('registrationSuccess');
+    if (registrationSuccess === 'true') {
+      alert('회원가입이 완료되었습니다. 로그인을 진행해주세요.');
+      // 로컬 스토리지에서 상태를 삭제 (한 번만 보여주기 위해)
+      localStorage.removeItem('registrationSuccess');
+    }
+  }, []);
+
+
   // 로그인 기능
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

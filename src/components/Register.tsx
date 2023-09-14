@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../api/firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   RegisterContainer,
   LogoName,
@@ -112,6 +112,7 @@ const FormComponent = () => {
     setPhone(e.target.value);
   };
 
+  const navigate = useNavigate();
   // 회원가입 수행 버튼
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,7 +123,8 @@ const FormComponent = () => {
           updateProfile(user, {
             displayName: name, // 이름 업데이트
           });
-          alert('회원가입 성공');
+          localStorage.setItem('registrationSuccess', 'true');
+          navigate('/login');
         })
         .catch((e) => {
           switch (e.code) {
@@ -148,7 +150,6 @@ const FormComponent = () => {
           <InputLabel>이메일</InputLabel>
           <Input type="email" value={email} onChange={handleEmailInputChange} placeholder="example@email.com" />
           {email && <AuthIcon />}
-
         </InputLabelContainer>
         <InputLabelContainer>
           <InputLabel style={passwordValid === 2 ? {} : { color: passwordValid ? '#2BDA90' : '#EE5151' }}>
@@ -184,9 +185,8 @@ const FormComponent = () => {
           <InputLabel>연락처</InputLabel>
           <Input type="phone" value={phone} onChange={handleClassInputChange} placeholder="ex) 010-0000-0000" />
         </InputLabelContainer>
-        <MainButton>등록하기</MainButton>
+        <MainButton type="submit">등록하기</MainButton>
         <Question>이미 사원등록을 하셨나요?</Question>
-
         <Link to="/login">
           <NextPage>로그인 하기</NextPage>
         </Link>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FaTimesCircle } from 'react-icons/fa';
-import { LuMailSearch, LuMailCheck } from "react-icons/lu";
-import { MdDone, MdOutlineErrorOutline } from "react-icons/md";
+import { LuMailSearch, LuMailCheck } from 'react-icons/lu';
+import { MdDone, MdOutlineErrorOutline } from 'react-icons/md';
 
 // 카드 컴포넌트
 export const LoginContainer = styled.div`
@@ -89,7 +89,7 @@ export const ClearIcon = styled(FaTimesCircle)`
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
-    color:${(props) => props.theme.gray500};
+    color: ${(props) => props.theme.gray500};
   }
 `;
 
@@ -104,7 +104,7 @@ export const AuthIcon = styled(LuMailSearch)`
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
-    color:${(props) => props.theme.blue700};
+    color: ${(props) => props.theme.blue700};
   }
 `;
 
@@ -119,7 +119,7 @@ export const AuthCheckedIcon = styled(LuMailCheck)`
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
-    color:${(props) => props.theme.gray500};
+    color: ${(props) => props.theme.gray500};
   }
 `;
 
@@ -134,6 +134,11 @@ export const ErrorIcon = styled(MdOutlineErrorOutline)`
   transition: all 0.3s;
 `;
 
+// Toast용 error 아이콘
+export const WhiteErrorIcon = styled(ErrorIcon)`
+  color: ${(props) => props.theme.white};
+`;
+
 // success 아이콘
 export const SuccessIcon = styled(MdDone)`
   color: ${(props) => props.theme.success};
@@ -143,6 +148,11 @@ export const SuccessIcon = styled(MdDone)`
   right: 16px;
   transform: translateY(-50%);
   transition: all 0.3s;
+`;
+
+// Toast용 success 아이콘
+export const WhiteSuccessIcon = styled(MdDone)`
+  color: ${(props) => props.theme.success};
 `;
 
 // 로그인 및 가입하기 버튼 `btn-bl`
