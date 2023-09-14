@@ -52,14 +52,4 @@ export const Item = styled.div`
   .image-name {
     font-size: 1.5rem;
   }
-
-  .delete-btn {
-    position: absolute;
-
-    top: 30px;
-    right: 30px;
-
-    color: #3a7bdf;
-    font-size: 2rem;
-  }
 `;

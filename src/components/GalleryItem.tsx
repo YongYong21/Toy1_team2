@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ImageData } from "../pages/Gallery";
 import { Item } from "../styles/GalleryItem";
 import { MdClear } from "react-icons/md";
+import { DeleteButton } from "../styles/Gallery";
 
 interface GalleryItemProps {
   image: ImageData;
@@ -28,9 +29,12 @@ export default function GalleryItem({ image, deleteData }: GalleryItemProps) {
           </div>
           <p className="image-name">{image.name}</p>
           {hovered && (
-            <button className="delete-btn" onClick={() => deleteData(image)}>
+            <DeleteButton
+              className="delete-btn"
+              onClick={() => deleteData(image)}
+            >
               <MdClear />
-            </button>
+            </DeleteButton>
           )}
         </div>
       </Item>
