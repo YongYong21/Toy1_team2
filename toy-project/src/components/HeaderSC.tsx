@@ -16,6 +16,7 @@ export let HeaderContainer = styled.div`
   top: 0;
   padding: 0 24px;
   z-index: 100;
+  background-color: ${theme.white};
 `;
 
 export let HeaderLeft = styled.div`
@@ -81,7 +82,8 @@ export let StyledNavLink = styled(NavLink)`
 
 export let HeaderRight = styled.button`
   display: flex;
-  background-color: ${theme.blue200};
+  border: 1px solid ${theme.blue300};
+  background-color: ${theme.blue100};
   align-items: center;
   padding: 4px 8px 4px 16px;
   border-radius: 8px;
@@ -109,9 +111,9 @@ interface myProps {
 }
 
 export let ProfileImage = styled.div<myProps>`
-  width: 36px;
-  height: 36px;
-  background-color: #222;
+  width: 32px;
+  height: 32px;
+  background-color: #777;
   border-radius: 50%;
   background-image: url(${(props) => props.photoURL});
   background-size: cover;
@@ -119,21 +121,21 @@ export let ProfileImage = styled.div<myProps>`
 
 export let AngleDown = styled(FaAngleDown)`
   color: ${theme.gray700};
-  margin: 0 8px 0 8px;
+  margin: 0 4px 0 4px;
 `;
 
 export let AngleUp = styled(FaAngleUp)`
   color: ${theme.gray700};
-  margin: 0 8px 0 8px;
+  margin: 0 4px 0 4px;
 `;
 
 export let BtnSm = styled.button`
-  font-size: ${theme.textStyles.button.fontSize}
+  font-size: ${theme.textStyles.button.fontSize};
   padding: 6px 16px;
-  background-color: ${theme.blue700}
+  background-color: ${theme.blue700};
   border-radius: 8px;
-
-  &hover {
-    color: ${theme.blue800}
+  color: ${theme.white};
+  &:hover {
+    background-color: ${theme.blue800};
   }
 `;

@@ -13,6 +13,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-div {
-  background-image: url();
+.swiper-button-prev {
+  --swiper-navigation-size: 44px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 240px;
+  --swiper-navigation-color: white;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.swiper-button-next {
+  --swiper-navigation-size: 44px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 240px;
+  --swiper-navigation-color: white;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 }

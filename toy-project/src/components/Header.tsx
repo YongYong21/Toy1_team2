@@ -7,6 +7,7 @@ import { HeaderContainer, HeaderLeft, HeaderLogo, HdUl, StyledLink, HeaderRight,
 export function Header() {
   let navigate = useNavigate();
   let { pathname } = useLocation();
+  let [uid, setUid] = useState<string | null>(null);
   let [username, setUsername] = useState<string>("사용자");
   let [photoURL, setPhotoURL] = useState<string>("");
   let [paths] = useState<string[][]>([
@@ -19,9 +20,11 @@ export function Header() {
     const auth = firebase.auth();
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        let uid = user.uid;
+        let uid: string | null = user.uid;
         const displayName = user.displayName;
         const photoURL = user.photoURL;
+
+        setUid(uid);
         setUsername(displayName || "사용자");
         setPhotoURL(photoURL || "");
       } else {
@@ -36,7 +39,7 @@ export function Header() {
         <HeaderLogo onClick={() => navigate("/")}>Company Space</HeaderLogo>
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
-      <LoginContainer username={username} setUsername={setUsername} photoURL={photoURL} />
+      <LoginContainer uid={uid} username={username} setUsername={setUsername} photoURL={photoURL} />
       {/* 팝업으로 처리할 부분 */}
     </HeaderContainer>
   );
@@ -57,10 +60,10 @@ function LinkContainer({ pathname, paths }: { pathname: string; paths: string[][
   );
 }
 
-function LoginContainer({ username, photoURL }: { username: string; setUsername: object; photoURL: string }) {
+function LoginContainer({ username, photoURL, uid }: { username: string; setUsername: object; photoURL: string; uid: string | null }) {
   let navigate = useNavigate();
   let [focused, setFocused] = useState(false);
-  return false ? ( //파이어베이스 인증 네임 불러와서 조건 비교할 예정
+  return uid ? (
     <HeaderRight
       onFocus={() => {
         setFocused(true);
