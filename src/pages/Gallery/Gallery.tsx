@@ -12,6 +12,7 @@ import GalleryList from "../../components/Gallery/GalleryList";
 import Modal from "react-modal";
 import { modalStyle } from "../../styles/Gallery/GalleryModal";
 import { MdClear } from "react-icons/md";
+import UploadModal from "../../components/UploadModal";
 
 export interface ImageData {
   id: string;
@@ -82,24 +83,13 @@ export default function Gallery() {
       <TitleWrap>
         <Title>협력사</Title>
         <AddButton onClick={openModal}>추가하기</AddButton>
-        <Modal
+        <UploadModal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          style={modalStyle}
-          ariaHideApp={false}
-          shouldCloseOnOverlayClick={true}
-        >
-          <DeleteButton className="delete-btn" onClick={closeModal}>
-            <MdClear />
-          </DeleteButton>
-          <ModalContent>
-            <h1>이미지를 선택해주세요</h1>
-            <input type="file"></input>
-            <h1>이름을 작성해주세요</h1>
-            <input type="text"></input>
-          </ModalContent>
-          <AddButton className="add-btn">추가하기</AddButton>
-        </Modal>
+          onUpload={() => {
+            closeModal();
+          }}
+        />
       </TitleWrap>
       <Main>
         <GalleryList images={images} deleteData={deleteData} />
