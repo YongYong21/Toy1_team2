@@ -29,7 +29,7 @@ export default function GalleryItem({ image, deleteData }: GalleryItemProps) {
           <p className="image-name">{image.name}</p>
           {hovered && (
             <button className="delete-btn" onClick={() => deleteData(image)}>
-              <MdClear className="clear-icon" />
+              <MdClear />
             </button>
           )}
         </div>
