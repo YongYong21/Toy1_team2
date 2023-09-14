@@ -14,6 +14,7 @@ import {
   MainButton,
   Question,
   NextPage,
+  AuthIcon,
 } from '../styles/LoginRegisterSC';
 
 const FormComponent = () => {
@@ -70,7 +71,7 @@ const FormComponent = () => {
     if (newPassword !== '') {
       if (isPasswordValid) {
         setPasswordValid(1);
-        setInputLabelText1('올바른 비밀번호 입니다.');
+        setInputLabelText1('올바른 비밀번호 형식입니다.');
       } else {
         setPasswordValid(0);
         setInputLabelText1('8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.');
@@ -114,7 +115,6 @@ const FormComponent = () => {
   // 회원가입 수행 버튼
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (passwordValid === 1 && passwordMatch === 1 && name && phone) {
       createUserWithEmailAndPassword(auth, email, pwdChk)
         .then((userCredential) => {
@@ -125,10 +125,17 @@ const FormComponent = () => {
           alert('회원가입 성공');
         })
         .catch((e) => {
-          alert(e);
+          switch (e.code) {
+            case 'auth/invalid-email':
+              alert('잘못된 이메일 주소입니다.');
+              break;
+            case 'auth/email-already-in-use':
+              alert('이미 가입되어 있는 계정입니다.');
+              break;
+          }
         });
     } else {
-      alert('입력한 내용을 다시 한번 확인해주세요.');
+      alert('입력하지 않은 값이 있습니다.');
     }
   };
 
@@ -140,6 +147,8 @@ const FormComponent = () => {
         <InputLabelContainer>
           <InputLabel>이메일</InputLabel>
           <Input type="email" value={email} onChange={handleEmailInputChange} placeholder="example@email.com" />
+          {email && <AuthIcon />}
+
         </InputLabelContainer>
         <InputLabelContainer>
           <InputLabel style={passwordValid === 2 ? {} : { color: passwordValid ? '#2BDA90' : '#EE5151' }}>

@@ -12,7 +12,7 @@ export const LoginContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 354px;
-  height: 420px;
+  height: 470px;
   text-align: center;
   border: 1px solid #cacaca;
   border-radius: 20px;

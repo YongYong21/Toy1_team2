@@ -58,15 +58,28 @@ const LoginForm = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, pwd)
-      .then(() => {
+      .then((userCredential) => {
         alert('로그인 성공');
+        const user = userCredential.user;
+
       })
       .catch((e) => {
-        alert(e);
+        switch (e.code) {
+          case 'auth/invalid-email':
+            alert('이메일을 입력해주세요.');
+            break;
+          case 'auth/missing-password':
+            alert('비밀번호를 입력해주세요.');
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            alert('이메일이나 비밀번호가 올바르지 않습니다.');
+            break;
+          default:
+            alert('알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.');
+        }
       });
   };
-
-  
 
   return (
     <form onSubmit={onSubmit}>
@@ -87,7 +100,7 @@ const LoginForm = () => {
           <NextPage>사원 등록</NextPage>
         </Link>
         <Link to="/findpw">
-          <NextPage>사원 등록</NextPage>
+          <NextPage>비밀번호 찾기</NextPage>
         </Link>
       </LoginContainer>
     </form>

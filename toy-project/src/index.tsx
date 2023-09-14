@@ -7,8 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/Theme';
 
-
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
