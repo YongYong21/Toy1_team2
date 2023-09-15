@@ -4,6 +4,7 @@ import { theme } from "./Theme";
 export let HomeContainer = styled.div`
   padding-top: 56px;
   position: relative;
+  height: 1500px;
 `;
 
 export let ParaTitle = styled.span`

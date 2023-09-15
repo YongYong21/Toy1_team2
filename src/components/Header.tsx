@@ -63,7 +63,7 @@ function LinkContainer({ pathname, paths }: { pathname: string; paths: string[][
 function LoginContainer({ username, photoURL, uid }: { username: string; setUsername: object; photoURL: string; uid: string | null }) {
   let navigate = useNavigate();
   let [focused, setFocused] = useState(false);
-  return true ? (
+  return uid ? (
     <HeaderRight
       onFocus={() => {
         setFocused(true);
