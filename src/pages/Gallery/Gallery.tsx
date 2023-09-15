@@ -74,6 +74,38 @@ export default function Gallery() {
     console.log("렌더링");
   }, []);
 
+  /**데이터 추가 */
+  const onUpload = async (selectedFile: File | null, name: string) => {
+    if (!selectedFile || !name) {
+      alert("값을 모두 채워주세요!");
+      return;
+    }
+    if (selectedFile && name) {
+      try {
+        //스토리지에 넣기
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(selectedFile.name);
+        await fileRef.put(selectedFile);
+
+        //파이어스토어에 넣기
+        const imageUrl = await fileRef.getDownloadURL();
+        const docRef = await bucket.add({ imageUrl, name });
+
+        // useState 사용
+        setImages((prevImages) => [
+          ...prevImages,
+          { id: docRef.id, imageUrl, name },
+        ]);
+
+        alert("성공적으로 업로드되었습니다!");
+        //모달 닫기
+        closeModal();
+      } catch (error) {
+        console.error("데이터 업로드 에러: ", error);
+      }
+    }
+  };
+
   return (
     <>
       <TitleWrap>
@@ -82,9 +114,7 @@ export default function Gallery() {
         <UploadModal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          onUpload={() => {
-            closeModal();
-          }}
+          onUpload={onUpload}
         />
       </TitleWrap>
       <Main>
