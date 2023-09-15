@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { MdClear } from "react-icons/md";
-import { modalStyle } from "../styles/Gallery/GalleryModal";
+import { modalStyle } from "../../styles/Gallery/GalleryModal";
 import {
   DeleteButton,
   AddButton,
   ModalContent,
-} from "../styles/Gallery/Gallery";
+} from "../../styles/Gallery/Gallery";
 
 interface UploadModalProps {
   isOpen: boolean;

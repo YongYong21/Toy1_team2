@@ -8,7 +8,7 @@ import {
 } from "../../styles/Gallery/Gallery";
 import GalleryList from "../../components/Gallery/GalleryList";
 
-import UploadModal from "../../components/UploadModal";
+import UploadModal from "../../components/Gallery/UploadModal";
 
 export interface ImageData {
   id: string;
