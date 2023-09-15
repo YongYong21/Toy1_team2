@@ -65,9 +65,10 @@ export function TodoList() {
         ></NewListInputContainer>
       )}
       <Tb>
-        {/* 리스트 추가되는 곳 */}
+        {/* 현재 탭의 listEl이 0개일 시 문구 표시 */}
         {!!TabMenu[0] && !todo.length && <NoContent>새로운 할 일을 생성해보세요!</NoContent>}
         {!!TabMenu[1] && !done.length && <NoContent>완료한 할 일이 없습니다.</NoContent>}
+        {/* 탭활성화에 따라 리스트 추가되는 곳 */}
         {!!TabMenu[0] &&
           todo.map((todoEl) => (
             <ListEl
@@ -110,7 +111,7 @@ function ListEl({
   setDone: React.Dispatch<[string, number][]>;
   TabMenu: number[];
 }) {
-  //체크버튼 눌러서 todo에서 doned으로 스위치하는 함수
+  //체크버튼 눌렀을 때 todo에서 doned으로 스위치하는 함수
   let switchTodoToDone = (e: React.MouseEvent<HTMLElement>) => {
     let tar = e.currentTarget as HTMLElement; //현재 이벤트 타겟
     let dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
@@ -130,7 +131,7 @@ function ListEl({
     setTodo(subtracted);
   };
 
-  //체크버튼 눌러서 done에서 todo으로 스위치하는 함수
+  //체크버튼 눌렀을 때 done에서 todo으로 스위치하는 함수
   let switchDoneToTodo = (e: React.MouseEvent<HTMLDivElement>) => {
     let tar = e.currentTarget as HTMLElement; //현재 이벤트 타겟
     let dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
@@ -179,10 +180,6 @@ function ListEl({
   }
 }
 
-function EditBtn() {
-  return <button onClick={(e) => {}}>수정</button>;
-}
-
 function NewListInputContainer({
   setToggleNew, //
   setNewDo,
@@ -226,3 +223,7 @@ function NewListInputContainer({
     </NewInputContainer>
   );
 }
+
+// function EditBtn() {
+//   return <button onClick={(e) => {}}>수정</button>;
+// }
