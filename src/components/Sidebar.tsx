@@ -10,19 +10,20 @@ import {
 
 import { firestore } from "../api/firebase";
 import { Link } from "react-router-dom";
-interface SidebarProps {}
+import { theme } from './../styles/Theme';
 
-interface MenuItem {
-  icon: JSX.Element;
-  text: string;
-  timeStamp?: string;
-  url?: string;
-}
+interface SidebarProps {}
 
 interface MenuSectionProps {
   id: number;
   title: string;
   items: MenuItem[];
+}
+
+interface MenuItem {
+  text: string;
+  timeStamp: string;
+  url: string;
 }
 
 interface ItemContainerProps {
@@ -33,17 +34,12 @@ interface HandleClickProps {
   clickItem: boolean[][];
   onItemClick: (sectionIndex: number, itemIndex: number) => void;
 }
-interface Data {
-  title: string;
-  items: any[];
-  id: number;
-  timeStamp: string;
-}
+
 const SidebarContainer = styled.div`
   width: 256px;
   height: 1024px;
-  background-color: #2a2f4a;
-  color: #e5e9ed;
+  background-color: ${theme.blueBg3};
+  color: ${theme.gray300};
   padding: 24px 20px 0px;
 `;
 
@@ -54,7 +50,8 @@ const MenuContainer = styled.div`
 const TitleContainer = styled.div`
   height: 28px;
   padding: 5px 8px;
-  font-size: 12px;
+  font-size: ${theme.textStyles.caption.fontSize};
+  line-height: ${theme.textStyles.caption.lineHeight};
   border-bottom: 1px solid #e5e9ed;
   display: flex;
   justify-content: space-between;
@@ -62,7 +59,7 @@ const TitleContainer = styled.div`
 `;
 
 const ItemContainer = styled.div<ItemContainerProps>`
-  background-color: ${(props) => (props.clickItem ? "#43618f" : "")};
+  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : "")};
   font-size: 15px;
   margin-bottom: 6px;
   padding: 8px;
@@ -73,46 +70,11 @@ const ItemContainer = styled.div<ItemContainerProps>`
     margin-right: 12px;
   }
   &:hover {
-    background-color: #43618f;
+    background-color: ${theme.blueBg1};
     color: #fefefe;
   }
 `;
 
-function 함수() {
-  // 생성하는 함수
-  // firestore.collection("sidebarMenu")
-  //   .add({
-  //     id: 0,
-  //     title: "회사생활",
-  //     items: [
-  //       { text: "회사 내규", content: '회사 내규', timeStamp: '2023-09-08 15:00', url:'rule'},
-  //       { text: "팀 소개", content: '팀 소개', timeStamp: '2023-09-08 15:00',url:'information'},
-  //       { text: "조직도", content: '조직도', timeStamp: '2023-09-08 15:00',url:'team'}
-  //     ]
-  //   })
-  //   .then((docRef) => {
-  //     console.log("Document written with ID: ", docRef.id);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error adding document: ", error);
-  //   });
-  // 가지고오기
-  // var docRef = firestore.collection("sidebarMenu").doc("test");
-  // docRef
-  //   .get()
-  //   .then((doc) => {
-  //     if (doc.exists) {
-  //       console.log("Document data:", doc.data());
-  //     } else {
-  //       // doc.data() will be undefined in this case
-  //       console.log("No such document!");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log("Error getting document:", error);
-  //   });
-}
-// 함수();
 
 function MenuSection({
   id,
@@ -145,7 +107,6 @@ function MenuSection({
                 onItemClick(id, index);
               }}
             >
-              {item.icon}
               {item.text}
             </ItemContainer>
           </Link>
@@ -155,9 +116,7 @@ function MenuSection({
 }
 
 function Sidebar(props: SidebarProps) {
-  const [data, setData] = useState<Data>();
-  const [content, setContent] = useState();
-  const [menu, setMenu] = useState<any[]>([]);
+  const [menu, setMenu] = useState<MenuSectionProps[]>([]);
   useEffect(() => {
     firestore
       .collection("sidebarMenu")
@@ -166,7 +125,13 @@ function Sidebar(props: SidebarProps) {
         const copy = [...menu];
 
         querySnapshot.forEach((doc) => {
-          copy.push(doc.data());
+          const docData = doc.data();
+          const menuSection: MenuSectionProps = {
+            id: docData.id,
+            title: docData.title,
+            items: docData.items,
+          };
+          copy.push(menuSection);
         });
         copy.sort((a, b) => a.id - b.id);
         setMenu(copy);
@@ -174,37 +139,6 @@ function Sidebar(props: SidebarProps) {
       });
   }, []);
 
-  // console.log(menu)
-  // const menuData: MenuSectionProps[] = menu;
-
-  // const menuData: MenuSectionProps[] = [
-  //   {
-  //     id: 0,
-  //     title: "회사생활",
-  //     items: [
-  //       { icon: <AiTwotoneContainer />, text: "회사 내규" },
-  //       { icon: <AiOutlineUser />, text: "팀 소개" },
-  //       { icon: <AiOutlineUsergroupDelete />, text: "조직도" },
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "프로젝트",
-  //     items: [
-  //       { icon: <AiTwotoneContainer />, text: "진행중인 프로젝트" },
-  //       { icon: <AiOutlineUser />, text: "예정된 프로젝트" },
-  //       { icon: <AiOutlineUsergroupDelete />, text: "완료된 프로젝트" },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "온보딩",
-  //     items: [
-  //       { icon: <AiTwotoneContainer />, text: "신입사원 필독서" },
-  //       { icon: <AiOutlineUser />, text: "온보딩 주제" },
-  //     ],
-  //   },
-  // ];
   const [clickItem, setClickItem] = useState(
     menu?.map((menu) => Array(menu.items.length).fill(false))
   );
