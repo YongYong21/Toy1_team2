@@ -1,29 +1,29 @@
-import ReactModal from "react-modal";
+import type ReactModal from 'react-modal';
 
 export const modalStyle: ReactModal.Styles = {
   overlay: {
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   content: {
-    width: "39%",
-    height: "46%",
-    minWidth: "25rem",
+    width: '39%',
+    height: '46%',
+    minWidth: '25rem',
 
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
 
-    borderRadius: "16px",
+    borderRadius: '16px',
 
-    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
 
-    backgroundColor: "white",
+    backgroundColor: 'white',
 
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
 
-    padding: "3rem",
+    padding: '3rem',
   },
 };

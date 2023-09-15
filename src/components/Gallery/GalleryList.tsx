@@ -1,14 +1,17 @@
-import React from "react";
-import GalleryItem from "./GalleryItem";
-import { ImageData } from "../../pages/Gallery/Gallery";
-import { Main } from "../../styles/Gallery/GalleryList";
+import React from 'react';
+import GalleryItem from './GalleryItem';
+import { type ImageData } from '../../pages/Gallery/Gallery';
+import { Main } from '../../styles/Gallery/GalleryList';
 
 interface GalleryListProps {
   images: ImageData[];
   deleteData: (image: ImageData) => void;
 }
 
-export default function GalleryList({ images, deleteData }: GalleryListProps) {
+export default function GalleryList({
+  images,
+  deleteData,
+}: GalleryListProps): JSX.Element {
   return (
     <Main>
       {images.map((image) => {
