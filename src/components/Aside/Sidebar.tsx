@@ -8,9 +8,9 @@ import {
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
 
-import { firestore } from "../api/firebase";
+import { firestore } from "../../api/firebase";
 import { Link } from "react-router-dom";
-import { theme } from './../styles/Theme';
+import { theme } from '../../styles/Theme';
 
 interface SidebarProps {}
 
