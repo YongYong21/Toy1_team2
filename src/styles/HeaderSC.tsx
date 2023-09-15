@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from "styled-components";
-import { theme } from "../styles/Theme";
+import { theme } from "./Theme";
 import { Link, NavLink } from "react-router-dom";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
@@ -48,7 +48,7 @@ export let Selected = css`
   color: ${theme.gray900};
 `;
 
-export let StyledLink = styled(Link)`
+export let UnselectedLink = styled(Link)`
   display: block;
   padding: 4px 8px;
   border-radius: 4px;
@@ -63,7 +63,7 @@ export let StyledLink = styled(Link)`
   }
 `;
 
-export let StyledNavLink = styled(NavLink)`
+export let SelectedLink = styled(NavLink)`
   display: block;
   padding: 4px 8px;
   border-radius: 4px;

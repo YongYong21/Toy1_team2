@@ -76,7 +76,6 @@ export function Shortcut() {
         <Th>
           <Col>제목</Col>
           <Col>수정일</Col>
-          <Col>담당자</Col>
         </Th>
       )}
       <Tb>
@@ -90,7 +89,6 @@ export function Shortcut() {
                   <FloatBtn>할 일 추가</FloatBtn>
                 </Cell>
                 <Cell>{wiki.recentEdit}</Cell>
-                <Cell>{wiki.editor}</Cell>
               </Tr>
             );
           })}

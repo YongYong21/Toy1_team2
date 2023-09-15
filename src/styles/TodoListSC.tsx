@@ -115,23 +115,6 @@ export const Col = styled.div`
   height: 100%;
 
   &:first-child {
-    width: 50%;
-  }
-  &:nth-child(2) {
-    width: 30%;
-  }
-  &:last-child {
-    width: 20%;
-  }
-`;
-
-export const ColTodo = styled.div`
-  font-size: ${theme.textStyles.body2.fontSize};
-  font-size: ${theme.textStyles.body2.lineHeight};
-  margin: 8px 0;
-  height: 100%;
-
-  &:first-child {
     width: 70%;
   }
   &:last-child {
@@ -139,7 +122,9 @@ export const ColTodo = styled.div`
   }
 `;
 // overflow: scroll;
-export const Tb = styled.div``;
+export const Tb = styled.div`
+  height: 100%;
+`;
 export const Tr = styled.div`
   padding: 8px 24px;
   display: flex;
@@ -152,7 +137,7 @@ export const Tr = styled.div`
   }
 `;
 
-export const TrNew = styled.div`
+export const NewInputContainer = styled.div`
   padding: 8px 24px;
   display: flex;
   cursor: pointer;
@@ -161,23 +146,6 @@ export const TrNew = styled.div`
 `;
 
 export const Cell = styled.div`
-  font-size: ${theme.textStyles.body2.fontSize};
-  display: flex;
-  align-items: center;
-
-  &:first-child {
-    width: 50%;
-    position: relative;
-  }
-  &:nth-child(2) {
-    width: 30%;
-  }
-  &:last-child {
-    width: 20%;
-  }
-`;
-
-export const CellTodo = styled.div`
   font-size: ${theme.textStyles.body2.fontSize};
   display: flex;
   align-items: center;
@@ -225,7 +193,7 @@ export const DocText = styled(HiDocumentText)`
   }
 `;
 
-export const Chk = styled(MdCheck)`
+export const ChkIcon = styled(MdCheck)`
   font-size: 16px;
   margin-right: 8px;
   color: ${theme.blue300};
@@ -261,4 +229,15 @@ export const Info = styled(PiWarningCircleBold)`
 export const NewInput = styled.input`
   width: 100%;
   margin-right: 24px;
+`;
+
+export const CheckIcon = styled.div``;
+
+export const NoContent = styled.div`
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${theme.gray700};
 `;

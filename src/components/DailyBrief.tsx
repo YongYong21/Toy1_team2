@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AngleUp, AngleDown } from "./HeaderSC";
+import { AngleUp, AngleDown } from "../styles/HeaderSC";
 import firebase from "../api/firebase";
 
 import { BriefContainer, Inner, GreetingArea, CurrentDate, CurrentUser, BriefArea, SelectPeriod, PeriodBtn, Menu, MenuLi, MenuUl, BoardArea, Check, EditNote, BoardEl, WorkType, WorkAmount, UN } from "../styles/DailyBriefSC";
@@ -29,8 +29,6 @@ export function DailyBrief() {
     let thisMonth = new Date().getMonth();
     let thisDate = new Date().getDate();
     let thisDay = new Date().getDay();
-    console.log(thisMonth, thisDate, thisDay);
-    console.log(dayObj["1"]);
     setDays(dayObj[thisDay as keyof typeof dayObj]);
     setDate(`${thisDate}`);
     setMonth(`${thisMonth + 1}`);
@@ -45,9 +43,6 @@ export function DailyBrief() {
       }
     });
   }, []);
-  useEffect(() => {
-    console.log(focused, new Date().getTime());
-  }, [focused]);
 
   return (
     <BriefContainer>
@@ -76,7 +71,6 @@ export function DailyBrief() {
                   onClick={(e) => {
                     e.stopPropagation();
                     let eTarget = e.target as HTMLElement;
-                    console.log(eTarget.innerText);
                     setPeriod(eTarget.innerText);
                     setFocused(false);
                   }}

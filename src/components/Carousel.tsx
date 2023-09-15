@@ -19,7 +19,7 @@ declare module "swiper/react" {
     pagination?: object;
     modules?: any[];
     effect?: string;
-    parallax?: any;
+    parallax?: boolean;
   }
 }
 
@@ -30,13 +30,6 @@ export function Carousel() {
     width: "100%",
   };
 
-  interface threadsElProps {
-    title: string;
-    subtitle: string;
-    pharse: string;
-    bgColor: string;
-    url: string;
-  }
   let [threads] = useState([
     {
       title: "Wiki",

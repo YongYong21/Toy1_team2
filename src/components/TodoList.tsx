@@ -1,140 +1,179 @@
 import { useEffect, useState } from "react";
-import { BtnSmLi, Plus, TabBtn, TabList, Title, TitleLine, TodoListContainer, TabBtnClk, Th, Col, Tb, Tr, Cell, Chk, TooltipDenied, Info, NewInput, ColTodo, CellTodo, TrNew } from "../styles/TodoListSC";
+import { BtnSmLi, Plus, TabBtn, TabList, Title, TitleLine, TodoListContainer, TabBtnClk, Th, Tb, Tr, Cell, ChkIcon, NewInput, Col, NewInputContainer, CheckIcon, NoContent } from "../styles/TodoListSC";
 import { Height30 } from "../styles/ShortcutSC";
 import { Check } from "../styles/DailyBriefSC";
-import { stringify } from "querystring";
 
 export function TodoList() {
-  let [toggleNew, setToggleNew] = useState(false);
-  let [newDo, setNewDo] = useState("");
-  let [clkTab, setClkTab] = useState([1, 0]);
+  let [toggleNew, setToggleNew] = useState(false); //새로운 toDo생성 UI 표출/닫힘
+  let [newDo, setNewDo] = useState(""); //새로운 할 일 인자
+  let [TabMenu, setTabMenu] = useState([1, 0]); // 탭 전환 상태값
 
-  let [todo, setTodo] = useState<[any, number][]>([]);
-  let [done, setDone] = useState<[any, number][]>([]);
+  let [todo, setTodo] = useState<[string, number][]>([]); // 할 일 목록
+  let [done, setDone] = useState<[string, number][]>([]); // 완료된 일 목록
 
+  //첫 페이지 로딩때만 실행할 로직
   useEffect(() => {
-    // 페이지 로딩이 되면 localStorage로 setTodo를 가져옴.
-    let parsedTodo = JSON.parse(localStorage.getItem("todo") as string);
-    console.log(parsedTodo, "!");
+    //localStorage에서 할 일 목록 불러오기 & setTodo()로 설정
+    let parsedTodo = JSON.parse(localStorage.getItem("todo") as string) || [];
     setTodo(parsedTodo);
 
-    let parsedDone = JSON.parse(localStorage.getItem("done") as string);
+    //localStorage에서 완료된 일 목록 불러오기 & setTodo()로 설정
+    let parsedDone = JSON.parse(localStorage.getItem("done") as string) || [];
     setDone(parsedDone);
   }, []);
+
+  let handleSwitchTab = (e: React.MouseEvent<HTMLDivElement>) => {
+    let tar = e.target as HTMLElement;
+    if (tar.textContent === "진행할 작업") {
+      setTabMenu([1, 0]);
+    } else {
+      setTabMenu([0, 1]);
+      setToggleNew(false);
+    }
+  };
 
   return (
     <TodoListContainer>
       <TitleLine>
         <Title>할 일</Title>
-        {clkTab[0] ? (
-          <BtnSmLi
-            onClick={() => {
-              setToggleNew(!toggleNew);
-            }}
-          >
+        {/* 탭에 따라 우측 새 추가 아이콘 표출/숨김 */}
+        {!!TabMenu[0] && (
+          <BtnSmLi onClick={() => setToggleNew(!toggleNew)}>
             <Plus></Plus>새 추가
           </BtnSmLi>
-        ) : (
-          <Height30></Height30>
         )}
+        {
+          !!TabMenu[1] && <Height30></Height30> //height설정만 있어서 비어있을 때 높이 유지해주는 요소.
+        }
       </TitleLine>
-      <TabList
-        onClick={(e) => {
-          let tar = e.target as HTMLElement;
-          if (tar.textContent === "진행할 작업") {
-            setClkTab([1, 0]);
-          } else {
-            setClkTab([0, 1]);
-            setToggleNew(false);
-          }
-        }}
-      >
-        {clkTab.map((v, i) => {
-          return v ? ( //
-            <TabBtnClk>{["진행할 작업", "완료된 작업"][i]}</TabBtnClk> //
-          ) : (
-            <TabBtn>{["진행할 작업", "완료된 작업"][i]}</TabBtn>
-          );
-        })}
+      <TabList onClick={handleSwitchTab}>
+        {TabMenu[0] === 1 ? <TabBtnClk>진행할 작업</TabBtnClk> : <TabBtn>진행할 작업</TabBtn>}
+        {TabMenu[1] === 1 ? <TabBtnClk>완료된 작업</TabBtnClk> : <TabBtn>완료된 작업</TabBtn>}
       </TabList>
       <Th>
-        <ColTodo>할일</ColTodo>
-        <ColTodo>관련문서</ColTodo>
+        <Col>할일</Col>
+        <Col>관련문서</Col>
       </Th>
+      {/* 새로운 리스트 추가하기 컴포넌트 */}
       {toggleNew && (
-        <AddNewContainer
+        <NewListInputContainer
           setToggleNew={setToggleNew} //
           newDo={newDo}
           setNewDo={setNewDo}
           todo={todo}
           setTodo={setTodo}
-        ></AddNewContainer>
+        ></NewListInputContainer>
       )}
       <Tb>
         {/* 리스트 추가되는 곳 */}
-        {!!clkTab[0] &&
-          todo?.map((todoEl) => (
-            <PostComponent
+        {!!TabMenu[0] && !todo.length && <NoContent>새로운 할 일을 생성해보세요!</NoContent>}
+        {!!TabMenu[1] && !done.length && <NoContent>완료한 할 일이 없습니다.</NoContent>}
+        {!!TabMenu[0] &&
+          todo.map((todoEl) => (
+            <ListEl
               todo={todo} //
-              todoEl={todoEl}
+              listEl={todoEl}
               setTodo={setTodo}
               setDone={setDone}
               done={done}
-            ></PostComponent>
+              TabMenu={TabMenu}
+            ></ListEl>
           ))}
-        {false &&
-          !!clkTab[0] &&
-          done.map((todoEl) => (
-            <PostComponent
+        {!!TabMenu[1] &&
+          done?.map((doneEl) => (
+            <ListEl
               todo={todo} //
-              todoEl={todoEl}
               setTodo={setTodo}
-              setDone={setDone}
               done={done}
-            ></PostComponent>
+              listEl={doneEl}
+              setDone={setDone}
+              TabMenu={TabMenu}
+            ></ListEl>
           ))}
       </Tb>
     </TodoListContainer>
   );
 }
 
-function PostComponent({ todoEl, setTodo, todo, setDone, done }: { todoEl: [any, number]; setTodo: any; todo: any; setDone: any; done: [any, number][] }) {
-  if (true) {
+function ListEl({
+  todo, // 할일 목록 (배열)
+  listEl, // 인자 하나하나(배열 아님)
+  setTodo, // 할일 목록 setState
+  done, //완료된 목록 (배열)
+  setDone, // 완료된 목록 setState
+  TabMenu, // 탭 메뉴 (현재 뭐 선택되어 있는지)
+}: {
+  todo: [string, number][];
+  listEl: [string, number];
+  setTodo: React.Dispatch<[string, number][]>;
+  done: [string, number][];
+  setDone: React.Dispatch<[string, number][]>;
+  TabMenu: number[];
+}) {
+  //체크버튼 눌러서 todo에서 doned으로 스위치하는 함수
+  let switchTodoToDone = (e: React.MouseEvent<HTMLElement>) => {
+    let tar = e.currentTarget as HTMLElement; //현재 이벤트 타겟
+    let dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
+
+    // ID에 매칭되는 놈 찾아서 done으로 보내는 과정
+    let matched = todo.find((v: [string, number]) => v[1].toString() === dataset) as [string, number];
+    let doneCopy: [string, number][] = done.slice();
+    doneCopy.unshift(matched);
+    let strfiedDone = JSON.stringify(doneCopy);
+    localStorage.setItem("done", strfiedDone);
+    setDone(doneCopy);
+
+    // ID에 매칭되는 놈 찾아서 todo에서 제거시키는 과정
+    let subtracted = todo.filter((v: [string, number]) => v[1].toString() !== dataset);
+    let strfiedTodo = JSON.stringify(subtracted);
+    localStorage.setItem("todo", strfiedTodo);
+    setTodo(subtracted);
+  };
+
+  //체크버튼 눌러서 done에서 todo으로 스위치하는 함수
+  let switchDoneToTodo = (e: React.MouseEvent<HTMLDivElement>) => {
+    let tar = e.currentTarget as HTMLElement; //현재 이벤트 타겟
+    let dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
+
+    // ID에 매칭되는 놈 찾아서 todo로 보내는 과정
+    let matched = done.find((v: [string, number]) => v[1].toString() === dataset) as [string, number];
+    let todoCopy: [string, number][] = todo.slice();
+    todoCopy.unshift(matched);
+    let strfiedTodo = JSON.stringify(todoCopy);
+    localStorage.setItem("todo", strfiedTodo);
+    setTodo(todoCopy);
+
+    // ID에 매칭되는 놈 찾아서 done에서 제거시키는 과정
+    let subtracted = done.filter((v: [string, number]) => v[1].toString() !== dataset);
+    let strfiedDone = JSON.stringify(subtracted);
+    localStorage.setItem("done", strfiedDone);
+    setDone(subtracted);
+  };
+
+  if (TabMenu[0] === 1) {
     return (
       <Tr>
-        <CellTodo>
-          <div
-            data-id={todoEl[1].toString()}
-            onClick={(e) => {
-              let tar = e.currentTarget as HTMLElement;
-              let dataset = tar.dataset.id;
-              console.log(dataset, "to Done");
-
-              let matched = todo.find((v: [any, number]) => v[1].toString() === dataset);
-              setDone(matched);
-              let subbed = todo.filter((v: [any, number]) => v[1].toString() !== dataset);
-              let strfied = JSON.stringify(subbed);
-              localStorage.setItem("todo", strfied);
-              setTodo(subbed);
-            }}
-          >
-            <Chk />
-          </div>
-          {todoEl[0]}
+        <Cell>
+          <CheckIcon data-id={listEl[1].toString()} onClick={switchTodoToDone}>
+            <ChkIcon />
+          </CheckIcon>
+          {listEl[0]}
           {/* <EditBtn></EditBtn> */}
-        </CellTodo>
-        <CellTodo>신입사원 필독서</CellTodo>
+        </Cell>
+        <Cell>신입사원 필독서</Cell>
       </Tr>
     );
   } else {
     return (
       <Tr>
         <Cell>
-          <Chk />
-          isEdit: True
+          <CheckIcon data-id={listEl[1]?.toString()} onClick={switchDoneToTodo}>
+            <ChkIcon />
+          </CheckIcon>
+          {listEl[0]}
+          {/* <EditBtn></EditBtn> */}
         </Cell>
         <Cell>신입사원 필독서</Cell>
-        <Cell>정범환</Cell>
       </Tr>
     );
   }
@@ -144,30 +183,46 @@ function EditBtn() {
   return <button onClick={(e) => {}}>수정</button>;
 }
 
-function AddNewContainer({ setToggleNew, setNewDo, newDo, todo, setTodo }: { setToggleNew: any; setNewDo: any; newDo: any; todo: [any, number][]; setTodo: any }) {
+function NewListInputContainer({
+  setToggleNew, //
+  setNewDo,
+  newDo,
+  todo,
+  setTodo,
+}: {
+  setToggleNew: React.Dispatch<boolean>;
+  setNewDo: React.Dispatch<string>;
+  newDo: string;
+  todo: [string, number][];
+  setTodo: React.Dispatch<[string, number][]>;
+}) {
   return (
-    <TrNew>
-      <CellTodo>
+    <NewInputContainer>
+      <Cell>
         <NewInput
           onKeyDown={(e) => {
-            console.log(e.key);
             if (e.key === "Enter") {
-              let temp = todo?.slice() || [];
+              // 엔터를 눌렀으면
+              // 심플하게 [내용 ,아이디]로 인자를 구성
+              let temp = todo.slice() || [];
               temp.unshift([newDo, new Date().getTime()]);
               setTodo(temp);
+
+              // stringify해서 localStorage에 다 저장
               let strfied = JSON.stringify(temp);
               localStorage.setItem("todo", strfied);
               setToggleNew(false);
             }
           }}
           onChange={(e) => {
-            setNewDo(e.target.value);
+            setNewDo(e.target.value); //타이핑 값을 그대로 새로운 인자값
           }}
         ></NewInput>
-      </CellTodo>
-      <CellTodo>
+      </Cell>
+      <Cell>
+        {/* 문서 설정 */}
         신입사원 필독서<Check></Check>
-      </CellTodo>
-    </TrNew>
+      </Cell>
+    </NewInputContainer>
   );
 }
