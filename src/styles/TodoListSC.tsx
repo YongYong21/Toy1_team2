@@ -1,4 +1,4 @@
-import { css, styled } from "styled-components";
+import { styled } from "styled-components";
 import { theme } from "./Theme";
 import { LuPlus } from "react-icons/lu";
 import { HiDocumentText } from "react-icons/hi";
@@ -284,7 +284,7 @@ export const DeleteToolTip = styled.div`
   background-color: ${theme.white};
   border: 1px solid ${theme.gray300};
   padding: 8px 16px;
-  bottom: -32px;
+  bottom: -28px;
   z-index: 2;
   box-shadow: 0 0 40px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;

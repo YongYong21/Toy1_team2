@@ -341,19 +341,13 @@ function ListComponent({
     return (
       <Tr>
         <Cell onClick={() => {}}>
-          {tglUdtTodo[idx] ? (
-            <TitleEditInput />
-          ) : (
-            <>
-              <CheckIcon //
-                data-id={listEl[1].toString()}
-                onClick={switchTodoToDone}
-              >
-                <ChkIcon />
-              </CheckIcon>
-              listEl[0]
-            </>
-          )}
+          <CheckIcon //
+            data-id={listEl[1].toString()}
+            onClick={switchTodoToDone}
+          >
+            <ChkIcon />
+          </CheckIcon>
+          {tglUdtTodo[idx] ? <TitleEditInput /> : listEl[0]}
         </Cell>
         <Cell>
           관련 문서 선택
@@ -374,20 +368,14 @@ function ListComponent({
   } else {
     return (
       <Tr style={{ opacity: 0.5 }}>
-        <Cell onClick={() => {}}>
-          {tglUdtTodo[idx] ? (
-            <TitleEditInput />
-          ) : (
-            <>
-              <CheckIcon //
-                data-id={listEl[1].toString()}
-                onClick={switchTodoToDone}
-              >
-                <ChkIcon />
-              </CheckIcon>
-              listEl[0]
-            </>
-          )}
+        <Cell>
+          <CheckIcon //
+            data-id={listEl[1].toString()}
+            onClick={switchDoneToTodo}
+          >
+            <ChkedIcon />
+          </CheckIcon>
+          {listEl[0]}
         </Cell>
         <Cell>관련 문서 선택 </Cell>
         <MoreButton data-id={listEl[1].toString()} onFocus={(e) => ToggleDeleteBtn(e, "focus")} onBlur={(e) => ToggleDeleteBtn(e, "blur")}>
