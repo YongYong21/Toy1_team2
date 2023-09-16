@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   AiOutlineDown,
   AiOutlineUp,
   AiTwotoneContainer,
   AiOutlineUser,
   AiOutlineUsergroupDelete,
-} from "react-icons/ai";
+} from 'react-icons/ai';
 
-import { firestore } from "../../api/firebase";
-import { Link } from "react-router-dom";
+import { firestore } from '../../api/firebase';
+import { Link } from 'react-router-dom';
 import { theme } from '../../styles/Theme';
 
 interface SidebarProps {}
@@ -59,7 +59,7 @@ const TitleContainer = styled.div`
 `;
 
 const ItemContainer = styled.div<ItemContainerProps>`
-  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : "")};
+  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : '')};
   font-size: 15px;
   margin-bottom: 6px;
   padding: 8px;
@@ -74,7 +74,6 @@ const ItemContainer = styled.div<ItemContainerProps>`
     color: #fefefe;
   }
 `;
-
 
 function MenuSection({
   id,
@@ -119,7 +118,7 @@ function Sidebar(props: SidebarProps) {
   const [menu, setMenu] = useState<MenuSectionProps[]>([]);
   useEffect(() => {
     firestore
-      .collection("sidebarMenu")
+      .collection('sidebarMenu')
       .get()
       .then((querySnapshot) => {
         const copy = [...menu];
@@ -140,7 +139,7 @@ function Sidebar(props: SidebarProps) {
   }, []);
 
   const [clickItem, setClickItem] = useState(
-    menu?.map((menu) => Array(menu.items.length).fill(false))
+    menu?.map((menu) => Array(menu.items.length).fill(false)),
   );
 
   function handleClickItem(sectionIndex: number, itemIndex: number) {
