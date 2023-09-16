@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { firestore } from '../api/firebase';
@@ -6,6 +7,12 @@ import ReactMarkdown from 'react-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { JsxElement } from 'typescript';
 import { theme } from './../styles/Theme';
+=======
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { firestore } from "../api/firebase";
+import { useParams } from "react-router-dom";
+>>>>>>> parent of eb21fd2 (현재 작업 임시 저장: main git pull)
 
 interface ContentsProps {}
 interface Data {
@@ -54,7 +61,7 @@ function Contents(props: ContentsProps) {
           for (const key in items) {
             if (items[key].url === id) {
               setData(items[key]);
-              return;
+              return; 
             }
           }
         });
@@ -62,6 +69,7 @@ function Contents(props: ContentsProps) {
       .catch((error) => {
         console.error('Error fetching menu data:', error);
       });
+<<<<<<< HEAD
   }, [id]);
   const [markdownText, setMarkdownText] = useState<string>('');
   const [previewMarkdown, setPreviewMarkdown] = useState<string>('');
@@ -89,7 +97,11 @@ function Contents(props: ContentsProps) {
     // [`items.0.url`]: "ongoing", })
     // firestore.collection("sidebarMenu").doc(id).update({ content: markdownText })
   };
+=======
+  }, [id]); 
+>>>>>>> parent of eb21fd2 (현재 작업 임시 저장: main git pull)
 
+  console.log(data);
   return (
     <ContentsContainer>
       <TitleDiv>{data?.text}</TitleDiv>
@@ -97,12 +109,16 @@ function Contents(props: ContentsProps) {
         <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
         <EditBtn>글 수정</EditBtn>
       </TimeStampWrap>
+<<<<<<< HEAD
       <ContentsDiv>
         <MarkdownViewer markdownText={data?.content || ''} />
         <textarea onChange={onChange} value={markdownText}></textarea>
         <MarkdownViewer markdownText={markdownText || ''} />
         <button onClick={handleSaveClick}>저장</button>
       </ContentsDiv>
+=======
+      <ContentsDiv>{data?.content}</ContentsDiv>
+>>>>>>> parent of eb21fd2 (현재 작업 임시 저장: main git pull)
     </ContentsContainer>
   );
 }
