@@ -9,10 +9,10 @@ import { theme } from './../styles/Theme';
 
 interface ContentsProps {}
 interface Data {
+  title: string;
+  items: any[];
+  id: number;
   timeStamp: string;
-  text: string;
-  content: string;
-  url: string;
 }
 const ContentsContainer = styled.div`
   width: 1280px;
@@ -21,8 +21,7 @@ const ContentsContainer = styled.div`
 const TitleDiv = styled.div`
   width: 1000px;
   height: 52px;
-  font-size: ${theme.textStyles.subtitle1.fontSize};
-  line-height: ${theme.textStyles.subtitle1.lineHeight};
+  font-size: 36px;
   padding: 8px;
   margin-bottom: 16px;
 `;
@@ -33,8 +32,7 @@ const TimeStampWrap = styled.div`
 const TimeStampDiv = styled.div`
   width: 800px;
   height: 30px;
-  font-size: ${theme.textStyles.subtitle5.fontSize};
-  line-height: ${theme.textStyles.subtitle5.lineHeight};
+  font-size: 16px;
   padding: 8px;
 `;
 const EditBtn = styled.button``;
@@ -42,44 +40,9 @@ const ContentsDiv = styled.div`
   padding: 8px;
 `;
 
-function 함수() {
-  // 생성하는 함수
-  // firestore.collection("sidebarMenu")
-  //   .add({
-  //     id: 0,
-  //     title: "회사생활",
-  //     items: [
-  //       { text: "회사 내규", content: '회사 내규', timeStamp: '2023-09-08 15:00', url:'rule'},
-  //       { text: "팀 소개", content: '팀 소개', timeStamp: '2023-09-08 15:00',url:'information'},
-  //       { text: "조직도", content: '조직도', timeStamp: '2023-09-08 15:00',url:'team'}
-  //     ]
-  //   })
-  //   .then((docRef) => {
-  //     console.log("Document written with ID: ", docRef.id);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error adding document: ", error);
-  //   });
-  // 가지고오기
-  // var docRef = firestore.collection("sidebarMenu").doc("test");
-  // docRef
-  //   .get()
-  //   .then((doc) => {
-  //     if (doc.exists) {
-  //       console.log("Document data:", doc.data());
-  //     } else {
-  //       // doc.data() will be undefined in this case
-  //       console.log("No such document!");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log("Error getting document:", error);
-  //   });
-}
-// 함수();
 function Contents(props: ContentsProps) {
   const { id } = useParams();
-  const [data, setData] = useState<Data | null>(null); // Use a more specific type if possible
+  const [data, setData] = useState<any | null>(null); // Use a more specific type if possible
 
   useEffect(() => {
     firestore
