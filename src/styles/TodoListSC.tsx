@@ -2,7 +2,7 @@ import { css, styled } from "styled-components";
 import { theme } from "./Theme";
 import { LuPlus } from "react-icons/lu";
 import { HiDocumentText } from "react-icons/hi";
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdMoreHoriz } from "react-icons/md";
 import { PiWarningCircleBold } from "react-icons/pi";
 
 export let TodoListContainer = styled.article`
@@ -149,10 +149,13 @@ export const Cell = styled.div`
   font-size: ${theme.textStyles.body2.fontSize};
   display: flex;
   align-items: center;
+  position: relative;
 
   &:first-child {
     width: 70%;
-    position: relative;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   &:last-child {
     width: 30%;
@@ -199,28 +202,36 @@ export const ChkIcon = styled(MdCheck)`
   color: ${theme.blue300};
   border: 1px solid ${theme.blue300};
   border-radius: 50%;
+  transition: all 0.2s;
 
   ${Cell}:hover & {
     color: ${theme.blue500};
     border: 1px solid ${theme.blue500};
   }
+  &:hover {
+    color: ${theme.white};
+    background-color: ${theme.blue700};
+    border: none;
+  }
 `;
 
-export const TooltipDenied = styled.div`
-  position: absolute;
-  width: 240px;
-  top: -80px;
-  right: 0;
-  font-size: ${theme.textStyles.body2.fontSize};
-  background-color: ${theme.blue100};
-  box-shadow: ${theme.shadows.shadow1.shadow};
-  color: ${theme.gray700};
-  padding: 16px 16px;
-  border-radius: 8px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
+export const ChkedIcon = styled(MdCheck)`
+  font-size: 16px;
+  margin-right: 8px;
+  color: ${theme.white};
+  border-radius: 50%;
+  background-color: ${theme.blue700};
+  transition: all 0.2s;
+
+  ${Cell}:hover & {
+    background-color: ${theme.blue500};
+  }
 `;
+
+export const TitleEditInput = styled.input`
+  width: 80%;
+`;
+
 export const Info = styled(PiWarningCircleBold)`
   font-size: 40px;
   margin-right: 8px;
@@ -240,4 +251,43 @@ export const NoContent = styled.div`
   justify-content: center;
   align-items: center;
   color: ${theme.gray700};
+`;
+
+export const MoreIcon = styled(MdMoreHoriz)``;
+
+export const MoreButton = styled.button`
+  font-size: 24px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 24px;
+  margin: auto;
+  padding: 0;
+  color: ${theme.blue700};
+  opacity: 0;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${Tr}:hover & {
+    opacity: 1;
+    color: ${theme.gray500};
+  }
+  ${MoreIcon}:hover & {
+    background-color: ${theme.blue700};
+  }
+`;
+
+export const DeleteToolTip = styled.div`
+  position: absolute;
+  right: 0;
+  background-color: ${theme.white};
+  border: 1px solid ${theme.gray300};
+  padding: 8px 16px;
+  bottom: -32px;
+  z-index: 2;
+  box-shadow: 0 0 40px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  color: ${theme.gray700};
+  opacity: 1;
 `;
