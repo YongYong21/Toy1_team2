@@ -27,7 +27,7 @@ import {
   ButtonContainer,
   CommuteButton,
   PauseButton
-} from "../../styles/commuteModal/commuteModalStyles";
+} from "../../styles/CommuteModal/commuteModalStyles";
 
 // 초를 시, 분, 초로 변환하는 함수
 const formatTimeFromSeconds = (totalSeconds: number): string => {

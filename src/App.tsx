@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
-import CommuteModal from "./components/commuteModal/commuteModal";
+import CommuteModal from "./components/CommuteModal/commuteModal";
 import Gallery from './pages/Gallery/Gallery';
 
 function App(): JSX.Element {
