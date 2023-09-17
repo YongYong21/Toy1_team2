@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import { theme } from "../../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
 
 import GlobalStyles from "../../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
@@ -30,7 +30,7 @@ import {
 } from "../../styles/commuteModal/commuteModalStyles";
 
 // 초를 시, 분, 초로 변환하는 함수
-const formatTimeFromSeconds = (totalSeconds: number) => {
+const formatTimeFromSeconds = (totalSeconds: number): string => {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
@@ -39,38 +39,37 @@ const formatTimeFromSeconds = (totalSeconds: number) => {
   return formattedTime;
 };
 
-function formatWorkStartTime(startTime: Date) {
+function formatWorkStartTime(startTime: Date): string {
   const hours = startTime.getHours();
   const minutes = startTime.getMinutes();
 
-  let formattedHours = hours < 10 ? `0${hours}` : hours.toString();
-  let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+  const formattedHours = hours < 10 ? `0${hours}` : hours.toString();
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
 
   return `${formattedHours}:${formattedMinutes}`;
 }
 
-  function formatWorkEndTime(startTime: Date) {
+  function formatWorkEndTime(startTime: Date): string {
     // 출근 시간에 9시간(540분)을 더해 예상 퇴근 시간을 계산
     const endTime = new Date(startTime.getTime() + 540 * 60 * 1000);
 
     const hours = endTime.getHours();
     const minutes = endTime.getMinutes();
 
-    let formattedHours = hours < 10 ? `0${hours}` : hours.toString();
-    let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+    const formattedHours = hours < 10 ? `0${hours}` : hours.toString();
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
 
     return `${formattedHours}:${formattedMinutes}`;
   }
 
 
-function CommuteModal() {
+function CommuteModal() : JSX.Element {
      // 모달창을 열고 닫는 상태를 관리
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState("");
     const [currentTime, setCurrentTime] = useState(''); // 현재 시간 상태 추가
 
-    
-    const [isBreakPaused, setIsBreakPaused] = useState(false);
+    // const [isBreakPaused, setIsBreakPaused] = useState<boolean>(false);
 
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [seconds, setSeconds] = useState(0);
@@ -79,7 +78,7 @@ function CommuteModal() {
     const [isCommuteButtonClicked, setIsCommuteButtonClicked] = useState(false); // 출근 버튼 클릭 상태 추가
     const [modalTitle, setModalTitle] = useState("김사원님, 아직 출근전 입니다. 👀");
 
-    const [breakStartTime, setBreakStartTime] = useState<null | Date>(null);
+    // const [breakStartTime, setBreakStartTime] = useState<null | Date>(null);
     // 휴게 시작 시간을 저장하는 상태 변수, 상태 변수를 업데이트 하는 함수
 
     const [workStartTime, setWorkStartTime] = useState<Date | null>(null); // 출근 시간 상태 변수 추가
@@ -87,13 +86,12 @@ function CommuteModal() {
 
 
     // 모달창을 열고 닫는 함수
-    const toggleModal = () => {
+    const toggleModal = (): void => {
       setIsModalOpen(!isModalOpen);
     };
 
-    
 
-      const toggleTimer = () => {
+      const toggleTimer = (): void => {
         if (!isTimerRunning) {
           setIsTimerRunning(true);
           setTimer(
@@ -104,7 +102,7 @@ function CommuteModal() {
         } else if (isTimerRunning) {
           if (seconds > 0) {
             setIsTimerRunning(false);
-            if (timer) {
+            if (timer !== null) {
               clearInterval(timer);
               setTimer(null);
             }
@@ -112,71 +110,39 @@ function CommuteModal() {
         }
       };
 
-        // 근무 시간 타이머 시작 함수
-        const startTimer = () => {
-          setIsTimerRunning(true);
-          setTimer(
-            setInterval(() => {
-              setSeconds((prevSeconds) => prevSeconds + 1);
-            }, 1000)
-          );
-        };
-
         // 근무 시간 타이머 일시 정지 함수
-        const pauseTimer = () => {
+        const pauseTimer = (): void => {
           setIsTimerRunning(false);
-          if (timer) {
+          if (timer !== null) {
             clearInterval(timer);
             setTimer(null);
           }
         };
 
-        // 휴게 시간 타이머 시작 함수
-        const startBreakTimer = () => {
-          setIsBreakPaused(false); // 일시 정지 상태를 해제한다.
-          setBreakStartTime(new Date()); // 휴게 시작 시간을 현재 시간으로 설정
-        };
-
-        // 휴게 시간 타이머 일시 정지 함수
-        const pauseBreakTimer = () => {
-          setIsBreakPaused(true); // 일시 정지 상태 설정
-          // 휴게 시간 타이머를 중지하는 로직을 추가해야 합니다.
-        };
-
-        // 휴게 시작 버튼 클릭 이벤트 핸들러
-        const handleStartBreakClick = () => {
-          startBreakTimer(); // 휴게 시간 타이머 시작
-        };
-
-        // 휴게 일시 정지 버튼 클릭 이벤트 핸들러
-        const handlePauseBreakClick = () => {
-          pauseBreakTimer(); // 휴게 시간 타이머 일시 정지
-        };
-
-        // 휴게 시간을 계산하는 함수
-        const calculateBreakTime = () => {
-          if (breakStartTime && !isBreakPaused) { // 휴게 시간 일시 정지 상태인 경우 계산하지 않음
-            const currentTime = new Date();
-            const elapsedMilliseconds: number = currentTime.getTime() - breakStartTime!.getTime();
-            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+        // // 휴게 시간을 계산하는 함수
+        // const calculateBreakTime = () => {
+        //   if (breakStartTime && !isBreakPaused) { // 휴게 시간 일시 정지 상태인 경우 계산하지 않음
+        //     const currentTime = new Date();
+        //     const elapsedMilliseconds: number = currentTime.getTime() - breakStartTime!.getTime();
+        //     const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
   
-            // elapsedSeconds를 이용하여 시, 분, 초로 휴게 시간을 계산합니다.
-            const hours = Math.floor(elapsedSeconds / 3600);
-            const minutes = Math.floor((elapsedSeconds % 3600) / 60);
-            const seconds = elapsedSeconds % 60;
+        //     // elapsedSeconds를 이용하여 시, 분, 초로 휴게 시간을 계산합니다.
+        //     const hours = Math.floor(elapsedSeconds / 3600);
+        //     const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+        //     const seconds = elapsedSeconds % 60;
   
-            // 시, 분, 초를 두 자리로 만듭니다.
-            const formattedHours = hours.toString().padStart(2, "0");
-            const formattedMinutes = minutes.toString().padStart(2, "0");
-            const formattedSeconds = seconds.toString().padStart(2, "0");
+        //     // 시, 분, 초를 두 자리로 만듭니다.
+        //     const formattedHours = hours.toString().padStart(2, "0");
+        //     const formattedMinutes = minutes.toString().padStart(2, "0");
+        //     const formattedSeconds = seconds.toString().padStart(2, "0");
   
-            return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-          } else {
-            return "00:00:00";
-          }
-        };
+        //     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        //   } else {
+        //     return "00:00:00";
+        //   }
+        // };
 
-        const handleCommuteButtonClick = () => {
+        const handleCommuteButtonClick = (): void => {
           const now = new Date();
           const hours = now.getHours();
           const currentTime = `${hours < 10 ? '0' : ''}${hours}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
@@ -190,7 +156,7 @@ function CommuteModal() {
               setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
               toggleTimer();
                 // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-                if (!workStartTime) {
+                if (workStartTime != null) {
                   setWorkStartTime(now); // 출근 시간 업데이트
                 }
             }
@@ -202,13 +168,13 @@ function CommuteModal() {
               toggleTimer();
               setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
                   // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-              if (!workStartTime) {
+              if (workStartTime != null) {
                 setWorkStartTime(now); // 출근 시간 업데이트
               }
             }
           }
         };
-        const resetTimer = () => {
+        const resetTimer = (): void => {
           const now = new Date();
           const hours = now.getHours();
           const currentTime = `${hours < 10 ? '0' : ''}${hours}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
@@ -216,7 +182,7 @@ function CommuteModal() {
           const confirmation = window.confirm(`현재 시각은 ${currentTime}입니다. 퇴근하시겠습니까? \n근무 시간: ${formatTimeFromSeconds(seconds)}`);
           if (confirmation) {
             setIsTimerRunning(false);
-            if (timer) {
+            if (timer != null) {
               clearInterval(timer);
               setTimer(null);
               setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
@@ -236,7 +202,7 @@ function CommuteModal() {
         setCurrentDate(`${formattedDate} ${dayOfWeek}`); // 날짜와 요일을 함께 표시
 
         // 현재 시간을 얻어와서 시분초 형식으로 포맷팅
-        const formatTime = () => {
+        const formatTime = (): string => {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, "0");
             const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -265,7 +231,7 @@ function CommuteModal() {
 
           {isModalOpen && (
             <ModalWrapper onClick={toggleModal}>
-              <ModalContent onClick={(e) => e.stopPropagation()}>
+              <ModalContent onClick={(e) => { e.stopPropagation(); }}>
                 <div className='triangle'></div>
 
                 <ModalHeaderContainer>
@@ -288,20 +254,20 @@ function CommuteModal() {
                       <WorkStartTextContainer>
                         <WorkStartTextTitle>출근 시간</WorkStartTextTitle>
                         <WorkStartText>
-                          {workStartTime ? formatWorkStartTime(workStartTime) : '00:00'}
+                          {workStartTime !== null && workStartTime !== undefined ? formatWorkStartTime(workStartTime) : '00:00'}
                         </WorkStartText>
                       </WorkStartTextContainer>
 
                       <ExpectedWorkEndTextContainer>
                         <ExpectedWorkEndTextTitle>예상 퇴근 시간</ExpectedWorkEndTextTitle>
                         <ExpectedWorkEndText>
-                          {workStartTime ? formatWorkEndTime(workStartTime) : '00:00'}
+                          {workStartTime !== null && workStartTime !== undefined ? formatWorkEndTime(workStartTime) : '00:00'}
                         </ExpectedWorkEndText>
                       </ExpectedWorkEndTextContainer>
                     </CommuteTimeTextContainer>
 
                     <BreakTimeText>
-                        휴게시간 {breakStartTime ? calculateBreakTime() : '00:00:00'} (점심 시간 12:00~13:00)
+                        점심 시간 12:00~13:00
                     </BreakTimeText>
                     
                   </>
