@@ -1,5 +1,5 @@
 import React from "react";
-import CommuteModal from "./components/commuteModal";
+import CommuteModal from "./components/commuteModal/commuteModal";
 
 
 function App() {
