@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { firestore } from "../api/firebase";
-import { useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import MarkdownPreview from "@uiw/react-markdown-preview";
-import { JsxElement } from "typescript";
-import { theme } from "./../styles/Theme";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { firestore } from '../api/firebase';
+import { useParams } from 'react-router-dom';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
-interface ContentsProps {}
-interface Data {
-  title: string;
-  items: any[];
-  id: number;
-  timeStamp: string;
-}
 const ContentsContainer = styled.div`
   width: 1280px;
   padding: 20px 30px 0px;
@@ -40,13 +30,13 @@ const ContentsDiv = styled.div`
   padding: 8px;
 `;
 
-function Contents(props: ContentsProps) {
+function Contents(): JSX.Element {
   const { id } = useParams();
   const [data, setData] = useState<any | null>(null); // Use a more specific type if possible
 
   useEffect(() => {
     firestore
-      .collection("sidebarMenu")
+      .collection('sidebarMenu')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -62,13 +52,16 @@ function Contents(props: ContentsProps) {
         });
       })
       .catch((error) => {
-        console.error("Error fetching menu data:", error);
+        console.error('Error fetching menu data:', error);
       });
   }, [id]);
-  const [markdownText, setMarkdownText] = useState<string>("");
-  const [previewMarkdown, setPreviewMarkdown] = useState<string>("");
+  const [markdownText, setMarkdownText] = useState<string>('');
 
-  const MarkdownViewer = ({ markdownText }: { markdownText: string }) => {
+  const MarkdownViewer = ({
+    markdownText,
+  }: {
+    markdownText: string;
+  }): JSX.Element => {
     return (
       <div>
         <MarkdownPreview source={markdownText} />
@@ -76,12 +69,11 @@ function Contents(props: ContentsProps) {
     );
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const newText = e.target.value;
     setMarkdownText(newText);
-    setPreviewMarkdown(newText);
   };
-  const handleSaveClick = () => {
+  const handleSaveClick = (): void => {
     // console.log(firestore.collection("sidebarMenu").doc('Ry903jgEiuNn72Bz8NZ7'))
     // firestore.collection("sidebarMenu").doc('Ry903jgEiuNn72Bz8NZ7').update({ [`items.0.content`]: MarkdownText})
     // firestore.collection("sidebarMenu").doc('Oa1Mk5TW1Q4gYw2budOr').update({ [`items.0.content`]: "진행중인 프로젝트",
@@ -99,9 +91,15 @@ function Contents(props: ContentsProps) {
         <EditBtn>글 수정</EditBtn>
       </TimeStampWrap>
       <ContentsDiv>
-        <MarkdownViewer markdownText={data?.content || ""} />
+        <MarkdownViewer
+          markdownText={data?.content !== undefined ? data.content : ''}
+        />
+
         <textarea onChange={onChange} value={markdownText}></textarea>
-        <MarkdownViewer markdownText={markdownText || ""} />
+        <MarkdownViewer
+          markdownText={markdownText !== '' ? markdownText : ''}
+        />
+
         <button onClick={handleSaveClick}>저장</button>
       </ContentsDiv>
     </ContentsContainer>

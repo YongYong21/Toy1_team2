@@ -1,14 +1,7 @@
-import React from "react";
-import Sidebar from "./components/Aside/Sidebar";
-import Content from "./components/Contents";
-import styled from "styled-components";
-import { Routes, Route, Link } from "react-router-dom";
-import Wiki from "./pages/Wiki";
+import { Routes, Route, Link } from 'react-router-dom';
+import Wiki from './pages/Wiki';
 
-const FlexBox = styled.div`
-  display: flex;
-`;
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <>
       <Link to="/wiki/rule">위키</Link>

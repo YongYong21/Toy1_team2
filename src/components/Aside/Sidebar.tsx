@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import {
-  AiOutlineDown,
-  AiOutlineUp,
-  AiTwotoneContainer,
-  AiOutlineUser,
-  AiOutlineUsergroupDelete,
-} from "react-icons/ai";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 
-import { firestore } from "../../api/firebase";
-import { Link } from "react-router-dom";
-import { theme } from "../../styles/Theme";
-
-interface SidebarProps {}
+import { firestore } from '../../api/firebase';
+import { Link } from 'react-router-dom';
+import { theme } from '../../styles/Theme';
 
 interface MenuSectionProps {
   id: number;
@@ -59,7 +51,7 @@ const TitleContainer = styled.div`
 `;
 
 const ItemContainer = styled.div<ItemContainerProps>`
-  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : "")};
+  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : '')};
   font-size: 15px;
   margin-bottom: 6px;
   padding: 8px;
@@ -81,10 +73,10 @@ function MenuSection({
   items,
   clickItem,
   onItemClick,
-}: MenuSectionProps & HandleClickProps) {
+}: MenuSectionProps & HandleClickProps): JSX.Element {
   const [clickTitle, setClickTitle] = useState(false);
 
-  function handleClickTitle() {
+  function handleClickTitle(): void {
     setClickTitle(!clickTitle);
   }
   return (
@@ -98,7 +90,7 @@ function MenuSection({
       </TitleContainer>
       {!clickTitle &&
         items.map((item, index) => (
-          <Link to={`/wiki/${item.url}`}>
+          <Link key={item.url} to={`/wiki/${item.url}`}>
             <ItemContainer
               key={index}
               clickItem={clickItem[id][index]}
@@ -114,11 +106,11 @@ function MenuSection({
   );
 }
 
-function Sidebar(props: SidebarProps) {
+function Sidebar(): JSX.Element {
   const [menu, setMenu] = useState<MenuSectionProps[]>([]);
   useEffect(() => {
     firestore
-      .collection("sidebarMenu")
+      .collection('sidebarMenu')
       .get()
       .then((querySnapshot) => {
         const copy = [...menu];
@@ -135,14 +127,17 @@ function Sidebar(props: SidebarProps) {
         copy.sort((a, b) => a.id - b.id);
         setMenu(copy);
         setClickItem(copy.map((menu) => Array(menu.items.length).fill(false)));
+      })
+      .catch((error) => {
+        console.error('Firebase 데이터 가져오기 오류:', error);
       });
   }, []);
 
   const [clickItem, setClickItem] = useState(
-    menu?.map((menu) => Array(menu.items.length).fill(false))
+    menu?.map((menu) => Array(menu.items.length).fill(false)),
   );
 
-  function handleClickItem(sectionIndex: number, itemIndex: number) {
+  function handleClickItem(sectionIndex: number, itemIndex: number): void {
     const copy = [...clickItem.map((arr) => arr.map(() => false))];
     copy[sectionIndex][itemIndex] = !copy[sectionIndex][itemIndex];
     setClickItem(copy);
