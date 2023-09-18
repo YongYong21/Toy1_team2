@@ -1,12 +1,13 @@
 import type ReactModal from 'react-modal';
+import styled from 'styled-components';
 
 export const modalStyle: ReactModal.Styles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   content: {
-    width: '39%',
-    height: '46%',
+    width: '43%',
+    height: '50%',
     minWidth: '25rem',
 
     position: 'absolute',
@@ -23,7 +24,56 @@ export const modalStyle: ReactModal.Styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-
-    padding: '3rem',
   },
 };
+
+export const ModalContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15%;
+  justify-content: center;
+  text-align: center;
+
+  padding: 1rem;
+  margin: 3rem 0 1rem;
+
+  width: 100%;
+  height: 70%;
+
+  .input-text {
+    margin-bottom: 1rem;
+    font-size: 100%;
+  }
+
+  input[type='file'],
+  input[type='text'] {
+    margin-bottom: 2%;
+    padding: 0.5rem;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    width: 100%;
+  }
+
+  .preview-img {
+    width: 90%;
+    max-width: 15rem;
+    max-height: 15rem;
+
+    cursor: pointer;
+
+    &:hover {
+      opacity: 70%;
+      transition: 0.3s;
+    }
+
+    border: 1px solid #ccc;
+
+    padding: 10%;
+  }
+
+  .input-img {
+    display: none;
+  }
+`;
