@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
+export const FlexBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+
 export const TitleWrap = styled.div`
   display: flex;
   justify-content: center;
-  gap: 55%;
+  gap: 70%;
 
   margin-top: 5rem;
 `;
@@ -36,15 +42,11 @@ export const AddButton = styled.button`
 `;
 
 export const Main = styled.div`
-  width: 80%;
+  width: 100%;
   min-height: 100vh;
 
   margin: 0 auto;
   padding: 3rem;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 export const DeleteButton = styled.button`
