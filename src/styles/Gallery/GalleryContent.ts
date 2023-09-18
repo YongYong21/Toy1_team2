@@ -10,7 +10,9 @@ export const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin-top: 5rem;
+  margin: 5rem auto 0;
+
+  width: 90%;
 `;
 
 export const Title = styled.h1`
