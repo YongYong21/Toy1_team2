@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { firestore } from '../api/firebase';
-import { useParams } from 'react-router-dom';
+import { useParams, Outlet, Link } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 
 const ContentsContainer = styled.div`
@@ -69,6 +69,8 @@ function Contents(): JSX.Element {
   const [data, setData] = useState<any | null>(null); // Use a more specific type if possible
   const [idx, setIdx] = useState(0);
   const [docName, setDocName] = useState('');
+  const [markdownText, setMarkdownText] = useState<string>('');
+  const [toggleEdit, setToggleEdit] = useState(true);
   // let item = [
   //   {
   //     text: '회사 내규',
@@ -102,6 +104,7 @@ function Contents(): JSX.Element {
               setDocName(doc.id);
               setIdx(index); // 해당 요소의 인덱스 출력
               setData(item);
+              setMarkdownText(item.content);
               return;
             }
           }
@@ -111,7 +114,6 @@ function Contents(): JSX.Element {
         console.error('Error fetching menu data:', error);
       });
   }, [id]);
-  const [markdownText, setMarkdownText] = useState<string>('');
 
   const MarkdownViewer = ({
     markdownText,
@@ -123,11 +125,6 @@ function Contents(): JSX.Element {
         <MarkdownPreview source={markdownText} />
       </div>
     );
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    const newText = e.target.value;
-    setMarkdownText(newText);
   };
 
   const handleSaveClick = (): void => {
@@ -165,26 +162,26 @@ function Contents(): JSX.Element {
         console.error('문서 가져오기 중 오류 발생: ', error);
       });
   };
-
+  const handleEditBtn = (): void => {
+    setToggleEdit(true);
+  };
   return (
     <ContentsContainer>
       <TitleDiv>{data?.text}</TitleDiv>
       <TimeStampWrap>
         <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
-        <EditBtn>글 수정</EditBtn>
+        <Link to={`${window.location.pathname}/edit`}>
+          {toggleEdit && <EditBtn onClick={handleEditBtn}>글 수정</EditBtn>}
+        </Link>
       </TimeStampWrap>
       <ContentsDiv>
         <MarkdownViewer
           markdownText={data?.content !== undefined ? data.content : ''}
         />
 
-        <textarea onChange={onChange} value={markdownText}></textarea>
-        <MarkdownViewer
-          markdownText={markdownText !== '' ? markdownText : ''}
-        />
-
         <button onClick={handleSaveClick}>저장</button>
       </ContentsDiv>
+      <Outlet></Outlet>
     </ContentsContainer>
   );
 }
