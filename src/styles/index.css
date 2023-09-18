@@ -1,11 +1,21 @@
 @font-face {
   font-family: 'Pretendard';
-  src: url('../assets/fonts/PretendardVariable.woff2')
+  src: url('../assets/fonts/PretendardVariable.woff2');
 }
 body {
   margin: 0;
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,4 +24,26 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.swiper-button-prev {
+  --swiper-navigation-size: 44px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 240px;
+  --swiper-navigation-color: white;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.swiper-button-next {
+  --swiper-navigation-size: 44px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 240px;
+  --swiper-navigation-color: white;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 }

@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import 'firebase/compat/auth'; // Firebase의 인증 모듈
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -14,5 +15,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+export default firebase;
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
