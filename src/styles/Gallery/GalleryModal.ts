@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const modalStyle: ReactModal.Styles = {
   overlay: {
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
   content: {
     width: '43%',
@@ -17,7 +17,7 @@ export const modalStyle: ReactModal.Styles = {
 
     borderRadius: '16px',
 
-    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.15)',
 
     backgroundColor: 'white',
 
@@ -42,7 +42,7 @@ export const ModalContent = styled.div`
 
   .input-text {
     margin-bottom: 1rem;
-    font-size: 100%;
+    font-size: ${(props) => props.theme.textStyles.subtitle5.fontSize};
   }
 
   input[type='file'],
@@ -50,7 +50,8 @@ export const ModalContent = styled.div`
     margin-bottom: 2%;
     padding: 0.5rem;
 
-    border: 1px solid #ccc;
+    border: 1px solid;
+    border-color: ${(props) => props.theme.gray500};
     border-radius: 8px;
 
     width: 100%;
@@ -68,7 +69,8 @@ export const ModalContent = styled.div`
       transition: 0.3s;
     }
 
-    border: 1px solid #ccc;
+    border: 1px solid;
+    border-color: ${(props) => props.theme.gray500};
 
     padding: 10%;
   }

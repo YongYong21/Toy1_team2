@@ -11,7 +11,7 @@ export const TitleWrap = styled.div`
 export const Title = styled.h1`
   margin: auto 0;
 
-  font-size: 2rem;
+  font-size: ${(props) => props.theme.textStyles.subtitle1.fontSize};
 `;
 
 export const AddButton = styled.button`
@@ -23,15 +23,13 @@ export const AddButton = styled.button`
   border-radius: 8px;
   border: none;
 
-  background-color: #3a7bdf;
+  background-color: ${(props) => props.theme.blue700};
 
-  font-size: 15px;
+  font-size: ${(props) => props.theme.textStyles.button.fontSize};
   color: white;
 
   &:hover {
-    background-color: #2565c8;
-
-    color: white;
+    background-color: ${(props) => props.theme.blue800};
 
     transition: 0.3s;
   }
@@ -56,5 +54,5 @@ export const DeleteButton = styled.button`
   right: 30px;
 
   font-size: 2rem;
-  color: #3a7bdf;
+  color: ${(props) => props.theme.blue600};
 `;

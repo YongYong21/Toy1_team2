@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Item = styled.div`
   margin: 10px;
+
   .item-wrap {
     width: 360px;
     height: 360px;
@@ -50,6 +51,6 @@ export const Item = styled.div`
   }
 
   .image-name {
-    font-size: 1.5rem;
+    font-size: ${(props) => props.theme.textStyles.subtitle4.fontSize};
   }
 `;
