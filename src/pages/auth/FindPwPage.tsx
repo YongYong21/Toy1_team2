@@ -1,7 +1,7 @@
 import React from 'react';
-import FindPwForm from '../../components/auth/findPw'
+import FindPwForm from '../../components/Auth/findPw';
 
-const LoginPage = () => {
+const FindPwPage: React.FC = () => {
   return (
     <>
       {/* 여기에 헤더와 푸터를 넣으면 될 것 같음! */}
@@ -9,6 +9,6 @@ const LoginPage = () => {
       {/* 여기에 헤더와 푸터를 넣으면 될 것 같음! */}
     </>
   );
-}
+};
 
-export default LoginPage
+export default FindPwPage;

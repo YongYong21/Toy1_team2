@@ -23,7 +23,7 @@ import {
   NextPage,
 } from '../../styles/auth/LoginRegisterSC';
 
-const FormComponent: React.FC = () => {
+const RegisterForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
   // Toast 메시지 상태관리
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -304,4 +304,4 @@ const FormComponent: React.FC = () => {
   );
 };
 
-export default FormComponent;
+export default RegisterForm;

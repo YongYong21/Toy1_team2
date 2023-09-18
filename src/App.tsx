@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Login from './pages/auth/LoginPage';
-import Register from './pages/auth/RegisterPage';
-import FindPwPage from './pages/auth/FindPwPage';
-import AfterLogin from './pages/auth/AfterLogin';
+import Login from './pages/Auth/LoginPage';
+import Register from './pages/Auth/RegisterPage';
+import FindPwPage from './pages/Auth/FindPwPage';
+import AfterLogin from './pages/Auth/AfterLogin';
 import Gallery from './pages/Gallery/Gallery';
 import { AuthContextProvider } from './contexts/AuthContext';
 const App: React.FC = () => {

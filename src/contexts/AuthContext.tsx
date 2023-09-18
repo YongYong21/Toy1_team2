@@ -10,28 +10,41 @@ export type AuthState =
 
 export const AuthStateContext = createContext<AuthState | undefined>(undefined);
 
-export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
   const [authState, setAuthState] = useState<AuthState>({ state: 'loading' });
 
-  const onChange = (user: User | null) => {
-    if (user) {
+  const onChange = (user: User | null): void => {
+    if (user !== null) {
       setAuthState({ state: 'loaded', isAuthentication: true, user });
     } else {
       setAuthState({ state: 'loaded', isAuthentication: false, user });
     }
   };
-  const setError = (error: Error) => setAuthState({ state: 'error', error });
+  const setError = (error: Error): void => {
+    setAuthState({ state: 'error', error });
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, onChange, setError);
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  return <AuthStateContext.Provider value={authState}>{children}</AuthStateContext.Provider>;
+  return (
+    <AuthStateContext.Provider value={authState}>
+      {children}
+    </AuthStateContext.Provider>
+  );
 };
 
-export const useAuthState = () => {
+export const useAuthState = (): AuthState => {
   const authState = useContext(AuthStateContext);
-  if (!authState) throw new Error('AuthProvider not found');
+  if (authState === undefined || authState === null)
+    throw new Error('AuthProvider not found');
   return authState;
 };

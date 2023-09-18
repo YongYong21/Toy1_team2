@@ -16,7 +16,7 @@ import {
   InputContainer,
 } from '../../styles/auth/LoginRegisterSC';
 
-const LoginForm: React.FC = () => {
+const FindPwForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
   // Toast 메시지 상태관리
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -138,4 +138,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default FindPwForm;
