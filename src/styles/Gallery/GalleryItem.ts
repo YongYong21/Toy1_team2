@@ -10,6 +10,7 @@ export const Item = styled.div`
     position: relative;
 
     margin: 10px;
+    padding: 1rem;
 
     border-radius: 8px;
     border: none;
