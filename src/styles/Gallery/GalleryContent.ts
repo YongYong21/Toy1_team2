@@ -8,8 +8,7 @@ export const FlexBox = styled.div`
 
 export const TitleWrap = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 70%;
+  justify-content: space-between;
 
   margin-top: 5rem;
 `;
