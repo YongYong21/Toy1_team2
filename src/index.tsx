@@ -8,16 +8,16 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/Theme';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 root.render(
-  <ThemeProvider theme={theme}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </React.StrictMode>
-  </ThemeProvider>
+    </ThemeProvider>
+  </React.StrictMode>,
 );

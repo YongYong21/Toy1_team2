@@ -16,32 +16,32 @@ import {
   InputContainer,
 } from '../../styles/auth/LoginRegisterSC';
 
-const LoginForm = () => {
-  /*------------------ Toast 메세지 ------------------*/
+const LoginForm: React.FC = () => {
+  /* ------------------ Toast 메세지 ------------------ */
   // Toast 메시지 상태관리
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
 
   // Toast 메시지를 숨기는 함수
-  const hideToastMessage = () => {
+  const hideToastMessage: () => void = () => {
     setShowToast(false);
-    setToastMessage('');
+    setToastMessage(null);
   };
 
   useEffect(() => {
-    if (toastMessage) {
+    if (toastMessage !== null) {
       setShowToast(true);
       setTimeout(hideToastMessage, 3000);
     }
   }, [toastMessage]);
 
-  /*------------------ Container 가운데 정렬 ------------------*/
+  /* ------------------ Container 가운데 정렬 ------------------ */
 
   // 디바이스 높이를 상태로 저장.
   const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
   useEffect(() => {
     // 브라우저 창 크기가 변경될 때마다 디바이스 높이 업데이트
-    const handleResize = () => {
+    const handleResize: () => void = () => {
       setDeviceHeight(window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
@@ -53,27 +53,31 @@ const LoginForm = () => {
   const marginTop = (deviceHeight - 371) / 2;
   const marginBottom = (deviceHeight - 471) / 2;
 
-  /*------------------ Input타입 관련기능 ------------------*/
+  /* ------------------ Input타입 관련기능 ------------------ */
 
   const [email, setEmail] = useState('');
 
   // input value값 저장
-  const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setEmail(e.target.value);
   };
 
   // input value값 초기화 기능
-  const handleClearEmailInput = () => {
+  const handleClearEmailInput: () => void = () => {
     setEmail('');
   };
 
   // 비밀번호 찾기 기능
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     auth
       .sendPasswordResetEmail(email)
       .then(() => {
-        setToastMessage('비밀번호 변경 링크를 이메일로 전송했습니다. 이메일을 확인해주세요.');
+        setToastMessage(
+          '비밀번호 변경 링크를 이메일로 전송했습니다. 이메일을 확인해주세요.',
+        );
       })
       .catch((e) => {
         switch (e.code) {
@@ -84,40 +88,44 @@ const LoginForm = () => {
             setToastMessage('존재하지 않는 이메일입니다.');
             break;
           default:
-            setToastMessage('알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.');
+            setToastMessage(
+              '알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.',
+            );
         }
       });
   };
 
-  // // 프로필 조회용 기능
-  // const fetchUserProfile = () => {
-  //   const user = auth.currentUser; // 현재 로그인한 사용자 정보를 가져옵니다.
-
-  //   if (user) {
-  //     const { displayName, email, emailVerified } = user;
-  //     console.log('사용자 이름:', displayName);
-  //     console.log('사용자 이메일:', email);
-  //     console.log('이메일 인증여부:', emailVerified);
-  //   } else {
-  //     // 사용자가 로그인하지 않은 경우
-  //     console.log('사용자가 로그인하지 않았습니다.');
-  //   }
-  // };
-
   return (
     <form onSubmit={onSubmit}>
-      <FindPwContainer style={{ marginTop: marginTop, marginBottom: marginBottom }}>
-      {showToast && (
-          <ToastMessage className={toastMessage?.includes('전송') ? 'success' : 'error'}>
-            {toastMessage?.includes('전송') ? <WhiteSuccessIcon /> : <WhiteErrorIcon />}
+      <FindPwContainer
+        style={{ marginTop: marginTop, marginBottom: marginBottom }}
+      >
+        {showToast && (
+          <ToastMessage
+            className={
+              toastMessage !== null && toastMessage.includes('전송')
+                ? 'success'
+                : 'error'
+            }
+          >
+            {toastMessage !== null && toastMessage.includes('전송') ? (
+              <WhiteSuccessIcon />
+            ) : (
+              <WhiteErrorIcon />
+            )}
             {toastMessage}
           </ToastMessage>
         )}
         <LogoName>Company Space</LogoName>
         <Title>비밀번호 찾기</Title>
         <InputContainer>
-          <Input type="email" value={email} onChange={handleEmailInputChange} placeholder="이메일" />
-          {email && <ClearIcon onClick={handleClearEmailInput} />}
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailInputChange}
+            placeholder="이메일"
+          />
+          {email !== null && <ClearIcon onClick={handleClearEmailInput} />}
         </InputContainer>
 
         <MainButton>비밀번호 찾기</MainButton>

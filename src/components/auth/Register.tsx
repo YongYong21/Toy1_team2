@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from 'firebase/auth';
 import { auth } from '../../api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -19,33 +23,33 @@ import {
   NextPage,
 } from '../../styles/auth/LoginRegisterSC';
 
-const FormComponent = () => {
-  /*------------------ Toast 메세지 ------------------*/
+const FormComponent: React.FC = () => {
+  /* ------------------ Toast 메세지 ------------------ */
   // Toast 메시지 상태관리
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
 
   // Toast 메시지를 숨기는 함수
-  const hideToastMessage = () => {
+  const hideToastMessage: () => void = () => {
     setShowToast(false);
-    setToastMessage('');
+    setToastMessage(null);
   };
 
   useEffect(() => {
-    if (toastMessage) {
+    if (toastMessage !== null) {
       setShowToast(true);
       setTimeout(hideToastMessage, 3000);
     }
   }, [toastMessage]);
 
-  /*------------------ Form 위치 ------------------*/
+  /* ------------------ Form 위치 ------------------ */
 
   // 디바이스 높이를 상태로 저장.
   const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
 
   useEffect(() => {
     // 브라우저 창 크기가 변경될 때마다 디바이스 높이 업데이트
-    const handleResize = () => {
+    const handleResize: () => void = () => {
       setDeviceHeight(window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
@@ -70,19 +74,24 @@ const FormComponent = () => {
   const [phone, setPhone] = useState('');
 
   // input value값 저장
-  const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setEmail(e.target.value);
   };
 
   /* -------------------- 비밀번호 유효성 검사 -------------------- */
 
   // 1. 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함.
-  const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return passwordRegex.test(password); // boolean 반환
   };
 
-  const handlePasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const newPassword = e.target.value.trim();
     setPwd(newPassword);
     const isPasswordValid = validatePassword(newPassword);
@@ -119,44 +128,62 @@ const FormComponent = () => {
     }
   }, [pwd, pwdChk]);
 
-  const handlePasswordChkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChkInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const newPasswordChk = e.target.value.trim();
     setPwdChk(newPasswordChk);
   };
   // ----------------------------------------
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setName(e.target.value);
   };
-  const handleClassInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClassInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setPhone(e.target.value);
   };
 
   const navigate = useNavigate();
   // 회원가입 수행 버튼
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
-    if (passwordValid === 1 && passwordMatch === 1 && name && phone) {
-      await createUserWithEmailAndPassword(auth, email, pwdChk)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          updateProfile(user, {
-            displayName: name, // 이름 업데이트
-          });
-          sendEmailVerification(user);
-          localStorage.setItem('registrationSuccess', 'true');
-          navigate('/login');
-        })
-        .catch((e) => {
-          switch (e.code) {
-            case 'auth/invalid-email':
-              setToastMessage('잘못된 이메일 주소입니다.');
-              break;
-            case 'auth/email-already-in-use':
-              setToastMessage('이미 가입되어 있는 계정입니다.');
-              break;
-          }
+    if (
+      passwordValid === 1 &&
+      passwordMatch === 1 &&
+      name !== null &&
+      phone !== null
+    ) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          pwdChk,
+        );
+        const user = userCredential.user;
+        await updateProfile(user, {
+          displayName: name, // 이름 업데이트
         });
+        await sendEmailVerification(user);
+        localStorage.setItem('registrationSuccess', 'true');
+        navigate('/login');
+      } catch (e) {
+        switch (e) {
+          case 'auth/invalid-email':
+            setToastMessage('잘못된 이메일 주소입니다.');
+            break;
+          case 'auth/email-already-in-use':
+            setToastMessage('이미 가입되어 있는 계정입니다.');
+            break;
+          default:
+            setToastMessage('알 수 없는 오류가 발생했습니다.');
+        }
+      }
     } else {
       setToastMessage('입력하지 않은 값이 있습니다.');
     }
@@ -164,10 +191,22 @@ const FormComponent = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <RegisterContainer style={{ marginTop: marginTop, marginBottom: marginBottom }}>
-      {showToast && (
-          <ToastMessage className={toastMessage?.includes('완료') ? 'success' : 'error'}>
-            {toastMessage?.includes('완료') ? <WhiteSuccessIcon /> : <WhiteErrorIcon />}
+      <RegisterContainer
+        style={{ marginTop: marginTop, marginBottom: marginBottom }}
+      >
+        {showToast && (
+          <ToastMessage
+            className={
+              toastMessage !== null && toastMessage.includes('전송')
+                ? 'success'
+                : 'error'
+            }
+          >
+            {toastMessage !== null && toastMessage.includes('완료') ? (
+              <WhiteSuccessIcon />
+            ) : (
+              <WhiteErrorIcon />
+            )}
             {toastMessage}
           </ToastMessage>
         )}
@@ -175,10 +214,21 @@ const FormComponent = () => {
         <Title>사원 등록</Title>
         <InputLabelContainer>
           <InputLabel>이메일</InputLabel>
-          <Input type="email" value={email} onChange={handleEmailInputChange} placeholder="example@email.com" />
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailInputChange}
+            placeholder="example@email.com"
+          />
         </InputLabelContainer>
         <InputLabelContainer>
-          <InputLabel style={passwordValid === 2 ? {} : { color: passwordValid ? '#2BDA90' : '#EE5151' }}>
+          <InputLabel
+            style={
+              passwordValid === 2
+                ? {}
+                : { color: passwordValid !== 0 ? '#2BDA90' : '#EE5151' }
+            }
+          >
             {inputLabelText1}
           </InputLabel>
           <Input
@@ -186,12 +236,26 @@ const FormComponent = () => {
             value={pwd}
             onChange={handlePasswordInputChange}
             placeholder="••••"
-            style={passwordValid === 2 ? {} : { borderColor: passwordValid ? '#2BDA90' : '#EE5151' }}
+            style={
+              passwordValid === 2
+                ? {}
+                : { borderColor: passwordValid !== 0 ? '#2BDA90' : '#EE5151' }
+            }
           />
-          {passwordValid === 2 ? null : pwd && passwordValid ? <SuccessIcon /> : <ErrorIcon />}
+          {passwordValid === 2 ? null : pwd !== null && passwordValid !== 0 ? (
+            <SuccessIcon />
+          ) : (
+            <ErrorIcon />
+          )}
         </InputLabelContainer>
         <InputLabelContainer>
-          <InputLabel style={passwordMatch === 2 ? {} : { color: passwordMatch ? '#2BDA90' : '#EE5151' }}>
+          <InputLabel
+            style={
+              passwordMatch === 2
+                ? {}
+                : { color: passwordMatch !== 0 ? '#2BDA90' : '#EE5151' }
+            }
+          >
             {inputLabelText2}
           </InputLabel>
           <Input
@@ -199,17 +263,36 @@ const FormComponent = () => {
             value={pwdChk}
             onChange={handlePasswordChkInputChange}
             placeholder="••••"
-            style={passwordMatch === 2 ? {} : { borderColor: passwordMatch ? '#2BDA90' : '#EE5151' }}
+            style={
+              passwordMatch === 2
+                ? {}
+                : { borderColor: passwordMatch !== 0 ? '#2BDA90' : '#EE5151' }
+            }
           />
-          {passwordMatch === 2 ? null : pwdChk && passwordMatch ? <SuccessIcon /> : <ErrorIcon />}
+          {passwordMatch === 2 ? null : pwdChk !== null &&
+            passwordMatch !== 0 ? (
+            <SuccessIcon />
+          ) : (
+            <ErrorIcon />
+          )}
         </InputLabelContainer>
         <InputLabelContainer>
           <InputLabel>이름</InputLabel>
-          <Input type="text" value={name} onChange={handleNameInputChange} placeholder="ex) 홍길동" />
+          <Input
+            type="text"
+            value={name}
+            onChange={handleNameInputChange}
+            placeholder="ex) 홍길동"
+          />
         </InputLabelContainer>
         <InputLabelContainer>
           <InputLabel>연락처</InputLabel>
-          <Input type="phone" value={phone} onChange={handleClassInputChange} placeholder="ex) 010-0000-0000" />
+          <Input
+            type="phone"
+            value={phone}
+            onChange={handleClassInputChange}
+            placeholder="ex) 010-0000-0000"
+          />
         </InputLabelContainer>
         <MainButton type="submit">등록하기</MainButton>
         <Question>이미 사원등록을 하셨나요?</Question>
