@@ -27,13 +27,19 @@ export default function Gallery(): JSX.Element {
     const imageRef = storage.refFromURL(doc.imageUrl);
 
     try {
-      await bucket.doc(dataId).delete();
+      if (confirm('정말 삭제하시겠습니까?')) {
+        await bucket.doc(dataId).delete();
 
-      await imageRef.delete();
+        await imageRef.delete();
 
-      setImages((prevImages) =>
-        prevImages.filter((image) => image.id !== doc.id),
-      );
+        setImages((prevImages) =>
+          prevImages.filter((image) => image.id !== doc.id),
+        );
+
+        setTimeout(() => {
+          alert('삭제가 완료되었습니다!');
+        }, 5);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +77,6 @@ export default function Gallery(): JSX.Element {
       }
     };
     void fetchData();
-    console.log('렌더링');
   }, []);
 
   /** 데이터 추가 */
