@@ -10,6 +10,7 @@ interface MenuSectionProps {
   id: number;
   title: string;
   items: MenuItem[];
+  url?: string;
 }
 
 interface MenuItem {
@@ -28,7 +29,7 @@ interface HandleClickProps {
 }
 
 const SidebarContainer = styled.div`
-  width: 256px;
+  min-width: 256px;
   height: 1024px;
   background-color: ${theme.blueBg3};
   color: ${theme.gray300};
@@ -73,12 +74,15 @@ function MenuSection({
   items,
   clickItem,
   onItemClick,
+  url,
 }: MenuSectionProps & HandleClickProps): JSX.Element {
+  // 사이드바에 있는 회사 생활, 프로젝트, 온보딩과 같은 제목 타이틀
   const [clickTitle, setClickTitle] = useState(false);
 
   function handleClickTitle(): void {
     setClickTitle(!clickTitle);
   }
+
   return (
     <MenuContainer>
       <TitleContainer
@@ -88,9 +92,11 @@ function MenuSection({
       >
         {title} {clickTitle ? <AiOutlineUp /> : <AiOutlineDown />}
       </TitleContainer>
+      {/* 타이틀을 클릭했을 경우, 메뉴들을 안보여지게 합니다. */}
       {!clickTitle &&
         items.map((item, index) => (
-          <Link key={item.url} to={`/wiki/${item.url}`}>
+          // url 주소 이동
+          <Link key={item.url} to={`/${url}/${item.url}`}>
             <ItemContainer
               key={index}
               clickItem={clickItem[id][index]}
@@ -106,9 +112,10 @@ function MenuSection({
   );
 }
 
-function Sidebar(): JSX.Element {
+function Sidebar({ url }: { url: string }): JSX.Element {
   const [menu, setMenu] = useState<MenuSectionProps[]>([]);
   useEffect(() => {
+    // firebase에 있는 sidebarMenu에 대한 정보 가져오기
     firestore
       .collection('sidebarMenu')
       .get()
@@ -136,7 +143,7 @@ function Sidebar(): JSX.Element {
   const [clickItem, setClickItem] = useState(
     menu?.map((menu) => Array(menu.items.length).fill(false)),
   );
-
+  // 클릭한 부분이 어떠한 데이터인지 확인해주는 함수
   function handleClickItem(sectionIndex: number, itemIndex: number): void {
     const copy = [...clickItem.map((arr) => arr.map(() => false))];
     copy[sectionIndex][itemIndex] = !copy[sectionIndex][itemIndex];
@@ -153,6 +160,8 @@ function Sidebar(): JSX.Element {
           items={menu.items}
           clickItem={clickItem}
           onItemClick={handleClickItem}
+          // pages에서 props 받은 url
+          url={url}
         />
       ))}
     </SidebarContainer>

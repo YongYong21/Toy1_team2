@@ -7,11 +7,12 @@ const FlexBox = styled.div`
   display: flex;
 `;
 export default function Wiki(): JSX.Element {
+  const url = 'wiki';
   return (
     <>
       {/* <Sidebar></Sidebar> */}
       <FlexBox>
-        <Sidebar></Sidebar>
+        <Sidebar url={url}></Sidebar>
         <Content></Content>
       </FlexBox>
     </>
