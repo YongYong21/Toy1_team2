@@ -1,8 +1,9 @@
-import { Carousel } from '../components/Carousel';
-import { DailyBrief } from '../components/DailyBrief';
-import { Shortcut } from '../components/Shortcut';
-import { TodoList } from '../components/TodoList';
-import { HomeContainer } from '../styles/HomeSC';
+import { Carousel } from '../../components/Home/Carousel';
+import { DailyBrief } from '../../components/Home/DailyBrief';
+import { Shortcut } from '../../components/Home/Shortcut';
+import { TodoList } from '../../components/Home/TodoList';
+import { HomeContainer } from '../../styles/Home/HomeSC';
+
 export function Home(): JSX.Element {
   // set done, todo를 todo에서 가져오기
   return (

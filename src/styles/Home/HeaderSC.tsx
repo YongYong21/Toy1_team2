@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { theme } from './Theme';
+import { theme } from '../Theme';
 import { Link, NavLink } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 

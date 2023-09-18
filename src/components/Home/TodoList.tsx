@@ -26,9 +26,9 @@ import {
   TodoTitle,
   ToggleDocsBtn,
   MenuLiInTdl,
-} from '../styles/TodoListSC';
-import { Height30 } from '../styles/ShortcutSC';
-import { MenuUnli } from '../styles/DailyBriefSC';
+} from '../../styles/Home/TodoListSC';
+import { Height30 } from '../../styles/Home/ShortcutSC';
+import { MenuUnli } from '../../styles/Home/DailyBriefSC';
 
 export function TodoList(): JSX.Element {
   const [toggleNew, setToggleNew] = useState(false); //  새로운 toDo생성 UI 표출/닫힘

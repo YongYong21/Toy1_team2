@@ -16,7 +16,7 @@ import {
   ParaText,
   TransparentLeft,
   TransparentRight,
-} from '../styles/HomeSC';
+} from '../../styles/Home/HomeSC';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';

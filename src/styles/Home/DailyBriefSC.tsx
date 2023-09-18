@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { theme } from './Theme';
+import { theme } from '../Theme';
 import { MdCheck, MdEditNote } from 'react-icons/md';
 
 export const BriefContainer = styled.div`

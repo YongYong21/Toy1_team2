@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { theme } from './Theme';
+import { theme } from '../Theme';
 
 export const ShortcutContainer = styled.article`
   border: 1px solid ${theme.gray400};

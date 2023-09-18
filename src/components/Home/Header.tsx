@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import firebase from '../api/firebase';
+import firebase from '../../api/firebase';
 
 import {
   HeaderContainer,
@@ -13,7 +13,7 @@ import {
   BtnSm,
   SelectedLink,
   UnselectedLink,
-} from '../styles/HeaderSC';
+} from '../../styles/Home/HeaderSC';
 
 export function Header(): JSX.Element {
   const navigate = useNavigate(); // URL 이동시키는 메소드

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShortcutContainer, Height30 } from '../styles/ShortcutSC';
+import { ShortcutContainer, Height30 } from '../../styles/Home/ShortcutSC';
 import {
   TabBtn,
   TabBtnClk,
@@ -13,7 +13,7 @@ import {
   Cell,
   DocText,
   FloatBtn,
-} from '../styles/TodoListSC';
+} from '../../styles/Home/TodoListSC';
 
 export function Shortcut(): JSX.Element {
   // const [addFocus, setAddFocus] = useState(false);

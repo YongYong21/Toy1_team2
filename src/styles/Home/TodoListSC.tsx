@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { theme } from './Theme';
+import { theme } from '../Theme';
 import { LuPlus } from 'react-icons/lu';
 import { HiDocumentText } from 'react-icons/hi';
 import { MdCheck, MdMoreHoriz } from 'react-icons/md';

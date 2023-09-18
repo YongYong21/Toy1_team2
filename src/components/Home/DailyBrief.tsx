@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AngleUp, AngleDown } from '../styles/HeaderSC';
-import firebase from '../api/firebase';
+import { AngleUp, AngleDown } from '../../styles/Home/HeaderSC';
+import firebase from '../../api/firebase';
 
 import {
   BriefContainer,
@@ -21,7 +21,7 @@ import {
   WorkType,
   WorkAmount,
   UN,
-} from '../styles/DailyBriefSC';
+} from '../../styles/Home/DailyBriefSC';
 
 export function DailyBrief(): JSX.Element {
   const dayObj = {

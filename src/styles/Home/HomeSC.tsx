@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { theme } from './Theme';
+import { theme } from '../Theme';
 
 export const HomeContainer = styled.div`
   padding-top: 56px;
