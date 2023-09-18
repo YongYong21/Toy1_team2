@@ -23,21 +23,30 @@ import {
   MoreButton,
   ChkedIcon,
   TitleEditInput,
+  TodoTitle,
+  ToggleDocsBtn,
+  MenuLiInTdl,
 } from "../styles/TodoListSC";
 import { Height30 } from "../styles/ShortcutSC";
-import { Check } from "../styles/DailyBriefSC";
+import { Check, MenuUl, MenuUnli } from "../styles/DailyBriefSC";
 
 export function TodoList() {
   const [toggleNew, setToggleNew] = useState(false); //새로운 toDo생성 UI 표출/닫힘
   const [newDo, setNewDo] = useState(""); //새로운 할 일 인자
   const [TabMenu, setTabMenu] = useState([1, 0]); // 탭 전환 상태값
 
-  const [todo, setTodo] = useState<[string, number][]>([]); // 할 일 목록
-  const [done, setDone] = useState<[string, number][]>([]); // 완료된 일 목록
+  const [todo, setTodo] = useState<[string, number, string][]>([]); // 할 일 목록
+  const [done, setDone] = useState<[string, number, string][]>([]); // 완료된 일 목록
   const [deleteTodo, setDeleteTodo] = useState<boolean[]>([]); // 할일 삭제 툴팁 표출 or 숨기기
   const [deleteDone, setDeleteDone] = useState<boolean[]>([]); // 완료된 일 삭제 툴팁 표출 or 숨기기
-  const [tglUdtTodo, setTglUdtTodo] = useState<boolean[]>([]);
-  const [tglUdtDone, setTglUdtDone] = useState<boolean[]>([]);
+  const [tglEditTodo, setTglEditTodo] = useState<boolean[]>([]); // 할일 수정 상태 표출 / 숨기기
+  const [tglEditDone, setTglEditDone] = useState<boolean[]>([]); // 완료한 일 수정 상태 포츌 / 숨기기
+  const [docsOpen, setDocsOpen] = useState<boolean[]>([]); // 관련문서 선택창 표출 / 숨기기
+  const [newDocsOpen, setNewDocsOpen] = useState<boolean>(false);
+
+  const [docs] = useState<string[]>(["없음", "회사 내규", "팀소개", "조직도", "진행중인 프로젝트", "예정된 프로젝트", "완료된 프로젝트", "신입사원 필독서", "온보딩 주제"]);
+
+  const [selectedDocs, setSelectedDocs] = useState<string>(docs[0]); //여기가 문제였구먼ㅠㅠㅠ
 
   //첫 페이지 로딩때만 실행할 로직
   useEffect(() => {
@@ -95,6 +104,11 @@ export function TodoList() {
           deleteDone={deleteDone}
           setDeleteDone={setDeleteDone}
           TabMenu={TabMenu}
+          docs={docs}
+          selectedDocs={selectedDocs}
+          setSelectedDocs={setSelectedDocs}
+          newDocsOpen={newDocsOpen}
+          setNewDocsOpen={setNewDocsOpen}
         ></NewListInputContainer>
       )}
       <Tb>
@@ -116,8 +130,14 @@ export function TodoList() {
               deleteDone={deleteDone}
               setDeleteDone={setDeleteDone}
               idx={idx}
-              tglUdtTodo={tglUdtTodo}
-              setTglUdtTodo={setTglUdtTodo}
+              tglEditTodo={tglEditTodo}
+              setTglEditTodo={setTglEditTodo}
+              tglEditDone={tglEditDone}
+              setTglEditDone={setTglEditDone}
+              docsOpen={docsOpen}
+              setDocsOpen={setDocsOpen}
+              docs={docs}
+              selectedDocs={selectedDocs}
             ></ListComponent>
           ))}
         {!!TabMenu[1] &&
@@ -134,8 +154,14 @@ export function TodoList() {
               deleteTodo={deleteTodo}
               setDeleteTodo={setDeleteTodo}
               idx={idx}
-              tglUdtTodo={tglUdtTodo}
-              setTglUdtTodo={setTglUdtTodo}
+              tglEditTodo={tglEditTodo}
+              setTglEditTodo={setTglEditTodo}
+              tglEditDone={tglEditDone}
+              setTglEditDone={setTglEditDone}
+              docsOpen={docsOpen}
+              setDocsOpen={setDocsOpen}
+              docs={docs}
+              selectedDocs={selectedDocs}
             ></ListComponent>
           ))}
       </Tb>
@@ -154,26 +180,39 @@ function NewListInputContainer({
   setDeleteDone,
   deleteDone,
   TabMenu,
+  docs,
+  selectedDocs,
+  setSelectedDocs,
+  newDocsOpen,
+  setNewDocsOpen,
 }: {
   setToggleNew: React.Dispatch<boolean>;
   setNewDo: React.Dispatch<string>;
   newDo: string;
-  todo: [string, number][];
-  setTodo: React.Dispatch<[string, number][]>;
+  todo: [string, number, string][];
+  setTodo: React.Dispatch<[string, number, string][]>;
   deleteTodo: boolean[];
   setDeleteTodo: React.Dispatch<boolean[]>;
   deleteDone: boolean[];
   setDeleteDone: React.Dispatch<boolean[]>;
   TabMenu: number[];
+  docs: string[];
+  selectedDocs: string;
+  setSelectedDocs: React.Dispatch<string>;
+  newDocsOpen: boolean;
+  setNewDocsOpen: React.Dispatch<boolean>;
 }) {
-  // React.KeyboardEvent<HTMLInputElement>
+  // const
+  // selectedDocs
+  // setSelectedDocs
+
   const handleEnterSubmit = //
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
         // 엔터를 눌렀으면
         // 심플하게 [내용 ,아이디]로 인자를 구성
-        let temp = todo.slice() || [];
-        temp.unshift([newDo, new Date().getTime()]);
+        let temp = todo.slice();
+        temp.unshift([newDo, new Date().getTime(), selectedDocs]);
         setTodo(temp);
 
         // stringify해서 localStorage에 다 저장
@@ -191,23 +230,61 @@ function NewListInputContainer({
           setDeleteDone(deleteDoneCopy);
         }
 
+        setNewDo("");
         setToggleNew(false);
       }
+    };
+
+  const handleBlurSubmitNew = //
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      let temp = todo.slice();
+      temp.unshift([newDo, new Date().getTime(), selectedDocs]);
+      setTodo(temp);
+
+      // stringify해서 localStorage에 다 저장
+      let strfied = JSON.stringify(temp);
+      localStorage.setItem("todo", strfied);
+
+      // 삭제 툴팁 심기
+      if (TabMenu[0] === 1) {
+        let deleteTodoCopy = deleteTodo.slice();
+        deleteTodoCopy.unshift(false);
+        setDeleteTodo(deleteTodoCopy);
+      } else if (TabMenu[1] === 1) {
+        let deleteDoneCopy = deleteDone.slice();
+        deleteDoneCopy.unshift(false);
+        setDeleteDone(deleteDoneCopy);
+      }
+      setToggleNew(false);
     };
 
   return (
     <NewInputContainer>
       <Cell>
         <NewInput
+          autoFocus
           onKeyDown={handleEnterSubmit}
+          onBlur={handleBlurSubmitNew}
           onChange={(e) => {
-            setNewDo(e.target.value); //타이핑 값을 그대로 새로운 인자값
+            setNewDo(e.target.value); //이거 없으면 새로고침 해야지만 새로운 내용 이름이 제대로 보임. useState 비동기 처리가 끝나기 전에 작업이 끝나서 처리 되기 전의 값이 보이는 현상..
           }}
         ></NewInput>
       </Cell>
       <Cell>
-        {/* 문서 설정 */}
-        신입사원 필독서<Check></Check>
+        <ToggleDocsBtn //
+          onClick={() => setNewDocsOpen(!newDocsOpen)}
+          onBlur={() => setNewDocsOpen(!newDocsOpen)}
+        >
+          {selectedDocs}
+        </ToggleDocsBtn>
+        {newDocsOpen && (
+          <MenuUnli>
+            {docs.map((doc) => (
+              <MenuLiInTdl>{doc}</MenuLiInTdl>
+              //왜냐하면 신규 컴포넌트이고 만들어지는 순간 일반 컴포넌트가 되어서??
+            ))}
+          </MenuUnli>
+        )}
       </Cell>
     </NewInputContainer>
   );
@@ -229,22 +306,34 @@ function ListComponent({
   deleteDone,
   setDeleteDone,
   idx, //인덱스(순서)
-  tglUdtTodo,
-  setTglUdtTodo,
+  tglEditTodo,
+  setTglEditTodo,
+  tglEditDone,
+  setTglEditDone,
+  docsOpen,
+  setDocsOpen,
+  docs,
+  selectedDocs,
 }: {
-  todo: [string, number][];
-  listEl: [string, number];
-  setTodo: React.Dispatch<[string, number][]>;
-  done: [string, number][];
-  setDone: React.Dispatch<[string, number][]>;
+  todo: [string, number, string][];
+  listEl: [string, number, string];
+  setTodo: React.Dispatch<[string, number, string][]>;
+  done: [string, number, string][];
+  setDone: React.Dispatch<[string, number, string][]>;
   TabMenu: number[];
   deleteTodo: boolean[];
   setDeleteTodo: React.Dispatch<boolean[]>;
   deleteDone: boolean[];
   setDeleteDone: React.Dispatch<boolean[]>;
   idx: number;
-  tglUdtTodo: boolean[];
-  setTglUdtTodo: React.Dispatch<boolean[]>;
+  tglEditTodo: boolean[];
+  setTglEditTodo: React.Dispatch<boolean[]>;
+  tglEditDone: boolean[];
+  setTglEditDone: React.Dispatch<boolean[]>;
+  docsOpen: boolean[];
+  setDocsOpen: React.Dispatch<boolean[]>;
+  docs: string[];
+  selectedDocs: string;
 }) {
   //체크버튼 눌렀을 때 todo에서 doned으로 스위치하는 함수
   const switchTodoToDone = (e: React.MouseEvent<HTMLElement>) => {
@@ -252,15 +341,15 @@ function ListComponent({
     const dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
 
     // ID에 매칭되는 놈 찾아서 done으로 보내는 과정
-    let matched = todo.find((v: [string, number]) => v[1].toString() === dataset) as [string, number];
-    let doneCopy: [string, number][] = done.slice();
+    let matched = todo.find((v: [string, number, string]) => v[1].toString() === dataset) as [string, number, string];
+    let doneCopy: [string, number, string][] = done.slice();
     doneCopy.unshift(matched);
     let strfiedDone = JSON.stringify(doneCopy);
     localStorage.setItem("done", strfiedDone);
     setDone(doneCopy);
 
     // ID에 매칭되는 놈 찾아서 todo에서 제거시키는 과정
-    let subtracted = todo.filter((v: [string, number]) => v[1].toString() !== dataset);
+    let subtracted = todo.filter((v: [string, number, string]) => v[1].toString() !== dataset);
     let strfiedTodo = JSON.stringify(subtracted);
     localStorage.setItem("todo", strfiedTodo);
     setTodo(subtracted);
@@ -272,26 +361,26 @@ function ListComponent({
     const dataset = tar.dataset.id; //HTML DataSet을 iD에 넣어 활용
 
     // ID에 매칭되는 놈 찾아서 todo로 보내는 과정
-    let matched = done.find((v: [string, number]) => v[1].toString() === dataset) as [string, number];
-    let todoCopy: [string, number][] = todo.slice();
+    let matched = done.find((v: [string, number, string]) => v[1].toString() === dataset) as [string, number, string];
+    let todoCopy: [string, number, string][] = todo.slice();
     todoCopy.unshift(matched);
     let strfiedTodo = JSON.stringify(todoCopy);
     localStorage.setItem("todo", strfiedTodo);
     setTodo(todoCopy);
 
     // ID에 매칭되는 놈 찾아서 done에서 제거시키는 과정
-    let subtracted = done.filter((v: [string, number]) => v[1].toString() !== dataset);
+    let subtracted = done.filter((v: [string, number, string]) => v[1].toString() !== dataset);
     let strfiedDone = JSON.stringify(subtracted);
     localStorage.setItem("done", strfiedDone);
     setDone(subtracted);
   };
 
-  // 삭제툴팁 키고 끄기 함수
+  // '삭제 툴팁' 키고 끄기 함수
   const ToggleDeleteBtn = //
     (e: React.FocusEvent<HTMLButtonElement>, eType: string) => {
       const tar = e.target;
       const tarId = tar.dataset.id;
-      console.log(eType);
+
       // 삭제 툴팁 표출 로직
       if (eType === "focus") {
         if (TabMenu[0] === 1) {
@@ -320,6 +409,7 @@ function ListComponent({
   // 삭제하기 함수
   const handleDeleteList = //
     (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
       let tar = e.target as HTMLElement;
       let tarId = tar.dataset.id;
 
@@ -328,7 +418,9 @@ function ListComponent({
         setTodo(filtered);
         const strfied = JSON.stringify(filtered);
         localStorage.setItem("todo", strfied);
+        console.log("tab0 deleting~!");
       } else if (TabMenu[1] === 1) {
+        console.log("tab1 deleting~!");
         const filtered = done.slice().filter((v) => v[1] !== Number(tarId));
         setDone(filtered);
         const strfied = JSON.stringify(filtered);
@@ -336,22 +428,161 @@ function ListComponent({
       }
     };
 
+  //수정 상태로 전환하기 함수
+  const ToggleEditTitle = //
+    (e: React.MouseEvent<HTMLElement>) => {
+      let tar = e.target as HTMLInputElement;
+      let tarId = tar.dataset.id;
+
+      if (TabMenu[0] === 1) {
+        const findIdx = todo.findIndex((v) => v[1] === Number(tarId));
+        let tglEditTodoCopy = tglEditTodo.slice();
+        tglEditTodoCopy[findIdx] = true;
+        setTglEditTodo(tglEditTodoCopy);
+      } else if (TabMenu[1] === 1) {
+        const findIdx = done.findIndex((v) => v[1] === Number(tarId));
+        let tglEditDoneCopy = tglEditDone.slice();
+        tglEditDoneCopy[findIdx] = true;
+        setTglEditDone(tglEditDoneCopy);
+      }
+    };
+
+  // 블러로 수정하기 함수
+  const handleUpdateEdit = //
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      let tar = e.currentTarget as HTMLInputElement;
+      let tarId = tar.dataset.id;
+
+      if (TabMenu[0] === 1) {
+        const findIdx = todo.findIndex((v) => v[1] === Number(tarId));
+        let tglEditTodoCopy = new Array(tglEditTodo.length).fill(0).map((v) => false);
+
+        if (tar.value !== "") {
+          let todoCopy = todo.slice();
+          todoCopy[findIdx][0] = tar.value;
+          setTodo(todoCopy);
+
+          let strfied = JSON.stringify(todoCopy);
+          localStorage.setItem("todo", strfied);
+        }
+
+        setTglEditTodo(tglEditTodoCopy);
+      } else if (TabMenu[1] === 1) {
+        const findIdx = done.findIndex((v) => v[1] === Number(tarId));
+        let tglEditDoneCopy = new Array(tglEditDone.length).fill(0).map((v) => false);
+
+        if (tar.value !== "") {
+          let doneCopy = done.slice();
+          doneCopy[findIdx][0] = tar.value;
+          setDone(doneCopy);
+
+          let strfied = JSON.stringify(doneCopy);
+          localStorage.setItem("done", strfied);
+        }
+        setTglEditDone(tglEditDoneCopy);
+      }
+    };
+
+  //키보드 엔터로 수정하기 함수
+  const handleUpdateWithEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    let tar = e.currentTarget as HTMLInputElement;
+    let tarId = tar.dataset.id;
+
+    if (e.key !== "Enter") return;
+
+    if (TabMenu[0] === 1) {
+      const findIdx = todo.findIndex((v) => v[1] === Number(tarId));
+      let tglEditTodoCopy = new Array(tglEditTodo.length).fill(0).map((v) => false);
+
+      if (tar.value !== "") {
+        let todoCopy = todo.slice();
+        todoCopy[findIdx][0] = tar.value;
+        setTodo(todoCopy);
+
+        let strfied = JSON.stringify(todoCopy);
+        localStorage.setItem("todo", strfied);
+      }
+
+      setTglEditTodo(tglEditTodoCopy);
+    } else if (TabMenu[1] === 1) {
+      const findIdx = done.findIndex((v) => v[1] === Number(tarId));
+      let tglEditDoneCopy = new Array(tglEditDone.length).fill(0).map((v) => false);
+
+      if (tar.value !== "") {
+        let doneCopy = done.slice();
+        doneCopy[findIdx][0] = tar.value;
+        setDone(doneCopy);
+
+        let strfied = JSON.stringify(doneCopy);
+        localStorage.setItem("done", strfied);
+      }
+      setTglEditDone(tglEditDoneCopy);
+    }
+  };
+
+  const toggleDocsList = () => {
+    if (docsOpen[idx]) {
+      let tar = new Array(docsOpen.length).fill(0).map((v) => false);
+      setDocsOpen(tar);
+    } else {
+      let docOpenCopy = docsOpen.slice();
+      docOpenCopy[idx] = true;
+      setDocsOpen(docOpenCopy);
+    }
+  };
+
   // JSX 리턴하는 부분
   if (TabMenu[0] === 1) {
     return (
       <Tr>
-        <Cell onClick={() => {}}>
-          <CheckIcon //
-            data-id={listEl[1].toString()}
-            onClick={switchTodoToDone}
-          >
-            <ChkIcon />
-          </CheckIcon>
-          {tglUdtTodo[idx] ? <TitleEditInput /> : listEl[0]}
+        <Cell>
+          {tglEditTodo[idx] ? (
+            <TitleEditInput //
+              onBlur={handleUpdateEdit}
+              onKeyDown={handleUpdateWithEnter}
+              defaultValue={listEl[0]}
+              data-id={listEl[1].toString()}
+              autoFocus
+            />
+          ) : (
+            <>
+              <CheckIcon //
+                data-id={listEl[1].toString()}
+                onClick={switchTodoToDone}
+              >
+                <ChkIcon />
+              </CheckIcon>
+              <TodoTitle //
+                data-id={listEl[1].toString()}
+                onClick={ToggleEditTitle}
+              >
+                {listEl[0]}
+              </TodoTitle>
+            </>
+          )}
         </Cell>
         <Cell>
-          관련 문서 선택
-          <MoreButton data-id={listEl[1].toString()} onFocus={(e) => ToggleDeleteBtn(e, "focus")} onBlur={(e) => ToggleDeleteBtn(e, "blur")}>
+          {" "}
+          {/* 관련 문서 선택 부분 */}
+          <ToggleDocsBtn //
+            onClick={toggleDocsList}
+            onBlur={toggleDocsList}
+          >
+            {selectedDocs}
+          </ToggleDocsBtn>
+          {docsOpen[idx] && (
+            <DocsComponent //
+              docsOpen={docsOpen}
+              setDocsOpen={setDocsOpen}
+              docs={docs}
+              idx={idx}
+            ></DocsComponent>
+          )}
+          <MoreButton //
+            data-id={listEl[1].toString()}
+            onFocus={(e) => ToggleDeleteBtn(e, "focus")}
+            onBlur={(e) => ToggleDeleteBtn(e, "blur")}
+          >
             <MoreIcon></MoreIcon>
           </MoreButton>
           {deleteTodo[idx] && ( //
@@ -367,18 +598,39 @@ function ListComponent({
     );
   } else {
     return (
-      <Tr style={{ opacity: 0.5 }}>
-        <Cell>
-          <CheckIcon //
-            data-id={listEl[1].toString()}
-            onClick={switchDoneToTodo}
-          >
-            <ChkedIcon />
-          </CheckIcon>
-          {listEl[0]}
+      <Tr>
+        <Cell style={{ opacity: 0.5 }}>
+          {tglEditDone[idx] ? (
+            <TitleEditInput //
+              onBlur={handleUpdateEdit}
+              onKeyDown={handleUpdateWithEnter}
+              defaultValue={listEl[0]}
+              data-id={listEl[1].toString()}
+              autoFocus
+            />
+          ) : (
+            <>
+              <CheckIcon //
+                data-id={listEl[1].toString()}
+                onClick={switchDoneToTodo}
+              >
+                <ChkedIcon />
+              </CheckIcon>
+              <TodoTitle //
+                data-id={listEl[1].toString()}
+                onClick={ToggleEditTitle}
+              >
+                {listEl[0]}
+              </TodoTitle>
+            </>
+          )}
         </Cell>
-        <Cell>관련 문서 선택 </Cell>
-        <MoreButton data-id={listEl[1].toString()} onFocus={(e) => ToggleDeleteBtn(e, "focus")} onBlur={(e) => ToggleDeleteBtn(e, "blur")}>
+        <Cell style={{ opacity: 0.5 }}>관련 문서 선택</Cell>
+        <MoreButton //
+          data-id={listEl[1].toString()}
+          onFocus={(e) => ToggleDeleteBtn(e, "focus")}
+          onBlur={(e) => ToggleDeleteBtn(e, "blur")}
+        >
           <MoreIcon></MoreIcon>
         </MoreButton>
         {deleteDone[idx] && ( //
@@ -392,4 +644,33 @@ function ListComponent({
       </Tr>
     );
   }
+}
+
+function DocsComponent({
+  idx,
+  docsOpen, //
+  setDocsOpen,
+  docs,
+}: {
+  idx: number | undefined;
+  docsOpen: boolean[];
+  setDocsOpen: React.Dispatch<boolean[]>;
+  docs: string[];
+}) {
+  const updSelectedDocs = (e: React.MouseEvent<HTMLLIElement>) => {
+    console.log("!!!!!!!!!!");
+  };
+
+  return (
+    <MenuUnli>
+      {docs.map((doc) => (
+        <MenuLiInTdl //
+          onClick={updSelectedDocs}
+          onMouseEnter={() => console.log("!!!!")}
+        >
+          {doc}
+        </MenuLiInTdl>
+      ))}
+    </MenuUnli>
+  );
 }

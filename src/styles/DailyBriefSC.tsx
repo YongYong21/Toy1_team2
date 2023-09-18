@@ -105,6 +105,16 @@ export const Menu = styled.div`
 // export const end = styled.css`
 //   opacity: 1;
 // `;
+export const MenuUnli = styled.ul`
+  position: absolute;
+  top: 28px;
+  z-index: 5;
+  height: 100px;
+  overflow-y: scroll;
+  border: 1px solid ${theme.gray500};
+  border-radius: 8px;
+  box-shadow: ${theme.shadows.shadow2};
+`;
 
 export const MenuUl = styled.ul``;
 export const MenuLi = styled.li`

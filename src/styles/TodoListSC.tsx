@@ -12,6 +12,7 @@ export let TodoListContainer = styled.article`
   border-radius: 8px;
   background-color: ${theme.white};
   box-shadow: ${theme.shadows.shadow1.shadow};
+  overflow-y: hidden;
 `;
 
 export let TitleLine = styled.div`
@@ -115,15 +116,17 @@ export const Col = styled.div`
   height: 100%;
 
   &:first-child {
-    width: 70%;
+    width: 60%;
   }
   &:last-child {
-    width: 30%;
+    width: 40%;
   }
 `;
-// overflow: scroll;
+
 export const Tb = styled.div`
-  height: 100%;
+  height: 263px;
+  overflow-y: scroll;
+  position: relative;
 `;
 export const Tr = styled.div`
   padding: 8px 24px;
@@ -152,13 +155,10 @@ export const Cell = styled.div`
   position: relative;
 
   &:first-child {
-    width: 70%;
-    &:hover {
-      text-decoration: underline;
-    }
+    width: 60%;
   }
   &:last-child {
-    width: 30%;
+    width: 40%;
   }
 `;
 
@@ -230,6 +230,10 @@ export const ChkedIcon = styled(MdCheck)`
 
 export const TitleEditInput = styled.input`
   width: 80%;
+  height: 24px;
+  font-size: 16px;
+  font-family: "Pretendard", sans-serif;
+  margin: 0;
 `;
 
 export const Info = styled(PiWarningCircleBold)`
@@ -290,4 +294,49 @@ export const DeleteToolTip = styled.div`
   border-radius: 4px;
   color: ${theme.gray700};
   opacity: 1;
+`;
+
+export const TodoTitle = styled.span`
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  border-radius: 4px;
+
+  width: 80%;
+  height: 24px;
+  &:hover {
+    background-color: ${theme.blue200};
+  }
+`;
+
+export const ToggleDocsBtn = styled.button`
+  padding: 0 8px;
+  color: ${theme.gray600};
+  height: 24px;
+  width: 120px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: ${theme.blue200};
+  }
+  &:focus {
+    background-color: ${theme.white};
+    border: 1px solid ${theme.gray500};
+  }
+`;
+
+export const MenuLiInTdl = styled.li`
+  border-radius: 8px;
+  width: 120px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${theme.white};
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: ${theme.blue100};
+  }
 `;

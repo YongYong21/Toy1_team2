@@ -5,6 +5,11 @@ import { BtnSmLi, Plus, TabBtn, TabBtnClk, TabList, Title, TitleLine, Th, Col, T
 export function Shortcut() {
   let [addFocus, setAddFocus] = useState(false);
   let [clkTab, setClkTab] = useState([1, 0]);
+
+  interface shortcutProps {
+    shortcut?: boolean;
+  }
+
   let wikiPosts = [
     {
       title: "회사 내규",
