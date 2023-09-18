@@ -13,7 +13,7 @@ export function Header() {
   let [paths] = useState<string[][]>([
     //[페이지이름, URL]
     ["Home", "/"],
-    ["Wiki", "/wiki"],
+    ["Wiki", "/wiki/rule"],
     ["Gallery", "/gallery"],
   ]);
 
