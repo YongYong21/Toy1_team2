@@ -29,16 +29,28 @@ export const modalStyle: ReactModal.Styles = {
 
 export const ModalContent = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 15%;
-  justify-content: center;
   text-align: center;
 
   padding: 1rem;
-  margin: 3rem 0 1rem;
+  margin: 1rem 0 0;
 
   width: 100%;
-  height: 70%;
+  height: 80%;
+
+  .title {
+    font-size: ${(props) => props.theme.textStyles.subtitle3.fontSize};
+  }
+
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20%;
+
+    height: 100%;
+  }
 
   .input-text {
     margin-bottom: 1rem;
@@ -60,7 +72,7 @@ export const ModalContent = styled.div`
   .preview-img {
     width: 90%;
     max-width: 15rem;
-    max-height: 15rem;
+    max-height: 12rem;
 
     cursor: pointer;
 

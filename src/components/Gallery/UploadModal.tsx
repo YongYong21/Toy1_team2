@@ -65,23 +65,27 @@ const UploadModal: React.FC<UploadModalProps> = ({
       <DeleteButton className="delete-btn" onClick={onRequestClose}>
         <MdClear />
       </DeleteButton>
+
       <ModalContent>
-        <div className="choose-img-wrap">
-          <h1 className="input-text">이미지를 선택해주세요</h1>
-          <label htmlFor="input-img">
-            <img className="preview-img" src={previewUrl ?? previewImg} />
-          </label>
-          <input
-            type="file"
-            id="input-img"
-            className="input-img"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <div className="input-name-wrap">
-          <h1 className="input-text">이름을 작성해주세요</h1>
-          <input type="text" value={name} onChange={handleNameChange} />
+        <h1 className="title">이미지 업로드 📸</h1>
+        <div className="main">
+          <div className="choose-img-wrap">
+            <h1 className="input-text">이미지를 선택해주세요</h1>
+            <label htmlFor="input-img">
+              <img className="preview-img" src={previewUrl ?? previewImg} />
+            </label>
+            <input
+              type="file"
+              id="input-img"
+              className="input-img"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div className="input-name-wrap">
+            <h1 className="input-text">이름을 작성해주세요</h1>
+            <input type="text" value={name} onChange={handleNameChange} />
+          </div>
         </div>
       </ModalContent>
       <AddButton className="add-btn" onClick={handleUpload}>
