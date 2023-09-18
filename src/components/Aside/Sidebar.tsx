@@ -112,12 +112,18 @@ function MenuSection({
   );
 }
 
-function Sidebar({ url }: { url: string }): JSX.Element {
+function Sidebar({
+  url,
+  collectionName,
+}: {
+  url: string;
+  collectionName: string;
+}): JSX.Element {
   const [menu, setMenu] = useState<MenuSectionProps[]>([]);
   useEffect(() => {
-    // firebase에 있는 sidebarMenu에 대한 정보 가져오기
+    // firebase에 있는 정보 가져오기
     firestore
-      .collection('sidebarMenu')
+      .collection(collectionName)
       .get()
       .then((querySnapshot) => {
         const copy = [...menu];
