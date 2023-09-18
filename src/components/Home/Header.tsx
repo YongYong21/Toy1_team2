@@ -80,7 +80,7 @@ function LinkContainer({
       {paths.map((path, idx) => {
         const currentPage = pathname.split('/')[1]; // 현재 주소의 "/"다음부분 딱 하나만 추출
         if (currentPage === path[1]) {
-          // URL 배열에서 같은걸 찾으면
+          // URL 배열에서 같은걸 찾기
           return (
             <SelectedLink key={idx} to={path[1]}>
               {path[0]}
