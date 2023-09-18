@@ -1,6 +1,6 @@
 import React from 'react';
 import GalleryItem from './GalleryItem';
-import { type ImageData } from '../../pages/Gallery/Gallery';
+import { type ImageData } from './GalleryContent';
 import { Main } from '../../styles/Gallery/GalleryList';
 
 interface GalleryListProps {
