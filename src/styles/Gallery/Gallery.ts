@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const TitleWrap = styled.div`
   display: flex;
@@ -47,30 +47,6 @@ export const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-export const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding: 1rem;
-  margin-top: 2rem;
-
-  h1 {
-    margin-bottom: 1rem;
-  }
-
-  input[type="file"],
-  input[type="text"] {
-    margin-bottom: 2rem;
-    padding: 0.5rem;
-
-    border: 1px solid #ccc;
-    border-radius: 5px;
-
-    width: 100%;
-  }
 `;
 
 export const DeleteButton = styled.button`
