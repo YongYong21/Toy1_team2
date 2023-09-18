@@ -62,14 +62,11 @@ function formatWorkStartTime(startTime: Date): string {
     return `${formattedHours}:${formattedMinutes}`;
   }
 
-
 function CommuteModal() : JSX.Element {
      // 모달창을 열고 닫는 상태를 관리
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState("");
     const [currentTime, setCurrentTime] = useState(''); // 현재 시간 상태 추가
-
-    // const [isBreakPaused, setIsBreakPaused] = useState<boolean>(false);
 
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [seconds, setSeconds] = useState(0);
@@ -78,18 +75,12 @@ function CommuteModal() : JSX.Element {
     const [isCommuteButtonClicked, setIsCommuteButtonClicked] = useState(false); // 출근 버튼 클릭 상태 추가
     const [modalTitle, setModalTitle] = useState("김사원님, 아직 출근전 입니다. 👀");
 
-    // const [breakStartTime, setBreakStartTime] = useState<null | Date>(null);
-    // 휴게 시작 시간을 저장하는 상태 변수, 상태 변수를 업데이트 하는 함수
-
     const [workStartTime, setWorkStartTime] = useState<Date | null>(null); // 출근 시간 상태 변수 추가
-
-
 
     // 모달창을 열고 닫는 함수
     const toggleModal = (): void => {
       setIsModalOpen(!isModalOpen);
     };
-
 
       const toggleTimer = (): void => {
         if (!isTimerRunning) {
@@ -119,29 +110,6 @@ function CommuteModal() : JSX.Element {
           }
         };
 
-        // // 휴게 시간을 계산하는 함수
-        // const calculateBreakTime = () => {
-        //   if (breakStartTime && !isBreakPaused) { // 휴게 시간 일시 정지 상태인 경우 계산하지 않음
-        //     const currentTime = new Date();
-        //     const elapsedMilliseconds: number = currentTime.getTime() - breakStartTime!.getTime();
-        //     const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
-  
-        //     // elapsedSeconds를 이용하여 시, 분, 초로 휴게 시간을 계산합니다.
-        //     const hours = Math.floor(elapsedSeconds / 3600);
-        //     const minutes = Math.floor((elapsedSeconds % 3600) / 60);
-        //     const seconds = elapsedSeconds % 60;
-  
-        //     // 시, 분, 초를 두 자리로 만듭니다.
-        //     const formattedHours = hours.toString().padStart(2, "0");
-        //     const formattedMinutes = minutes.toString().padStart(2, "0");
-        //     const formattedSeconds = seconds.toString().padStart(2, "0");
-  
-        //     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-        //   } else {
-        //     return "00:00:00";
-        //   }
-        // };
-
         const handleCommuteButtonClick = (): void => {
           const now = new Date();
           const hours = now.getHours();
@@ -154,11 +122,12 @@ function CommuteModal() : JSX.Element {
               pauseTimer(); // 휴게 시간 측정 중지
               setIsCommuteButtonClicked(true);
               setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
-              toggleTimer();
+              
                 // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-                if (workStartTime != null) {
+                if (workStartTime === null) {
                   setWorkStartTime(now); // 출근 시간 업데이트
                 }
+                toggleTimer();
             }
           } else {
             // 타이머가 실행 중이 아닌 경우, 출근할 것인지 확인합니다.
@@ -168,7 +137,7 @@ function CommuteModal() : JSX.Element {
               toggleTimer();
               setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
                   // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-              if (workStartTime != null) {
+              if (workStartTime === null) {
                 setWorkStartTime(now); // 출근 시간 업데이트
               }
             }
@@ -226,7 +195,9 @@ function CommuteModal() : JSX.Element {
       <>
         <AppWrapper>
           <header>
-            <HeaderButton onClick={toggleModal}>Commute</HeaderButton>
+            <HeaderButton onClick={toggleModal}>
+              {seconds > 0 ? formatTimeFromSeconds(seconds) : 'Commute'}
+            </HeaderButton>
           </header>
 
           {isModalOpen && (

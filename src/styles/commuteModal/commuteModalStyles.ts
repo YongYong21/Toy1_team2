@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const HeaderButton = styled.button`
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
+  font-weight: 700;
+  
   border-radius: 12px;
 
   width: 127px;
@@ -224,22 +226,6 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-// export const TimerText = styled.p`
-//   background: ${({ theme }) => theme.gray300};
-//   border-radius: 12px;
-//   width: 340px;
-//   height: 48px;
-
-//   display: flex;
-//   justify-content: center;
-
-//   color: ${({ theme }) => theme.gray700};
-//   font-size: ${({ theme }) => theme.textStyles.subtitle5.fontSize};
-
-//   padding: 12px;
-//   margin-right: 16px;
-// `;
 
 /* Button */
 export const CommuteButton = styled.button`
