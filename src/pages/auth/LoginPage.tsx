@@ -1,14 +1,14 @@
 import React from 'react';
-import RegisterForm from '../components/Register'
+import LoginForm from '../../components/auth/Login';
 
-const JoinPage = () => {
+const LoginPage = () => {
   return (
     <>
       {/* 여기에 헤더와 푸터를 넣으면 될 것 같음! */}
-      <RegisterForm />
+      <LoginForm />
       {/* 여기에 헤더와 푸터를 넣으면 될 것 같음! */}
     </>
   );
-}
+};
 
-export default JoinPage
+export default LoginPage;

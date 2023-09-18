@@ -1,10 +1,11 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FaTimesCircle } from 'react-icons/fa';
 import { LuMailSearch, LuMailCheck } from 'react-icons/lu';
 import { MdDone, MdOutlineErrorOutline } from 'react-icons/md';
 
-// 카드 컴포넌트
+// 카드 컴포넌트 (로그인)
 export const LoginContainer = styled.div`
+  position: relative;
   box-shadow: ${(props) => props.theme.shadows.shadow2.shadow};
   background-color: ${(props) => props.theme.white};
   margin: 0 auto;
@@ -17,9 +18,50 @@ export const LoginContainer = styled.div`
   border: 1px solid #cacaca;
   border-radius: 20px;
 `;
-
+// 카드 컴포넌트 (회원가입)
 export const RegisterContainer = styled(LoginContainer)`
   height: 650px;
+`;
+// 카드 컴포넌트 (비밀번호 찾기)
+export const FindPwContainer = styled(LoginContainer)`
+  height: 370px;
+`;
+
+const fadeInOut = keyframes`
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+`;
+
+// Toast 메세지
+export const ToastMessage = styled.div`
+  position: absolute;
+  top: -13%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 16px 10px 45px;
+  border-radius: 8px;
+  background-color: rgba(238, 81, 81, 0.8);
+  color: white;
+  width: auto;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 1.5;
+  animation: ${fadeInOut} 3s ease;
+
+  /* 에러 스타일 */
+  &.error {
+    background-color: rgba(238, 81, 81, 0.8);
+  }
+
+  /* 성공 스타일 */
+  &.success {
+    background-color: rgba(24, 223, 140, 0.8);
+  }
 `;
 
 // Company Space 로고
@@ -137,6 +179,12 @@ export const ErrorIcon = styled(MdOutlineErrorOutline)`
 // Toast용 error 아이콘
 export const WhiteErrorIcon = styled(ErrorIcon)`
   color: ${(props) => props.theme.white};
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  right: none;
+  left: 16px;
+  transform: translateY(-50%);
 `;
 
 // success 아이콘
@@ -151,8 +199,14 @@ export const SuccessIcon = styled(MdDone)`
 `;
 
 // Toast용 success 아이콘
-export const WhiteSuccessIcon = styled(MdDone)`
-  color: ${(props) => props.theme.success};
+export const WhiteSuccessIcon = styled(SuccessIcon)`
+  color: ${(props) => props.theme.white};
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  right: none;
+  left: 16px;
+  transform: translateY(-50%);
 `;
 
 // 로그인 및 가입하기 버튼 `btn-bl`

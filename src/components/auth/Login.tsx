@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import { auth } from '../api/firebase';
+import { auth } from '../../api/firebase';
 import {
   LoginContainer,
+  ToastMessage,
+  WhiteErrorIcon,
+  WhiteSuccessIcon,
   LogoName,
   Title,
   Input,
@@ -12,10 +15,29 @@ import {
   NextPage,
   ClearIcon,
   InputContainer,
-} from '../styles/LoginRegisterSC';
+} from '../../styles/auth/LoginRegisterSC';
 
 const LoginForm = () => {
-  /*------------------ Container 가운데 정렬 ------------------*/
+
+/*------------------ Toast 메세지 ------------------*/
+// Toast 메시지 상태관리
+const [toastMessage, setToastMessage] = useState<string | null>(null);
+const [showToast, setShowToast] = useState(false);
+
+// Toast 메시지를 숨기는 함수
+const hideToastMessage = () => {
+  setShowToast(false);
+  setToastMessage('');
+};
+
+useEffect(() => {
+  if(toastMessage) {
+    setShowToast(true);
+    setTimeout(hideToastMessage, 3000);
+  }
+},[toastMessage])
+
+/*------------------ Container 가운데 정렬 ------------------*/
 
   // 디바이스 높이를 상태로 저장.
   const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
@@ -58,43 +80,79 @@ const LoginForm = () => {
   useEffect(() => {
     const registrationSuccess = localStorage.getItem('registrationSuccess');
     if (registrationSuccess === 'true') {
-      alert('회원가입이 완료되었습니다. 로그인을 진행해주세요.');
+      setToastMessage('회원가입이 완료되었습니다. 로그인을 위해 전송된 인증 메일을 확인해주세요.');
       // 로컬 스토리지에서 상태를 삭제 (한 번만 보여주기 위해)
       localStorage.removeItem('registrationSuccess');
     }
   }, []);
 
-
   // 로그인 기능
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, pwd)
-      .then((userCredential) => {
-        alert('로그인 성공');
-        const user = userCredential.user;
+    await signInWithEmailAndPassword(auth, email, pwd)
+      .then(() => {
+        const user = auth.currentUser;
+        if (user) {
+          let { emailVerified } = user; // 사용자의 이메일 인증 여부 추출
+          if (emailVerified) {
+            // 이메일 인증이 완료 된 경우
+            setToastMessage('로그인 완료');
+            fetchUserProfile();
 
+            /*  여기에 메인 페이지 이동 코드 작성하기!  */
+
+            return;
+          } else {
+            // 사용자 정보를 초기화하고 로그아웃
+            signOut(auth);
+            setToastMessage('이메일 인증이 진행되지 않았습니다. 먼저 인증을 진행해주세요.');
+            fetchUserProfile();
+            return;
+          }
+        }
       })
       .catch((e) => {
         switch (e.code) {
           case 'auth/invalid-email':
-            alert('이메일을 입력해주세요.');
+            setToastMessage('이메일을 입력해주세요.');
             break;
           case 'auth/missing-password':
-            alert('비밀번호를 입력해주세요.');
+            setToastMessage('비밀번호를 입력해주세요.');
             break;
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            alert('이메일이나 비밀번호가 올바르지 않습니다.');
+            setToastMessage('이메일이나 비밀번호가 올바르지 않습니다.');
             break;
           default:
-            alert('알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.');
+            setToastMessage('알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.');
         }
       });
+  };
+
+  // 프로필 조회용 기능
+  const fetchUserProfile = () => {
+    const user = auth.currentUser; // 현재 로그인한 사용자 정보를 가져옵니다.
+
+    if (user) {
+      const { displayName, email, emailVerified } = user;
+      console.log('사용자 이름:', displayName);
+      console.log('사용자 이메일:', email);
+      console.log('이메일 인증여부:', emailVerified);
+    } else {
+      // 사용자가 로그인하지 않은 경우
+      console.log('사용자가 로그인하지 않았습니다.');
+    }
   };
 
   return (
     <form onSubmit={onSubmit}>
       <LoginContainer style={{ marginTop: marginTop, marginBottom: marginBottom }}>
+      {showToast && (
+          <ToastMessage className={toastMessage?.includes('완료') ? 'success' : 'error'}>
+            {toastMessage?.includes('완료') ? <WhiteSuccessIcon /> : <WhiteErrorIcon />}
+            {toastMessage}
+          </ToastMessage>
+        )}
         <LogoName>Company Space</LogoName>
         <Title>로그인</Title>
         <InputContainer>

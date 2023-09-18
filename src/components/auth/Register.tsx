@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../api/firebase';
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { auth } from '../../api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   RegisterContainer,
+  ToastMessage,
+  WhiteErrorIcon,
+  WhiteSuccessIcon,
   LogoName,
   Title,
   InputLabelContainer,
@@ -14,10 +17,27 @@ import {
   MainButton,
   Question,
   NextPage,
-  AuthIcon,
-} from '../styles/LoginRegisterSC';
+} from '../../styles/auth/LoginRegisterSC';
 
 const FormComponent = () => {
+  /*------------------ Toast 메세지 ------------------*/
+  // Toast 메시지 상태관리
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+
+  // Toast 메시지를 숨기는 함수
+  const hideToastMessage = () => {
+    setShowToast(false);
+    setToastMessage('');
+  };
+
+  useEffect(() => {
+    if (toastMessage) {
+      setShowToast(true);
+      setTimeout(hideToastMessage, 3000);
+    }
+  }, [toastMessage]);
+
   /*------------------ Form 위치 ------------------*/
 
   // 디바이스 높이를 상태로 저장.
@@ -114,42 +134,48 @@ const FormComponent = () => {
 
   const navigate = useNavigate();
   // 회원가입 수행 버튼
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (passwordValid === 1 && passwordMatch === 1 && name && phone) {
-      createUserWithEmailAndPassword(auth, email, pwdChk)
+      await createUserWithEmailAndPassword(auth, email, pwdChk)
         .then((userCredential) => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name, // 이름 업데이트
           });
+          sendEmailVerification(user);
           localStorage.setItem('registrationSuccess', 'true');
           navigate('/login');
         })
         .catch((e) => {
           switch (e.code) {
             case 'auth/invalid-email':
-              alert('잘못된 이메일 주소입니다.');
+              setToastMessage('잘못된 이메일 주소입니다.');
               break;
             case 'auth/email-already-in-use':
-              alert('이미 가입되어 있는 계정입니다.');
+              setToastMessage('이미 가입되어 있는 계정입니다.');
               break;
           }
         });
     } else {
-      alert('입력하지 않은 값이 있습니다.');
+      setToastMessage('입력하지 않은 값이 있습니다.');
     }
   };
 
   return (
     <form onSubmit={onSubmit}>
       <RegisterContainer style={{ marginTop: marginTop, marginBottom: marginBottom }}>
+      {showToast && (
+          <ToastMessage className={toastMessage?.includes('완료') ? 'success' : 'error'}>
+            {toastMessage?.includes('완료') ? <WhiteSuccessIcon /> : <WhiteErrorIcon />}
+            {toastMessage}
+          </ToastMessage>
+        )}
         <LogoName>Company Space</LogoName>
         <Title>사원 등록</Title>
         <InputLabelContainer>
           <InputLabel>이메일</InputLabel>
           <Input type="email" value={email} onChange={handleEmailInputChange} placeholder="example@email.com" />
-          {email && <AuthIcon />}
         </InputLabelContainer>
         <InputLabelContainer>
           <InputLabel style={passwordValid === 2 ? {} : { color: passwordValid ? '#2BDA90' : '#EE5151' }}>
