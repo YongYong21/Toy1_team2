@@ -8,11 +8,12 @@ const FlexBox = styled.div`
 `;
 export default function Wiki(): JSX.Element {
   const url = 'wiki';
+  const collectionName = 'sidebarMenu';
   return (
     <>
       {/* <Sidebar></Sidebar> */}
       <FlexBox>
-        <Sidebar url={url}></Sidebar>
+        <Sidebar url={url} collectionName={collectionName}></Sidebar>
         <Content></Content>
       </FlexBox>
     </>
