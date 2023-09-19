@@ -4,6 +4,7 @@ export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  margin-left: 300px;
 `;
 
 export const TitleWrap = styled.div`
