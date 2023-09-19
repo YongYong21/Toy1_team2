@@ -23,7 +23,12 @@ import {
   UN,
 } from '../../styles/Home/DailyBriefSC';
 
-export function DailyBrief(): JSX.Element {
+interface TaskProps {
+  todo: Array<[string, number, string]>;
+  done: Array<[string, number, string]>;
+}
+
+export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
   const dayObj = {
     0: '일',
     1: '월',
@@ -39,8 +44,6 @@ export function DailyBrief(): JSX.Element {
   const [month, setMonth] = useState<string>('');
 
   const [username, setUsername] = useState('');
-  const [done] = useState(0);
-  const [todo] = useState(0);
   const [focused, setFocused] = useState(false);
   const [period, setPeriod] = useState('이번 주');
 
@@ -104,12 +107,12 @@ export function DailyBrief(): JSX.Element {
             <BoardEl>
               <Check></Check>
               <WorkType>완료된 작업</WorkType>
-              <WorkAmount>{done}</WorkAmount>
+              <WorkAmount>{done.length}</WorkAmount>
             </BoardEl>
             <BoardEl>
               <EditNote></EditNote>
               <WorkType>진행할 작업</WorkType>
-              <WorkAmount>{todo}</WorkAmount>
+              <WorkAmount>{todo.length}</WorkAmount>
             </BoardEl>
           </BoardArea>
         </BriefArea>

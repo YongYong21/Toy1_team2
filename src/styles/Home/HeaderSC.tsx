@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { theme } from '../Theme';
 import { Link, NavLink } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
@@ -49,15 +49,6 @@ export const HdUl = styled.ul`
   display: flex;
   gap: 32px;
   margin-left: 80px;
-`;
-
-// export const Selected = css`
-//   font-weight: 700;
-//   color: ${theme.gray900};
-// `;
-export const Selected = css`
-  font-weight: 700;
-  color: ${theme.gray900};
 `;
 
 export const UnselectedLink = styled(Link)`

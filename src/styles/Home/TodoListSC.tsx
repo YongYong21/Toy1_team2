@@ -116,10 +116,10 @@ export const Col = styled.div`
   height: 100%;
 
   &:first-child {
-    width: 60%;
+    width: 70%;
   }
   &:last-child {
-    width: 40%;
+    width: 30%;
   }
 `;
 
@@ -155,10 +155,10 @@ export const Cell = styled.div`
   position: relative;
 
   &:first-child {
-    width: 60%;
+    width: 70%;
   }
   &:last-child {
-    width: 40%;
+    width: 30%;
   }
 `;
 
@@ -229,8 +229,8 @@ export const ChkedIcon = styled(MdCheck)`
 `;
 
 export const TitleEditInput = styled.input`
-  width: 80%;
-  height: 24px;
+  width: 90%;
+  height: 28px;
   font-size: 16px;
   font-family: 'Pretendard', sans-serif;
   margin: 0;
@@ -264,7 +264,7 @@ export const MoreButton = styled.button`
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 24px;
+  right: 12px;
   margin: auto;
   padding: 0;
   color: ${theme.blue700};
@@ -301,9 +301,10 @@ export const TodoTitle = styled.span`
   align-items: center;
   padding-left: 8px;
   border-radius: 4px;
+  white-space: normal;
+  height: 28px;
 
-  width: 80%;
-  height: 24px;
+  width: 90%;
   &:hover {
     background-color: ${theme.blue200};
   }

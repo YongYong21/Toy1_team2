@@ -98,18 +98,11 @@ export const Menu = styled.div`
   padding: 4px;
 `;
 
-// export const start = styled.css`
-//   opacity: 0;
-// `;
-
-// export const end = styled.css`
-//   opacity: 1;
-// `;
-export const MenuUnli = styled.ul`
+export const DocsComponentUl = styled.ul`
   position: absolute;
   top: 28px;
   z-index: 5;
-  height: 100px;
+  height: 120px;
   overflow-y: scroll;
   border: 1px solid ${theme.gray500};
   border-radius: 8px;

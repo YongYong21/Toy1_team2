@@ -23,7 +23,7 @@ export function Header(): JSX.Element {
   const [photoURL, setPhotoURL] = useState<string>(''); // 유저 프사
   const [paths] = useState<string[][]>([
     ['Home', '/'],
-    ['Wiki', '/wiki/rule'],
+    ['Wiki', '/wiki'],
     ['Gallery', '/gallery'],
   ]);
 
@@ -79,7 +79,7 @@ function LinkContainer({
     <HdUl className="nav">
       {paths.map((path, idx) => {
         const currentPage = pathname.split('/')[1]; // 현재 주소의 "/"다음부분 딱 하나만 추출
-        if (currentPage === path[1]) {
+        if ('/' + currentPage === path[1]) {
           // URL 배열에서 같은걸 찾기
           return (
             <SelectedLink key={idx} to={path[1]}>
@@ -109,7 +109,7 @@ function LoginContainer({
   uid: string | null;
 }): JSX.Element {
   const navigate = useNavigate();
-  return uid !== null ? ( // 로그인이 됐다면 로그인된 UI 표출
+  return uid === null ? ( // 로그인이 됐다면 로그인된 UI 표출
     <HeaderRight
     // 프로필 선택하면 포커스, 다른데 선택하면 언포커스
     >

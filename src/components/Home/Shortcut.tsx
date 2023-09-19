@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { ShortcutContainer, Height30 } from '../../styles/Home/ShortcutSC';
+import {
+  ShortcutContainer,
+  Height30,
+  ShortcutCell,
+  ShortcutCol,
+} from '../../styles/Home/ShortcutSC';
+import { useNavigate } from 'react-router-dom';
+
 import {
   TabBtn,
   TabBtnClk,
@@ -7,60 +14,87 @@ import {
   Title,
   TitleLine,
   Th,
-  Col,
   Tb,
   Tr,
-  Cell,
   DocText,
   FloatBtn,
 } from '../../styles/Home/TodoListSC';
+import { ShortcutGallery } from './ShortcutGallery';
 
-export function Shortcut(): JSX.Element {
+interface TaskProps {
+  todo: Array<[string, number, string]>;
+  setTodo: React.Dispatch<Array<[string, number, string]>>;
+  setTabMenu: React.Dispatch<number[]>;
+  setTglEditTodo: React.Dispatch<boolean[]>;
+}
+
+export function Shortcut({
+  todo, //
+  setTodo,
+  setTabMenu,
+  setTglEditTodo,
+}: TaskProps): JSX.Element {
   // const [addFocus, setAddFocus] = useState(false);
   const [clkTab, setClkTab] = useState([1, 0]);
+  const navigate = useNavigate();
 
   const wikiPosts = [
     {
       title: '회사 내규',
-      editor: '박현진',
       recentEdit: '2023.09.13.',
+      url: 'rules',
     },
     {
       title: '팀 소개',
-      editor: '박준규',
       recentEdit: '2023.09.13.',
+      url: 'information',
     },
     {
       title: '조직도',
-      editor: '박용희',
       recentEdit: '2023.09.13.',
+      url: 'team',
     },
     {
       title: '진행중인 프로젝트',
-      editor: '장문용',
       recentEdit: '2023.09.13.',
+      url: 'ongoing',
     },
     {
       title: '예정된 프로젝트',
-      editor: '정범환',
       recentEdit: '2023.09.13.',
+      url: 'scheduled',
     },
     {
       title: '완료된 프로젝트',
-      editor: '박현진',
       recentEdit: '2023.09.13.',
+      url: 'completed',
     },
     {
       title: '신입사원 필독서',
-      editor: '박준규',
       recentEdit: '2023.09.13.',
+      url: 'read',
     },
     {
       title: '온보딩 주제',
-      editor: '박용희',
       recentEdit: '2023.09.13.',
     },
   ];
+
+  const makeNewTodo = //
+    (e: React.MouseEvent<HTMLButtonElement>): void => {
+      e.stopPropagation();
+      const tar = e.target as HTMLElement;
+      const tarText = tar.dataset.id as string;
+
+      setTabMenu([1, 0]);
+      const newTodo = todo.slice();
+      newTodo.unshift(['', new Date().getTime(), tarText]);
+      setTodo(newTodo);
+      setTglEditTodo([true]);
+
+      const strfied = JSON.stringify(newTodo);
+      localStorage.setItem('todo', strfied);
+    };
 
   return (
     <ShortcutContainer>
@@ -88,8 +122,8 @@ export function Shortcut(): JSX.Element {
       </TabList>
       {clkTab[0] === 1 && (
         <Th>
-          <Col>제목</Col>
-          <Col>수정일</Col>
+          <ShortcutCol>제목</ShortcutCol>
+          <ShortcutCol>수정일</ShortcutCol>
         </Th>
       )}
       <Tb>
@@ -97,16 +131,22 @@ export function Shortcut(): JSX.Element {
           wikiPosts.map((wiki, idx) => {
             return (
               <Tr key={idx}>
-                <Cell>
+                <ShortcutCell
+                  onClick={() => {
+                    navigate(`/wiki/${wiki.url}`);
+                  }}
+                >
                   <DocText />
                   {wiki.title}
-                  <FloatBtn>할 일 추가</FloatBtn>
-                </Cell>
-                <Cell>{wiki.recentEdit}</Cell>
+                  <FloatBtn data-id={wiki.title} onClick={makeNewTodo}>
+                    할 일 추가
+                  </FloatBtn>
+                </ShortcutCell>
+                <ShortcutCell>{wiki.recentEdit}</ShortcutCell>
               </Tr>
             );
           })}
-        {clkTab[1] === 1 && '갤러리 로직 추가'}
+        {clkTab[1] === 1 && <ShortcutGallery />}
       </Tb>
     </ShortcutContainer>
   );
