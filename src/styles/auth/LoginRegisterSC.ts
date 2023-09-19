@@ -36,8 +36,9 @@ const fadeInOut = keyframes`
 
 // Toast 메세지
 export const ToastMessage = styled.div`
-  position: absolute;
-  top: -13%;
+  z-index: 1000;
+  position: fixed;
+  top: 8%;
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 16px 10px 45px;
@@ -70,6 +71,7 @@ export const LogoName = styled.h2`
   font-size: ${(props) => props.theme.textStyles.subtitle4.fontSize};
   line-height: ${(props) => props.theme.textStyles.subtitle4.lineHeight};
   height: 36px;
+  letter-spacing: -1px;
   margin-top: 10px;
   font-weight: 900;
 `;
