@@ -20,7 +20,7 @@ interface MenuItem {
 }
 
 interface ItemContainerProps {
-  isUrl: boolean;
+  $isUrl: boolean;
 }
 
 const SidebarContainer = styled.div`
@@ -48,7 +48,7 @@ const TitleContainer = styled.div`
 `;
 
 const ItemContainer = styled.div<ItemContainerProps>`
-  background-color: ${(props) => (props.isUrl ? theme.blueBg1 : '')};
+  background-color: ${(props) => (props.$isUrl ? theme.blueBg1 : '')};
   font-size: 15px;
   margin-bottom: 6px;
   padding: 8px;
@@ -87,7 +87,7 @@ function MenuSection({ title, items, url }: MenuSectionProps): JSX.Element {
         items.map((item, index) => (
           // url 주소 이동
           <Link key={item.url} to={`/${url}/${item.url}`}>
-            <ItemContainer key={index} isUrl={id === item.url}>
+            <ItemContainer key={index} $isUrl={id === item.url}>
               {item.text}
             </ItemContainer>
           </Link>
