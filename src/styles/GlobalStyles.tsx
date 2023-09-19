@@ -1,7 +1,6 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
-  
-const GlobalStyles= createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
     // 적용시킬 css 입력
     a{
         text-decoration: none;
@@ -31,5 +30,5 @@ const GlobalStyles= createGlobalStyle`
         cursor: pointer;
     }
 `;
- 
+
 export default GlobalStyles;
