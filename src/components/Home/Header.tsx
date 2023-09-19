@@ -109,7 +109,7 @@ function LoginContainer({
   uid: string | null;
 }): JSX.Element {
   const navigate = useNavigate();
-  return uid === null ? ( // 로그인이 됐다면 로그인된 UI 표출
+  return uid !== null ? ( // 로그인이 됐다면 로그인된 UI 표출
     <HeaderRight
     // 프로필 선택하면 포커스, 다른데 선택하면 언포커스
     >
