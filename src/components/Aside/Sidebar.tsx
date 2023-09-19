@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 
 import { firestore } from '../../api/firebase';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { theme } from '../../styles/Theme';
 
 interface MenuSectionProps {
@@ -20,20 +20,16 @@ interface MenuItem {
 }
 
 interface ItemContainerProps {
-  clickItem: boolean;
-}
-
-interface HandleClickProps {
-  clickItem: boolean[][];
-  onItemClick: (sectionIndex: number, itemIndex: number) => void;
+  $isUrl: boolean;
 }
 
 const SidebarContainer = styled.div`
   min-width: 256px;
-  height: 1024px;
+  height: 100vh;
   background-color: ${theme.blueBg3};
   color: ${theme.gray300};
   padding: 24px 20px 0px;
+  position: fixed;
 `;
 
 const MenuContainer = styled.div`
@@ -52,7 +48,7 @@ const TitleContainer = styled.div`
 `;
 
 const ItemContainer = styled.div<ItemContainerProps>`
-  background-color: ${(props) => (props.clickItem ? theme.blueBg1 : '')};
+  background-color: ${(props) => (props.$isUrl ? theme.blueBg1 : '')};
   font-size: 15px;
   margin-bottom: 6px;
   padding: 8px;
@@ -68,20 +64,14 @@ const ItemContainer = styled.div<ItemContainerProps>`
   }
 `;
 
-function MenuSection({
-  id,
-  title,
-  items,
-  clickItem,
-  onItemClick,
-  url,
-}: MenuSectionProps & HandleClickProps): JSX.Element {
+function MenuSection({ title, items, url }: MenuSectionProps): JSX.Element {
   // 사이드바에 있는 회사 생활, 프로젝트, 온보딩과 같은 제목 타이틀
   const [clickTitle, setClickTitle] = useState(false);
 
   function handleClickTitle(): void {
     setClickTitle(!clickTitle);
   }
+  const { id } = useParams();
 
   return (
     <MenuContainer>
@@ -97,13 +87,7 @@ function MenuSection({
         items.map((item, index) => (
           // url 주소 이동
           <Link key={item.url} to={`/${url}/${item.url}`}>
-            <ItemContainer
-              key={index}
-              clickItem={clickItem[id][index]}
-              onClick={() => {
-                onItemClick(id, index);
-              }}
-            >
+            <ItemContainer key={index} $isUrl={id === item.url}>
               {item.text}
             </ItemContainer>
           </Link>
@@ -139,22 +123,11 @@ function Sidebar({
         });
         copy.sort((a, b) => a.id - b.id);
         setMenu(copy);
-        setClickItem(copy.map((menu) => Array(menu.items.length).fill(false)));
       })
       .catch((error) => {
         console.error('Firebase 데이터 가져오기 오류:', error);
       });
   }, []);
-
-  const [clickItem, setClickItem] = useState(
-    menu?.map((menu) => Array(menu.items.length).fill(false)),
-  );
-  // 클릭한 부분이 어떠한 데이터인지 확인해주는 함수
-  function handleClickItem(sectionIndex: number, itemIndex: number): void {
-    const copy = [...clickItem.map((arr) => arr.map(() => false))];
-    copy[sectionIndex][itemIndex] = !copy[sectionIndex][itemIndex];
-    setClickItem(copy);
-  }
 
   return (
     <SidebarContainer>
@@ -164,8 +137,6 @@ function Sidebar({
           id={menu.id}
           title={menu.title}
           items={menu.items}
-          clickItem={clickItem}
-          onItemClick={handleClickItem}
           // pages에서 props 받은 url
           url={url}
         />
