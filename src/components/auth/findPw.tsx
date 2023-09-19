@@ -50,7 +50,7 @@ const FindPwForm: React.FC = () => {
     };
   }, []);
   // margin-top과 margin-bottom 계산
-  const setMarginTop = (deviceHeight - 371) / 2;
+  const setMarginTop = (deviceHeight - 471) / 2;
   const setMarginBottom = (deviceHeight - 471) / 2;
 
   /* ------------------ Input타입 관련기능 ------------------ */
@@ -125,7 +125,7 @@ const FindPwForm: React.FC = () => {
             onChange={handleEmailInputChange}
             placeholder="이메일"
           />
-          {email !== null && <ClearIcon onClick={handleClearEmailInput} />}
+          {email !== '' && <ClearIcon onClick={handleClearEmailInput} />}
         </InputContainer>
 
         <MainButton>비밀번호 찾기</MainButton>

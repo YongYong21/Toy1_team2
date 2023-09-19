@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../api/firebase';
 import {
   LoginContainer,
@@ -87,11 +87,12 @@ const LoginForm: React.FC = () => {
       setToastMessage(
         '회원가입이 완료되었습니다. 로그인을 위해 전송된 인증 메일을 확인해주세요.',
       );
-      // 로컬 스토리지에서 상태를 삭제 (한 번만 보여주기 위해)
+      // 로컬 스토리지에서 상태를 삭제 (한 번만 보여주기 위해 )
       localStorage.removeItem('registrationSuccess');
     }
   }, []);
-
+  // 이전페이지 등록 (로그인 후 이동)
+  const navigate = useNavigate();
   // 로그인 기능
   const onSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -99,23 +100,32 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, pwd);
-
       const user = auth.currentUser;
+
       if (user !== null) {
         const { emailVerified } = user; // 사용자의 이메일 인증 여부 추출
         if (emailVerified) {
           // 이메일 인증이 완료 된 경우
           setToastMessage('로그인 완료');
-          fetchUserProfile();
 
-          /* 여기에 메인 페이지 이동 코드 작성하기! */
+          setTimeout(() => {
+            if (
+              window.history.state === 'register' ||
+              window.history.state === 'findpw'
+            ) {
+              // 이전 페이지가 '/register' 또는 '/findpw'인 경우 홈 화면으로 이동
+              navigate('/');
+            } else {
+              // 그렇지 않으면 이전 페이지로 이동
+              window.history.back();
+            }
+          }, 1000);
         } else {
           // 사용자 정보를 초기화하고 로그아웃
           await signOut(auth); // signOut 함수 반환 프로미스 처리
           setToastMessage(
             '이메일 인증이 진행되지 않았습니다. 먼저 인증을 진행해주세요.',
           );
-          fetchUserProfile();
         }
       }
     } catch (e) {
@@ -140,21 +150,6 @@ const LoginForm: React.FC = () => {
       } else {
         setToastMessage('알 수 없는 오류가 발생했습니다.');
       }
-    }
-  };
-
-  // 프로필 조회용 기능
-  const fetchUserProfile: () => void = () => {
-    const user = auth.currentUser; // 현재 로그인한 사용자 정보를 가져옵니다.
-
-    if (user !== null) {
-      const { displayName, email, emailVerified } = user;
-      console.log('사용자 이름:', displayName);
-      console.log('사용자 이메일:', email);
-      console.log('이메일 인증여부:', emailVerified);
-    } else {
-      // 사용자가 로그인하지 않은 경우
-      console.log('사용자가 로그인하지 않았습니다.');
     }
   };
 
@@ -188,7 +183,7 @@ const LoginForm: React.FC = () => {
             onChange={handleEmailInputChange}
             placeholder="이메일"
           />
-          {email !== null && <ClearIcon onClick={handleClearEmailInput} />}
+          {email !== '' && <ClearIcon onClick={handleClearEmailInput} />}
         </InputContainer>
         <InputContainer>
           <Input
@@ -197,7 +192,7 @@ const LoginForm: React.FC = () => {
             onChange={handlePasswordInputChange}
             placeholder="비밀번호"
           />
-          {pwd !== null && <ClearIcon onClick={handleClearPasswordInput} />}
+          {pwd !== '' && <ClearIcon onClick={handleClearPasswordInput} />}
         </InputContainer>
         <MainButton>로그인</MainButton>
         <Question>아직 등록된 사원이 아니신가요?</Question>

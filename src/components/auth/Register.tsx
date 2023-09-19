@@ -58,8 +58,8 @@ const RegisterForm: React.FC = () => {
     };
   }, []);
   // margin-top과 margin-bottom 계산
-  const setMarginTop = (deviceHeight - 721) / 2;
-  const setMarginBottom = (deviceHeight - 721) / 2;
+  const setMarginTop = (deviceHeight - 671) / 2;
+  const setMarginBottom = (deviceHeight - 671) / 2;
 
   /* -------------------- useState -------------------- */
 
