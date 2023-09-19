@@ -50,8 +50,8 @@ const FindPwForm: React.FC = () => {
     };
   }, []);
   // margin-top과 margin-bottom 계산
-  const marginTop = (deviceHeight - 371) / 2;
-  const marginBottom = (deviceHeight - 471) / 2;
+  const setMarginTop = (deviceHeight - 371) / 2;
+  const setMarginBottom = (deviceHeight - 471) / 2;
 
   /* ------------------ Input타입 관련기능 ------------------ */
 
@@ -98,7 +98,7 @@ const FindPwForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       <FindPwContainer
-        style={{ marginTop: marginTop, marginBottom: marginBottom }}
+        style={{ marginTop: setMarginTop, marginBottom: setMarginBottom }}
       >
         {showToast && (
           <ToastMessage

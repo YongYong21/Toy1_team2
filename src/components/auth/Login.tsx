@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
   useEffect(() => {
     if (toastMessage !== null) {
       setShowToast(true);
-      setTimeout(hideToastMessage, 3000);
+      setTimeout(hideToastMessage, 6000);
     }
   }, [toastMessage]);
 
