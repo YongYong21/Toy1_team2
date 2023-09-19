@@ -18,7 +18,6 @@ export default function App(): JSX.Element {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/findpw" element={<FindPwPage />} />
-        <Route path="/gallery" element={<Gallery />} />
       </Routes>
     </AuthContextProvider>
   );
