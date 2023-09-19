@@ -7,6 +7,7 @@ import {
   Title,
   Main,
   FlexBox,
+  LoadingSpinner,
 } from '../../styles/Gallery/GalleryContent';
 import GalleryList from './GalleryList';
 import UploadModal from './UploadModal';
@@ -23,6 +24,7 @@ export default function GalleryContent(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const bucket = firestore.collection(id);
   const [title, setTitle] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   /** 데이터 삭제 */
   const deleteData = async (doc: ImageData): Promise<void> => {
@@ -61,6 +63,8 @@ export default function GalleryContent(): JSX.Element {
     /** 데이터 가져오기 */
     const fetchData = async (): Promise<void> => {
       try {
+        // 페이지 바꿀 때마다 설정하기 위함
+        setIsLoading(true);
         const querySnapshot = await bucket.get();
         const imageList: ImageData[] = [];
 
@@ -88,6 +92,7 @@ export default function GalleryContent(): JSX.Element {
         }
 
         setImages(imageList);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -142,7 +147,11 @@ export default function GalleryContent(): JSX.Element {
         />
       </TitleWrap>
       <Main>
-        <GalleryList images={images} deleteData={deleteData} />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <GalleryList images={images} deleteData={deleteData} />
+        )}
       </Main>
     </FlexBox>
   );

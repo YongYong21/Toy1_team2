@@ -1,10 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
+
   margin: 0 auto;
   margin-left: 300px;
+
+  width: 80%;
+  max-width: 80%;
 `;
 
 export const TitleWrap = styled.div`
@@ -20,6 +24,20 @@ export const Title = styled.h1`
   margin: auto 0;
 
   font-size: ${(props) => props.theme.textStyles.subtitle1.fontSize};
+`;
+
+export const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+export const LoadingSpinner = styled.div`
+  border: 4px solid rgba(0, 0, 0, 0.3);
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: ${spin} 1s linear infinite;
 `;
 
 export const AddButton = styled.button`
@@ -46,6 +64,10 @@ export const AddButton = styled.button`
 export const Main = styled.div`
   width: 100%;
   min-height: 100vh;
+
+  // 로딩 애니메이션을 위해 center
+  display: flex;
+  justify-content: center;
 
   margin: 0 auto;
   padding: 3rem;
