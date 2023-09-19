@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   sendEmailVerification,
+  signOut,
 } from 'firebase/auth';
 import { auth } from '../../api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
@@ -171,6 +172,7 @@ const RegisterForm: React.FC = () => {
         });
         await sendEmailVerification(user);
         localStorage.setItem('registrationSuccess', 'true');
+        await signOut(auth);
         navigate('/login');
       } catch (e) {
         switch (e) {
