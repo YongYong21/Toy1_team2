@@ -21,6 +21,7 @@ export function Home(): JSX.Element {
           justifyContent: 'center',
           gap: '24px',
           marginTop: '24px',
+          height: '440px',
         }}
       >
         <Shortcut //

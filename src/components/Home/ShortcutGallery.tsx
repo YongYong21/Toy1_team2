@@ -1,6 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-// import { useState } from 'react';
-import { ImgsContainer, ImgItems } from '../../styles/Home/ShortcutGallerySC';
+import {
+  ImgsContainer,
+  ImgItems,
+  ImgTitle,
+  NoImg,
+  ImgHeader,
+  BtnSmLiShortcut,
+  RightArrow,
+  SectionContainer,
+} from '../../styles/Home/ShortcutGallerySC';
 import { firestore } from '../../api/firebase';
 import { useEffect, useState } from 'react';
 
@@ -44,22 +52,41 @@ export function ShortcutGallery(): JSX.Element {
     void fetchData();
   }, []);
 
-  const fff = (): void => {
-    navigate('/');
+  const onNaviagate = (): void => {
+    navigate('/gallery');
+    // 추후 /gallery/partner로 바꿀 예정
   };
 
   return (
-    <ImgsContainer>
-      <ImgItems onClick={fff}>
-        {images.map((image, idx) => {
-          return (
-            <ImgItems
-              key={idx}
-              style={{ backgroundImage: `url(${image.imageUrl})` }}
-            ></ImgItems>
-          );
-        })}
-      </ImgItems>
-    </ImgsContainer>
+    <SectionContainer>
+      <ImgHeader>
+        협력사 이미지
+        <RightArrow onClick={onNaviagate} />
+      </ImgHeader>
+      <ImgsContainer>
+        {images.length === 0 && (
+          <NoImg>
+            이런, 협력사 이미지가 없습니다.
+            <BtnSmLiShortcut //
+              onClick={onNaviagate}
+            >
+              갤러리로 이동
+            </BtnSmLiShortcut>
+          </NoImg>
+        )}
+        {images.length !== 0 &&
+          images.map((image, idx) => {
+            return (
+              <ImgItems
+                key={idx}
+                style={{ backgroundImage: `url(${image.imageUrl})` }}
+                onClick={onNaviagate}
+              >
+                <ImgTitle>{image.name}</ImgTitle>
+              </ImgItems>
+            );
+          })}
+      </ImgsContainer>
+    </SectionContainer>
   );
 }

@@ -47,6 +47,12 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
   const [focused, setFocused] = useState(false);
   const [period, setPeriod] = useState('이번 주');
 
+  // todo.map((task) => {
+  //   const idDay = new Date(task[1]);
+  //   console.log('idDay', idDay);
+  //   return undefined;
+  // });
+
   useEffect(() => {
     const thisMonth = new Date().getMonth();
     const thisDate = new Date().getDate();
