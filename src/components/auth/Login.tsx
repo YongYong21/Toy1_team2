@@ -109,16 +109,7 @@ const LoginForm: React.FC = () => {
           setToastMessage('로그인 완료');
 
           setTimeout(() => {
-            if (
-              window.history.state === 'register' ||
-              window.history.state === 'findpw'
-            ) {
-              // 이전 페이지가 '/register' 또는 '/findpw'인 경우 홈 화면으로 이동
-              navigate('/');
-            } else {
-              // 그렇지 않으면 이전 페이지로 이동
-              window.history.back();
-            }
+            navigate('/');
           }, 1000);
         } else {
           // 사용자 정보를 초기화하고 로그아웃
