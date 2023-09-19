@@ -51,7 +51,7 @@ export const ToastMessage = styled.div`
   font-size: 14px;
   white-space: nowrap;
   line-height: 1.5;
-  animation: ${fadeInOut} 3s ease;
+  animation: ${fadeInOut} 6s ease;
 
   /* 에러 스타일 */
   &.error {

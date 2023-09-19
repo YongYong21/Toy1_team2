@@ -21,7 +21,7 @@ import {
   MainButton,
   Question,
   NextPage,
-} from '../../styles/auth/LoginRegisterSC';
+} from '../../styles/Auth/LoginRegisterSC';
 
 const RegisterForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
@@ -38,7 +38,7 @@ const RegisterForm: React.FC = () => {
   useEffect(() => {
     if (toastMessage !== null) {
       setShowToast(true);
-      setTimeout(hideToastMessage, 3000);
+      setTimeout(hideToastMessage, 6000);
     }
   }, [toastMessage]);
 
@@ -58,8 +58,8 @@ const RegisterForm: React.FC = () => {
     };
   }, []);
   // margin-top과 margin-bottom 계산
-  const marginTop = (deviceHeight - 721) / 2;
-  const marginBottom = (deviceHeight - 721) / 2;
+  const setMarginTop = (deviceHeight - 721) / 2;
+  const setMarginBottom = (deviceHeight - 721) / 2;
 
   /* -------------------- useState -------------------- */
 
@@ -192,7 +192,7 @@ const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       <RegisterContainer
-        style={{ marginTop: marginTop, marginBottom: marginBottom }}
+        style={{ marginTop: setMarginTop, marginBottom: setMarginBottom }}
       >
         {showToast && (
           <ToastMessage

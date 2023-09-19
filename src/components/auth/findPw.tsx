@@ -14,7 +14,7 @@ import {
   NextPage,
   ClearIcon,
   InputContainer,
-} from '../../styles/auth/LoginRegisterSC';
+} from '../../styles/Auth/LoginRegisterSC';
 
 const FindPwForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
@@ -31,7 +31,7 @@ const FindPwForm: React.FC = () => {
   useEffect(() => {
     if (toastMessage !== null) {
       setShowToast(true);
-      setTimeout(hideToastMessage, 3000);
+      setTimeout(hideToastMessage, 6000);
     }
   }, [toastMessage]);
 
