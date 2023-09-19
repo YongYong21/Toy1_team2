@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { firestore } from '../api/firebase';
-import { useParams, Outlet, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
+// import { theme } from '../styles/Theme';
 
+const FlexDiv = styled.div`
+  display: flex;
+  ul {
+    list-style-type: disc;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+`;
 const ContentsContainer = styled.div`
-  width: 1280px;
+  width: 50%;
   padding: 20px 30px 0px;
 `;
 const TitleDiv = styled.div`
-  width: 1000px;
   height: 52px;
   font-size: 36px;
   padding: 8px;
@@ -25,23 +34,28 @@ const TimeStampDiv = styled.div`
   font-size: 16px;
   padding: 8px;
 `;
-const EditBtn = styled.button``;
+
 const ContentsDiv = styled.div`
   padding: 8px;
 `;
 const StyledTextarea = styled.textarea`
-  width: 800px; /* 원하는 너비를 지정하세요. */
-  height: 500px; /* 원하는 높이를 지정하세요. */
-  padding: 10px; /* 여백을 추가하세요. */
-  font-size: 16px; /* 원하는 폰트 크기를 지정하세요. */
+  width: 800px;
+  height: 500px;
+  padding: 10px;
+  font-size: 16px;
 `;
+interface ItemType {
+  text: string;
+  content: string;
+  timeStamp: string;
+  url: string;
+}
 function EditContent(): JSX.Element {
   const { id } = useParams();
-  const [data, setData] = useState<any | null>(null); // Use a more specific type if possible
+  const [data, setData] = useState<ItemType | null>(null);
   const [idx, setIdx] = useState(0);
   const [docName, setDocName] = useState('');
   const [markdownText, setMarkdownText] = useState<string>('');
-  const [toggleEdit, setToggleEdit] = useState(true);
   const currentURL = window.location.href;
   const newURL = currentURL.replace(/\/edit$/, '');
 
@@ -56,7 +70,7 @@ function EditContent(): JSX.Element {
           for (const [index, item] of items.entries()) {
             if (item.url === id) {
               setDocName(doc.id);
-              setIdx(index); // 해당 요소의 인덱스 출력
+              setIdx(index);
               setData(item);
               setMarkdownText(item.content);
               return;
@@ -102,7 +116,6 @@ function EditContent(): JSX.Element {
           const hours = String(now.getHours()).padStart(2, '0');
           const minutes = String(now.getMinutes()).padStart(2, '0');
           const time = `${year}-${month}-${day} ${hours}:${minutes}`;
-          // content를 수정하려는 배열 요소의 인덱스 (예: 첫 번째 요소를 수정하려면 0)
           const itemIndex = idx;
 
           // 새로운 content 값으로 수정
@@ -111,7 +124,7 @@ function EditContent(): JSX.Element {
           // 수정된 items 배열을 다시 문서에 저장
           docRef
             .update({
-              items: items,
+              items,
             })
             .then(() => {
               console.log('content 수정 완료');
@@ -127,32 +140,37 @@ function EditContent(): JSX.Element {
         console.error('문서 가져오기 중 오류 발생: ', error);
       });
   };
-  const handleEditBtn = (): void => {
-    setToggleEdit(true);
-  };
+
   return (
-    <ContentsContainer>
-      <TitleDiv>{data?.text}</TitleDiv>
-      <TimeStampWrap>
-        <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
-        <Link to={`${window.location.pathname}/edit`}>
-          {toggleEdit && <EditBtn onClick={handleEditBtn}>글 수정</EditBtn>}
-        </Link>
-      </TimeStampWrap>
-      <ContentsDiv>
-        <StyledTextarea
-          onChange={onChange}
-          value={markdownText}
-        ></StyledTextarea>
-        <MarkdownViewer
-          markdownText={markdownText !== '' ? markdownText : ''}
-        />
-        <Link to={newURL}>
-          <button onClick={handleSaveClick}>저장</button>
-        </Link>
-      </ContentsDiv>
-      <Outlet></Outlet>
-    </ContentsContainer>
+    <FlexDiv>
+      <ContentsContainer>
+        <TitleDiv>{data?.text}</TitleDiv>
+        <TimeStampWrap>
+          <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
+        </TimeStampWrap>
+        <ContentsDiv>
+          <StyledTextarea
+            onChange={onChange}
+            value={markdownText}
+          ></StyledTextarea>
+          <Link to={newURL}>
+            <button onClick={handleSaveClick}>저장</button>
+          </Link>
+        </ContentsDiv>
+      </ContentsContainer>
+
+      <ContentsContainer>
+        <TitleDiv>{data?.text}</TitleDiv>
+        <TimeStampWrap>
+          <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
+        </TimeStampWrap>
+        <ContentsDiv>
+          <MarkdownViewer
+            markdownText={markdownText !== '' ? markdownText : ''}
+          />
+        </ContentsDiv>
+      </ContentsContainer>
+    </FlexDiv>
   );
 }
 
