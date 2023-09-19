@@ -1,23 +1,25 @@
 import React from 'react';
+import { AuthContextProvider } from './contexts/AuthContext';
 import { Routes, Route } from 'react-router-dom';
+import { Header } from './components/Home/Header';
+import { Home } from './pages/Home/Home';
 import Login from './pages/Auth/LoginPage';
 import Register from './pages/Auth/RegisterPage';
 import FindPwPage from './pages/Auth/FindPwPage';
-import AfterLogin from './pages/Auth/AfterLogin';
 import Gallery from './pages/Gallery/Gallery';
-import { AuthContextProvider } from './contexts/AuthContext';
-const App: React.FC = () => {
+
+export default function App(): JSX.Element {
   return (
     <AuthContextProvider>
+      <Header />
       <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/findpw" element={<FindPwPage />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/after" element={<AfterLogin />} />
       </Routes>
     </AuthContextProvider>
   );
-};
-
-export default App;
+}
