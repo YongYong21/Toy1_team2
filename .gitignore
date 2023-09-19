@@ -25,3 +25,7 @@ yarn-error.log*
 # api
 apikey.env
 .env
+
+# others
+reportWebVitals.ts
+setupTests.ts
