@@ -22,7 +22,7 @@ import {
   MainButton,
   Question,
   NextPage,
-} from '../../styles/Auth/LoginRegisterSC';
+} from '../../styles/Authentication/LoginRegisterSC';
 
 const RegisterForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */

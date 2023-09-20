@@ -15,7 +15,7 @@ import {
   NextPage,
   ClearIcon,
   InputContainer,
-} from '../../styles/Auth/LoginRegisterSC';
+} from '../../styles/Authentication/LoginRegisterSC';
 
 const LoginForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
