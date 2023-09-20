@@ -65,6 +65,21 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
     });
   }, []);
 
+  const onClickMenu = (e: React.MouseEvent<HTMLUListElement>): void => {
+    e.stopPropagation();
+    const eTarget = e.target as HTMLElement;
+    setPeriod(eTarget.innerText);
+    setFocused(false);
+  };
+
+  const onClickPeriodBtn = (): void => {
+    setFocused(true);
+  };
+
+  const onBlurPeriodBtn = (): void => {
+    setFocused(false);
+  };
+
   return (
     <BriefContainer>
       <Inner>
@@ -78,24 +93,12 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
           </CurrentUser>
         </GreetingArea>
         <BriefArea>
-          <SelectPeriod
-            onClick={() => {
-              setFocused(true);
-            }}
-          >
+          <SelectPeriod onClick={onClickPeriodBtn} onBlur={onBlurPeriodBtn}>
             <PeriodBtn>{period}</PeriodBtn>
             <div>{focused ? <AngleUp></AngleUp> : <AngleDown></AngleDown>}</div>
             {focused ? (
               <Menu>
-                <MenuUl
-                  className="menu-ul"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const eTarget = e.target as HTMLElement;
-                    setPeriod(eTarget.innerText);
-                    setFocused(false);
-                  }}
-                >
+                <MenuUl className="menu-ul" onClick={onClickMenu}>
                   <MenuLi>이번 주</MenuLi>
                   <MenuLi>이번 달</MenuLi>
                   <MenuLi>전체</MenuLi>
