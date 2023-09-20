@@ -114,9 +114,9 @@ export function Shortcut({
       >
         {clkTab.map((v, i) => {
           return v === 1 ? ( //
-            <TabBtnClk>{['문서', '갤러리'][i]}</TabBtnClk> //
+            <TabBtnClk key={i}>{['문서', '갤러리'][i]}</TabBtnClk> //
           ) : (
-            <TabBtn>{['문서', '갤러리'][i]}</TabBtn>
+            <TabBtn key={i}>{['문서', '갤러리'][i]}</TabBtn>
           );
         })}
       </TabList>
@@ -126,9 +126,9 @@ export function Shortcut({
           <ShortcutCol>수정일</ShortcutCol>
         </Th>
       )}
-      <Tb>
-        {clkTab[0] === 1 &&
-          wikiPosts.map((wiki, idx) => {
+      {clkTab[0] === 1 && (
+        <Tb>
+          {wikiPosts.map((wiki, idx) => {
             return (
               <Tr key={idx}>
                 <ShortcutCell
@@ -146,8 +146,9 @@ export function Shortcut({
               </Tr>
             );
           })}
-        {clkTab[1] === 1 && <ShortcutGallery />}
-      </Tb>
+        </Tb>
+      )}
+      {clkTab[1] === 1 && <ShortcutGallery />}
     </ShortcutContainer>
   );
 }

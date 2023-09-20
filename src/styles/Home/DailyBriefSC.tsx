@@ -80,10 +80,11 @@ export const SelectPeriod = styled.button`
   }
 `;
 
-export const PeriodBtn = styled.button`
-  font-size: ${theme.textStyles.subtitle4.fontSize};
+export const PeriodBtn = styled.div`
+  font-size: 22px;
+  white-space: nowrap;
   margin: 0 12px 0 32px;
-  width: 82px;
+  width: 86px;
 `;
 
 export const Menu = styled.div`
@@ -116,6 +117,7 @@ export const MenuLi = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: no-wrap;
   background-color: ${theme.white};
 
   &:hover {
