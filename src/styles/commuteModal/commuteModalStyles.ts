@@ -82,7 +82,6 @@ export const CloseButton = styled.button`
   font-size: 40px;
 `;
 
-
 export const ModalContent = styled.div`
   padding: 24px;
 
@@ -163,7 +162,6 @@ export const WorkStartTextContainer = styled.div`
   border-radius: 12px;
   margin: 10px 5px 0 0;
 `;
-
 
 export const WorkStartTextTitle = styled.span`
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
