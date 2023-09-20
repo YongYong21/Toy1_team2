@@ -7,13 +7,13 @@ export const HeaderButton = styled.button`
   
   border-radius: 50px;
 
-  width: 100px;
+  width: 120px;
   height: 39px;
   margin : 9px 16px 4px 7px;
   padding: 4px 8px;
 
-  background-color: ${props => props.theme.blue200};
-  color:  ${props => props.theme.gray800};
+  background-color: ${props => props.theme.blue700};
+  color:  ${props => props.theme.white};
 
   line-height: 160%;
   text-align: center; /* 텍스트를 가운데 정렬 */
@@ -21,7 +21,7 @@ export const HeaderButton = styled.button`
   float: right;
 
   &:hover {
-      background-color: ${props => props.theme.blue300};
+      background-color: ${props => props.theme.blue600};
     }
 `;
 

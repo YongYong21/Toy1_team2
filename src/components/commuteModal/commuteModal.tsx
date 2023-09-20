@@ -3,10 +3,12 @@ import React, { useState, useEffect  } from "react";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
 import firebase from '../../api/firebase';
+import { FaBusinessTime } from 'react-icons/fa';
 
 
 import GlobalStyles from "../../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
-import {  HeaderButton,
+import {  
+  HeaderButton,
   AppWrapper,
   ModalWrapper,
   ModalHeaderContainer,
@@ -296,7 +298,7 @@ function CommuteModal() : JSX.Element {
         <AppWrapper>
           <header>
             <HeaderButton onClick={toggleModal}>
-              {seconds > 0 ? formatTimeFromSeconds(seconds) : 'Commute'}
+              {seconds > 0 ? formatTimeFromSeconds(seconds) : <FaBusinessTime style={{ fontSize: '24px', color: 'white', marginTop: '3px'}}/>}
             </HeaderButton>
           </header>
 
