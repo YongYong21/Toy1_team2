@@ -1,10 +1,10 @@
+// components/CommuteModal/commuteModal.tsx
 import React, { useState, useEffect  } from "react";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
 
 import GlobalStyles from "../../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
-import {
-  HeaderButton,
+import {  HeaderButton,
   AppWrapper,
   ModalWrapper,
   ModalHeaderContainer,
@@ -39,130 +39,178 @@ const formatTimeFromSeconds = (totalSeconds: number): string => {
   return formattedTime;
 };
 
-function formatWorkStartTime(startTime: Date): string {
-  const hours = startTime.getHours();
-  const minutes = startTime.getMinutes();
-
-  const formattedHours = hours < 10 ? `0${hours}` : hours.toString();
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
-
-  return `${formattedHours}:${formattedMinutes}`;
-}
-
-  function formatWorkEndTime(startTime: Date): string {
-    // 출근 시간에 9시간(540분)을 더해 예상 퇴근 시간을 계산
-    const endTime = new Date(startTime.getTime() + 540 * 60 * 1000);
-
-    const hours = endTime.getHours();
-    const minutes = endTime.getMinutes();
+// 시작 시간 포맷팅
+function formatWorkStartTime(startTime: Date | null): string {
+  if (startTime instanceof Date) {
+    const hours = startTime.getHours();
+    const minutes = startTime.getMinutes();
 
     const formattedHours = hours < 10 ? `0${hours}` : hours.toString();
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
 
     return `${formattedHours}:${formattedMinutes}`;
+  } else {
+    return '00:00'; // startTime이 유효하지 않을 때 기본값을 반환합니다.
+  }
+}
+
+// 퇴근 시간 포맷팅
+  function formatWorkEndTime(startTime: Date | null): string {
+    if (startTime instanceof Date) {
+      // 출근 시간에 9시간(540분)을 더해 예상 퇴근 시간을 계산
+      const endTime = new Date(startTime.getTime() + 540 * 60 * 1000);
+  
+      const hours = endTime.getHours();
+      const minutes = endTime.getMinutes();
+  
+      const formattedHours = hours < 10 ? `0${hours}` : hours.toString();
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+  
+      return `${formattedHours}:${formattedMinutes}`;
+    } else {
+      return '00:00'; // startTime이 유효하지 않을 때 기본값을 반환합니다.
+    }
   }
 
+  
 function CommuteModal() : JSX.Element {
      // 모달창을 열고 닫는 상태를 관리
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCommuteButtonClicked, setIsCommuteButtonClicked] = useState(false); // 출근 버튼 클릭 상태 추가
+
     const [currentDate, setCurrentDate] = useState("");
     const [currentTime, setCurrentTime] = useState(''); // 현재 시간 상태 추가
 
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [seconds, setSeconds] = useState(0);
+    const [workStartTime, setWorkStartTime] = useState<Date | null>(null); // 출근 시간 상태 변수 추가
+
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-    const [isCommuteButtonClicked, setIsCommuteButtonClicked] = useState(false); // 출근 버튼 클릭 상태 추가
-    const [modalTitle, setModalTitle] = useState("김사원님, 아직 출근전 입니다. 👀");
+    const [modalTitle, setModalTitle] = useState("김사원님 업무 시작 전 입니다. 👀");
 
-    const [workStartTime, setWorkStartTime] = useState<Date | null>(null); // 출근 시간 상태 변수 추가
 
     // 모달창을 열고 닫는 함수
     const toggleModal = (): void => {
       setIsModalOpen(!isModalOpen);
+      // 모달 상태를 로컬 스토리지에 저장
+      localStorage.setItem('isModalOpen', JSON.stringify(!isModalOpen));
     };
 
-      const toggleTimer = (): void => {
-        if (!isTimerRunning) {
-          setIsTimerRunning(true);
-          setTimer(
-            setInterval(() => {
-              setSeconds((prevSeconds) => prevSeconds + 1);
-            }, 1000)
-          );
-        } else if (isTimerRunning) {
-          if (seconds > 0) {
-            setIsTimerRunning(false);
-            if (timer !== null) {
-              clearInterval(timer);
-              setTimer(null);
-            }
-          }
-        }
-      };
+    const toggleTimer = (): void => {
+      localStorage.setItem('isCommuteButtonClicked', JSON.stringify(true));
 
-        // 근무 시간 타이머 일시 정지 함수
-        const pauseTimer = (): void => {
+      if (!isTimerRunning) { // Timer가 true일 때
+        setIsTimerRunning(true);
+        setIsCommuteButtonClicked(true);
+        setTimer(
+          setInterval(() => {
+            setSeconds((prevSeconds) => {
+              const newSeconds = prevSeconds + 1;
+              localStorage.setItem('seconds', JSON.stringify(newSeconds)); // 타이머 초를 저장
+              return newSeconds;
+            });
+          }, 1000)
+        );
+      } else if (isTimerRunning) { // Timer가 false일 때
+        if (seconds > 0) {
+
           setIsTimerRunning(false);
+          setIsCommuteButtonClicked(true);
+
           if (timer !== null) {
             clearInterval(timer);
-            setTimer(null);
+             setTimer(null);
           }
-        };
+        }
+      }
+    };
 
-        const handleCommuteButtonClick = (): void => {
-          const now = new Date();
-          const hours = now.getHours();
-          const currentTime = `${hours < 10 ? '0' : ''}${hours}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
+    // 근무 시간 타이머 일시 정지 함수
+    const pauseTimer = (): void => {
+      setIsTimerRunning(false);
+      localStorage.setItem('isTimerRunning', JSON.stringify(false));
+
+      if (timer !== null) {
+        clearInterval(timer);
+        setTimer(null);
+      }
+    };
+
+    const handleCommuteButtonClick = (): void => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const currentTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+      localStorage.setItem('isTimerRunning', JSON.stringify(true));
+
+      if (seconds > 0) {
+        // 타이머가 실행 중인 경우, 업무를 재개할 것인지 확인합니다.
+        const confirmation = window.confirm(`현재 시각은 ${currentTime} 입니다. 업무를 재개하시겠습니까?`);
+        if (confirmation) {
+            toggleTimer();
+            setIsCommuteButtonClicked(true);
+
+            // 출근 버튼이 클릭되었을 때 로컬 스토리지에 해당 상태 저장
+            localStorage.setItem('isCommuteButtonClicked', JSON.stringify(true));
+            localStorage.setItem('isTimerRunning', JSON.stringify(true));
+
+            setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
+
+        }
+      } else {
+        localStorage.setItem('isTimerRunning', JSON.stringify(false));
+
+        // 타이머가 실행 중이 아닌 경우, 출근할 것인지 확인합니다.
+        const confirmation = window.confirm(`현재 시각은 ${currentTime} 입니다. 출근하시겠습니까?`);
+        if (confirmation) {
         
-          if (seconds > 0) {
-            // 타이머가 실행 중인 경우, 업무를 재개할 것인지 확인합니다.
-            const confirmation = window.confirm(`현재 시각은 ${currentTime} 입니다. 업무를 재개하시겠습니까?`);
-            if (confirmation) {
-              pauseTimer(); // 휴게 시간 측정 중지
-              setIsCommuteButtonClicked(true);
-              setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
-              
-                // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-                if (workStartTime === null) {
-                  setWorkStartTime(now); // 출근 시간 업데이트
-                }
-                toggleTimer();
-            }
-          } else {
-            // 타이머가 실행 중이 아닌 경우, 출근할 것인지 확인합니다.
-            const confirmation = window.confirm(`현재 시각은 ${currentTime} 입니다. 출근하시겠습니까?`);
-            if (confirmation) {
-              setIsCommuteButtonClicked(true);
-              toggleTimer();
-              setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
-                  // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-              if (workStartTime === null) {
-                setWorkStartTime(now); // 출근 시간 업데이트
-              }
-            }
-          }
-        };
-        const resetTimer = (): void => {
-          const now = new Date();
-          const hours = now.getHours();
-          const currentTime = `${hours < 10 ? '0' : ''}${hours}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
+          toggleTimer();
+
+          setIsCommuteButtonClicked(true);
+          localStorage.setItem('isTimerRunning', JSON.stringify(true));
+
+          setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
+
+
+        }
+      }
+        // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
+        if (workStartTime === null) {
+          setWorkStartTime(now); // 출근 시간 업데이트
+        }
+    };
+
+    // reset 타이머 (퇴근)
+    const resetTimer = (): void => {
+      const now = new Date();
+      const hours = now.getHours();
+      const currentTime = `${hours < 10 ? '0' : ''}${hours}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
+      
+      const confirmation = window.confirm(`현재 시각은 ${currentTime}입니다. 퇴근하시겠습니까? \n근무 시간: ${formatTimeFromSeconds(seconds)}`);
+      if (confirmation) {
+        setIsTimerRunning(false);
+        if (timer != null) {
+          clearInterval(timer);
+          setTimer(null);
+          setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
+
+          // 로컬 스토리지에서 seconds를 초기화
+          localStorage.setItem('seconds', JSON.stringify(0));
+
+          localStorage.setItem('isTimerRunning', JSON.stringify(false));
+        }
+        localStorage.setItem('isCommuteButtonClicked', JSON.stringify(false));
+        setIsCommuteButtonClicked(false); // seconds가 0일 때 버튼 클릭 상태를 false로 업데이트
+
+        // 모달 상태를 초기화하여 모달이 닫히도록 설정
+          setModalTitle(`김사원님 오늘도 수고하셨습니다. 👏`);
           
-          const confirmation = window.confirm(`현재 시각은 ${currentTime}입니다. 퇴근하시겠습니까? \n근무 시간: ${formatTimeFromSeconds(seconds)}`);
-          if (confirmation) {
-            setIsTimerRunning(false);
-            if (timer != null) {
-              clearInterval(timer);
-              setTimer(null);
-              setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
-            }
+        }
+    };
 
-            // 모달 상태를 초기화하여 모달이 닫히도록 설정
-              setIsCommuteButtonClicked(false);
-              setModalTitle(`김사원님, 오늘도 수고하셨습니다. 👏`);         
-            }
-        };
-
+    // 오늘 날짜, 현재 시간 표시
     useEffect(() => {
         const today = new Date();
         const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
@@ -188,6 +236,62 @@ function CommuteModal() : JSX.Element {
             clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 클리어
         };
       }, []);
+
+    // 페이지 로드 시 로컬 스토리지에서 상태 복원
+    useEffect(() => {
+      const isModalOpenString = localStorage.getItem('isModalOpen');
+      if (isModalOpenString !== null) {
+        const isModalOpenFromStorage = JSON.parse(isModalOpenString);
+        setIsModalOpen(isModalOpenFromStorage);
+      }
+
+      const isCommuteButtonClickedString = localStorage.getItem('isCommuteButtonClicked');
+      if (isCommuteButtonClickedString !== null) {
+        const isCommuteButtonClickedFromStorage = JSON.parse(isCommuteButtonClickedString);
+        setIsCommuteButtonClicked(isCommuteButtonClickedFromStorage);
+      }
+
+      const secondsInLocalStorage = localStorage.getItem('seconds');
+      if (secondsInLocalStorage !== null) {
+        const secondsAsNumber = JSON.parse(secondsInLocalStorage);
+        setSeconds(secondsAsNumber);
+      }
+
+      // const isTimerRunningString = localStorage.getItem('isTimerRunning');
+      // if (isTimerRunningString !== null) {
+      //   const isTimerRunningFromStorage = JSON.parse(isTimerRunningString);
+      //   setIsTimerRunning(isTimerRunningFromStorage);
+      // }
+    
+      const workStartTimeString = localStorage.getItem('workStartTime');
+      if (workStartTimeString !== null) {
+        const workStartTimeFromStorage = new Date(JSON.parse(workStartTimeString));
+        setWorkStartTime(workStartTimeFromStorage);
+      }
+      // const TimerStateString = localStorage.getItem('TimerState'); // 변수 이름을 TimerStateString으로 변경
+      // if (TimerStateString != null) {
+      //   const timerState = JSON.parse(TimerStateString); // timerState로 변수 이름 변경
+      //   setIsTimerRunning(timerState.IsTimerRunning);
+      //   setSeconds(timerState.seconds);
+      //   setWorkStartTime(timerState.workStartTime); // workStartTime 값을 복원
+      // }
+  }, []);
+
+
+    // 타이머 상태가 변경될 때 로컬 스토리지에 저장
+    // useEffect(() => {
+    //   const timerState = {
+    //     isTimerRunning,
+    //     seconds,
+    //     workStartTime // nullish coalescing 연산자 사용
+    //   };
+
+    //   localStorage.setItem('isTimerRunning', JSON.stringify(timerState.isTimerRunning));
+    //   localStorage.setItem('seconds', JSON.stringify(timerState.seconds));
+    //   localStorage.setItem('workStartTime', JSON.stringify(timerState.workStartTime));
+
+    // }, [isTimerRunning, seconds, workStartTime]); // 의존성 배열, 하나라도 변경될 때마다 저장됨
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -216,7 +320,7 @@ function CommuteModal() : JSX.Element {
                     <TimeText>현재 시간 {currentTime}</TimeText>
                     <TimerTextContainer>
                       <TimerTextTitle>근무 시간</TimerTextTitle>
-                      <TimerText isTimerRunning={isTimerRunning}>
+                      <TimerText $isTimerRunning={isTimerRunning}>
                         {formatTimeFromSeconds(seconds)}
                       </TimerText>
                     </TimerTextContainer>

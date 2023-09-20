@@ -1,17 +1,18 @@
+// styles/CommuteModal/commuteModalStyles.ts
 import styled from "styled-components";
 
 export const HeaderButton = styled.button`
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
-  font-weight: 700;
+  font-weight: 600;
   
   border-radius: 12px;
 
-  width: 127px;
+  width: 100px;
   height: 39px;
-  margin : 7px 166px 7px 7px;
+  margin : 7px 16px 7px 7px;
 
-  background-color: ${props => props.theme.gray200};
-  color: black;
+  background-color: ${props => props.theme.blue200};
+  color:  ${props => props.theme.gray700};
 
   line-height: 160%;
   text-align: center; /* 텍스트를 가운데 정렬 */
@@ -31,7 +32,6 @@ export const AppWrapper = styled.div`
 `;
 
 export const ModalWrapper = styled.div`
-    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 50px;
     right: 0;
@@ -90,7 +90,7 @@ export const ModalContent = styled.div`
 
   margin: 30px 151px 30px 30px;
 
-  box-shadow: ${({ theme }) => theme.shadows.shadow3.shadow};
+  box-shadow: ${({ theme }) => theme.shadows.shadow2.shadow};
   .triangle {
     width: 27px;
     background-color: ${({ theme }) => theme.gray100};;
@@ -104,13 +104,17 @@ export const ModalContent = styled.div`
 }
 `;
 
-export const TimeText = styled.p`
+export const TimeText = styled.span`
   margin-bottom: 8px;
 
   font-weight: 500;
   font-size: ${({ theme }) => theme.textStyles.body1.fontSize};
   color: ${({ theme }) => theme.gray600};
 `;
+
+TimeText.shouldForwardProp = (prop) => prop !== "isTimerRunning"; // isTimerRunning 프롭 필터링
+
+
 
 export const TimerTextContainer = styled.div`
   display: flex;
@@ -130,14 +134,14 @@ export const TimerTextTitle = styled.span`
 `;
 
 interface TimerTextProps {
-  isTimerRunning: boolean;
+  $isTimerRunning: boolean;
 }
 
 export const TimerText = styled.span<TimerTextProps>`
   font-size: 64px; /* 큰 폰트 크기로 설정 */
   align-self: center; /* 가운데 정렬 */
   
-  color: ${props => props.isTimerRunning ? ({ theme }) => theme.error : 'black'};
+  color: ${(props) => props.$isTimerRunning ? props.theme.error : 'black'};
   font-family: 'Pretendard', sans-serif;
   font-weight: 700;
   padding: 30px 0 50px 0;
