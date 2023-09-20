@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const FlexBox = styled.div`
   display: flex;
+  margin-top: 56px;
 `;
 
 export default function Gallery(): JSX.Element {
