@@ -3,9 +3,9 @@ import { AuthContextProvider } from './contexts/AuthContext';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Home/Header';
 import { Home } from './pages/Home/Home';
-import Login from './pages/Auth/LoginPage';
-import Register from './pages/Auth/RegisterPage';
-import FindPwPage from './pages/Auth/FindPwPage';
+import Login from './pages/Authentication/LoginPage';
+import Register from './pages/Authentication/RegisterPage';
+import FindPwPage from './pages/Authentication/FindPwPage';
 import Gallery from './pages/Gallery/Gallery';
 
 export default function App(): JSX.Element {

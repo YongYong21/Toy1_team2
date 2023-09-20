@@ -14,7 +14,7 @@ import {
   NextPage,
   ClearIcon,
   InputContainer,
-} from '../../styles/Auth/LoginRegisterSC';
+} from '../../styles/Authentication/LoginRegisterSC';
 
 const FindPwForm: React.FC = () => {
   /* ------------------ Toast 메세지 ------------------ */
