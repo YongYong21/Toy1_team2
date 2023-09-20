@@ -1,9 +1,11 @@
 import React from 'react';
 import Sidebar from '../components/Aside/Sidebar';
 import Content from '../components/Contents';
+
 import styled from 'styled-components';
 
 const FlexBox = styled.div`
+  margin-top: 56px;
   display: flex;
 `;
 export default function Wiki(): JSX.Element {
@@ -11,7 +13,6 @@ export default function Wiki(): JSX.Element {
   const collectionName = 'sidebarMenu';
   return (
     <>
-      {/* <Sidebar></Sidebar> */}
       <FlexBox>
         <Sidebar url={url} collectionName={collectionName}></Sidebar>
         <Content></Content>

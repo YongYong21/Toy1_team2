@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import { firestore } from '../api/firebase';
 import { useParams, Link } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
+import { theme } from '../styles/Theme';
 
 const ContentsContainer = styled.div`
+  min-width: 1080px;
   width: 1280px;
   padding: 20px 30px 0px;
   margin-left: 256px;
 `;
 const TitleDiv = styled.div`
-  width: 1000px;
   height: 52px;
   font-size: 36px;
   padding: 8px;
@@ -19,16 +20,31 @@ const TitleDiv = styled.div`
 const TimeStampWrap = styled.div`
   display: flex;
   margin-bottom: 16px;
+  justify-content: space-between;
+  align-items: center;
 `;
 const TimeStampDiv = styled.div`
-  width: 800px;
+  width: 80%;
   height: 30px;
   font-size: 16px;
   padding: 8px;
 `;
-const EditBtn = styled.button``;
+const EditBtn = styled.button`
+  color: white;
+  min-width: 92px;
+  height: 48px;
+  font-size: ${theme.textStyles.button.fontSize};
+  line-height: ${theme.textStyles.button.lineHeight};
+  background-color: ${theme.blue700};
+  border-radius: 12px;
+  padding: 12px 32px;
+  transition: all 0.3s;
+  &:hover {
+    background-color: ${theme.blue800};
+    color: #fefefe;
+  }
+`;
 const ContentsDiv = styled.div`
-  height: 2000px;
   padding: 8px;
   ul {
     list-style-type: disc;
