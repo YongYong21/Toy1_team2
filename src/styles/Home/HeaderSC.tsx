@@ -142,3 +142,13 @@ export const BtnSm = styled.button`
     background-color: ${theme.blue800};
   }
 `;
+
+export const LogoutDiv = styled.div`
+  width: 100px;
+  height: 24px;
+  background-color: white;
+  position: absolute;
+  top: 60px;
+  right: 28px;
+  z-index: 100;
+`;

@@ -13,6 +13,7 @@ import {
   BtnSm,
   SelectedLink,
   UnselectedLink,
+  // LogoutDiv,
 } from '../../styles/Home/HeaderSC';
 
 export function Header(): JSX.Element {
@@ -21,6 +22,8 @@ export function Header(): JSX.Element {
   const [uid, setUid] = useState<string | null>(null); // 유저ID
   const [username, setUsername] = useState<string>('사용자'); // 유저 이름
   const [photoURL, setPhotoURL] = useState<string>(''); // 유저 프사
+  // const [prfSelected, selPrfSelected] = useState<boolean>(true);
+
   const [paths] = useState<string[][]>([
     ['Home', '/'],
     ['Wiki', '/wiki/rules'],
@@ -117,6 +120,7 @@ function LoginContainer({
     >
       <ProfileName>{username}</ProfileName>
       <ProfileImage photoURL={photoURL}></ProfileImage>
+      {/* {prfSelected === true && <LogoutDiv>Log Out</LogoutDiv>} */}
     </HeaderRight>
   ) : (
     // 로그인이 안 됐다면 로그인 버튼 표출

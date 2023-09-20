@@ -4,6 +4,7 @@ import { DailyBrief } from '../../components/Home/DailyBrief';
 import { Shortcut } from '../../components/Home/Shortcut';
 import { TodoList } from '../../components/Home/TodoList';
 import { HomeContainer } from '../../styles/Home/HomeSC';
+import { Footer } from '../../components/Footer/Footer';
 
 export function Home(): JSX.Element {
   const [todo, setTodo] = useState<Array<[string, number, string]>>([]); //  할 일 목록
@@ -21,7 +22,7 @@ export function Home(): JSX.Element {
           justifyContent: 'center',
           gap: '24px',
           marginTop: '24px',
-          height: '440px',
+          height: '520px',
         }}
       >
         <Shortcut //
@@ -41,6 +42,7 @@ export function Home(): JSX.Element {
           setTglEditTodo={setTglEditTodo}
         ></TodoList>
       </div>
+      <Footer />
     </HomeContainer>
   );
 }
