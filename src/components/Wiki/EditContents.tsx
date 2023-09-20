@@ -4,6 +4,7 @@ import { firestore } from '../../api/firebase';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { theme } from '../../styles/Theme';
+import { useAuthState } from '../../contexts/AuthContext';
 
 const FlexDiv = styled.div`
   width: 100%;
@@ -103,35 +104,48 @@ function EditContent(): JSX.Element {
   const [idx, setIdx] = useState(0);
   const [docName, setDocName] = useState('');
   const [markdownText, setMarkdownText] = useState<string>('');
+
+  // authState
+  const authState = useAuthState();
   const currentURL = window.location.href;
+
+  // URL
   const newURL = currentURL
     .replace(/\/edit$/, '')
     .replace('http://localhost:3000', '');
   const navigate = useNavigate();
+
   useEffect(() => {
-    firestore
-      .collection('sidebarMenu')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const items = doc.data().items;
+    // 로그인 여부 확인
+    if (authState.state === 'loaded' && authState.isAuthentication) {
+      firestore
+        .collection('sidebarMenu')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const items = doc.data().items;
 
-          for (const [index, item] of items.entries()) {
-            if (item.url === id) {
-              setDocName(doc.id);
-              setIdx(index);
-              setData(item);
-              setMarkdownText(item.content);
-              return;
+            for (const [index, item] of items.entries()) {
+              if (item.url === id) {
+                setDocName(doc.id);
+                setIdx(index);
+                setData(item);
+                setMarkdownText(item.content);
+                return;
+              }
             }
-          }
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching menu data:', error);
         });
-      })
-      .catch((error) => {
-        console.error('Error fetching menu data:', error);
-      });
-  }, [id]);
+    } else if (authState.state === 'loaded' && !authState.isAuthentication) {
+      alert('글수정 기능은 로그인을 해야합니다.');
+      navigate(newURL);
+    }
+  }, [authState, id]);
 
+  // 마크다운 프리뷰
   const MarkdownViewer = ({
     markdownText,
   }: {
