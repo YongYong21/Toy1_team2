@@ -53,7 +53,7 @@ export function ShortcutGallery(): JSX.Element {
   }, []);
 
   const onNaviagate = (): void => {
-    navigate('/gallery');
+    navigate('/gallery/facility');
     // 추후 /gallery/partner로 바꿀 예정
   };
 
