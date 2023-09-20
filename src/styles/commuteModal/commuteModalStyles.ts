@@ -76,7 +76,7 @@ export const ModalTitleText = styled.p`
 export const CloseButton = styled.button`
   position: absolute; /* 절대 위치로 설정하여 ModalContent에 대해 위치를 조정합니다. */
   top: 45px; /* DateText의 가로선과 일치하도록 조절합니다. */
-  right: 28px;
+  right: 150px;
 
   margin-left: 230px;
   font-size: 40px;
@@ -91,7 +91,7 @@ export const ModalContent = styled.div`
   line-height: 150%;
   width: 490px;
 
-  margin: 30px 5px 30px 30px;
+  margin: 30px 120px 30px 30px;
 
   box-shadow: ${({ theme }) => theme.shadows.shadow2.shadow};
   .triangle {
@@ -116,8 +116,6 @@ export const TimeText = styled.span`
 `;
 
 TimeText.shouldForwardProp = (prop) => prop !== "isTimerRunning"; // isTimerRunning 프롭 필터링
-
-
 
 export const TimerTextContainer = styled.div`
   display: flex;
