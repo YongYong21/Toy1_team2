@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const Item = styled.div`
-  margin: 10px;
+  margin: 8px;
 
   .item-wrap {
     width: 360px;
     height: 360px;
-
-    position: relative;
 
     margin: 10px;
     padding: 1rem;
@@ -21,7 +19,7 @@ export const Item = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    gap: 10%;
+    gap: 5%;
   }
 
   .item-wrap:hover {

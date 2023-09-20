@@ -8,7 +8,8 @@ export const FlexBox = styled.div`
   margin-left: 300px;
 
   width: 80%;
-  max-width: 80%;
+
+  padding: 2%;
 `;
 
 export const TitleWrap = styled.div`
@@ -21,8 +22,6 @@ export const TitleWrap = styled.div`
 `;
 
 export const Title = styled.h1`
-  margin: auto 0;
-
   font-size: ${(props) => props.theme.textStyles.subtitle1.fontSize};
 `;
 
@@ -32,11 +31,13 @@ export const spin = keyframes`
 `;
 
 export const LoadingSpinner = styled.div`
-  border: 4px solid rgba(0, 0, 0, 0.3);
-  border-top: 4px solid #007bff;
+  border: 6px solid rgba(0, 0, 0, 0.3);
+  border-top: 6px solid ${(props) => props.theme.blue700};
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+
+  width: 50px;
+  height: 50px;
+
   animation: ${spin} 1s linear infinite;
 `;
 
