@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { type ImageData } from '../../pages/Gallery/Gallery';
+import { type ImageData } from './GalleryContent';
 import { Item } from '../../styles/Gallery/GalleryItem';
 import { MdClear } from 'react-icons/md';
-import { DeleteButton } from '../../styles/Gallery/Gallery';
+import { DeleteButton } from '../../styles/Gallery/GalleryContent';
+import { useAuthState } from '../../contexts/AuthContext';
 
 interface GalleryItemProps {
   image: ImageData;
@@ -14,6 +15,7 @@ export default function GalleryItem({
   deleteData,
 }: GalleryItemProps): JSX.Element {
   const [hovered, setHovered] = useState(false);
+  const authState = useAuthState();
 
   const handleMouseEnter = (): void => {
     setHovered(true);
@@ -31,16 +33,18 @@ export default function GalleryItem({
             <img className="image" src={image.imageUrl} alt={image.name} />
           </div>
           <p className="image-name">{image.name}</p>
-          {hovered && (
-            <DeleteButton
-              className="delete-btn"
-              onClick={() => {
-                deleteData(image);
-              }}
-            >
-              <MdClear />
-            </DeleteButton>
-          )}
+          {hovered &&
+            authState.state === 'loaded' &&
+            authState.isAuthentication && (
+              <DeleteButton
+                className="delete-btn"
+                onClick={() => {
+                  deleteData(image);
+                }}
+              >
+                <MdClear />
+              </DeleteButton>
+            )}
         </div>
       </Item>
     </>
