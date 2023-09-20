@@ -2,17 +2,18 @@
 import styled from "styled-components";
 
 export const HeaderButton = styled.button`
+  font-family: 'Pretendard', sans-serif;
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
-  font-weight: 600;
+  font-weight: 500;
   
   border-radius: 50px;
 
   width: 120px;
   height: 39px;
-  margin : 9px 16px 4px 7px;
+  margin : 9px 36px 4px 7px;
   padding: 4px 8px;
 
-  background-color: ${props => props.theme.blue700};
+  background-color: #415575;
   color:  ${props => props.theme.white};
 
   line-height: 160%;
@@ -21,7 +22,7 @@ export const HeaderButton = styled.button`
   float: right;
 
   &:hover {
-      background-color: ${props => props.theme.blue600};
+      background-color: #325183;
     }
 `;
 
@@ -63,7 +64,6 @@ export const DateText = styled.p`
 `;
 
 export const ModalTitleText = styled.p`
-
     font-family: 'Pretendard', sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -75,8 +75,8 @@ export const ModalTitleText = styled.p`
 
 export const CloseButton = styled.button`
   position: absolute; /* 절대 위치로 설정하여 ModalContent에 대해 위치를 조정합니다. */
-  top: 48px; /* DateText의 가로선과 일치하도록 조절합니다. */
-  right: 180px;
+  top: 45px; /* DateText의 가로선과 일치하도록 조절합니다. */
+  right: 28px;
 
   margin-left: 230px;
   font-size: 40px;
@@ -91,7 +91,7 @@ export const ModalContent = styled.div`
   line-height: 150%;
   width: 490px;
 
-  margin: 30px 151px 30px 30px;
+  margin: 30px 5px 30px 30px;
 
   box-shadow: ${({ theme }) => theme.shadows.shadow2.shadow};
   .triangle {
@@ -101,7 +101,7 @@ export const ModalContent = styled.div`
     border-radius: 3px;
 
     transform: rotate(135deg);
-    right: 180px;
+    right: 210px;
     top: 18px;
     position: absolute;
 }
