@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import firebase from '../../api/firebase';
 import CommuteModal from '../CommuteModal/commuteModal';
+import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
 
 import {
   HeaderContainer,
@@ -9,6 +10,7 @@ import {
   HeaderLogo,
   HdUl,
   HeaderRight,
+  HeaderRightProfile,
   ProfileName,
   ProfileImage,
   BtnSm,
@@ -27,6 +29,8 @@ export function Header(): JSX.Element {
     ['Wiki', '/wiki'],
     ['Gallery', '/gallery'],
   ]);
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
+
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -58,14 +62,19 @@ export function Header(): JSX.Element {
         </HeaderLogo>
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
-      {/* 로그인유무에 따른 우측 부분 */}
-      <CommuteModal></CommuteModal>
-      <LoginContainer
-        uid={uid}
-        username={username}
-        setUsername={setUsername}
-        photoURL={photoURL}
-      />
+      <HeaderRight>
+          {/* 로그인유무에 따른 우측 부분 */}
+          {authState.state === 'loaded' && authState.isAuthentication && (
+            <CommuteModalContainer></CommuteModalContainer>
+          )}
+          <LoginContainer
+            uid={uid}
+            username={username}
+            setUsername={setUsername}
+            photoURL={photoURL}
+          />
+      </HeaderRight>
+
     </HeaderContainer>
   );
 }
@@ -101,6 +110,12 @@ function LinkContainer({
   );
 }
 
+function CommuteModalContainer(): JSX.Element {
+  return (
+    <CommuteModal></CommuteModal>
+  );
+}
+
 function LoginContainer({
   username, //
   photoURL,
@@ -112,13 +127,13 @@ function LoginContainer({
   uid: string | null;
 }): JSX.Element {
   const navigate = useNavigate();
-  return uid === null ? ( // 로그인이 됐다면 로그인된 UI 표출
-    <HeaderRight
+  return uid !== null ? ( // 로그인이 됐다면 로그인된 UI 표출
+    <HeaderRightProfile
     // 프로필 선택하면 포커스, 다른데 선택하면 언포커스
     >
       <ProfileName>{username}</ProfileName>
       <ProfileImage photoURL={photoURL}></ProfileImage>
-    </HeaderRight>
+    </HeaderRightProfile>
   ) : (
     // 로그인이 안 됐다면 로그인 버튼 표출
     <BtnSm

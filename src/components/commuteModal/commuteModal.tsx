@@ -2,6 +2,8 @@
 import React, { useState, useEffect  } from "react";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
+import firebase from '../../api/firebase';
+
 
 import GlobalStyles from "../../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
 import {  HeaderButton,
@@ -87,7 +89,9 @@ function CommuteModal() : JSX.Element {
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-    const [modalTitle, setModalTitle] = useState("김사원님 업무 시작 전 입니다. 👀");
+    const [modalTitle, setModalTitle] = useState('');
+
+    const [displayName, setDisplayName] = useState<string>(''); // 사용자 이름 상태 변수 추가
 
 
     // 모달창을 열고 닫는 함수
@@ -128,8 +132,9 @@ function CommuteModal() : JSX.Element {
 
     // 근무 시간 타이머 일시 정지 함수
     const pauseTimer = (): void => {
-      setIsTimerRunning(false);
       localStorage.setItem('isTimerRunning', JSON.stringify(false));
+
+      setIsTimerRunning(false);
 
       if (timer !== null) {
         clearInterval(timer);
@@ -156,7 +161,7 @@ function CommuteModal() : JSX.Element {
             localStorage.setItem('isCommuteButtonClicked', JSON.stringify(true));
             localStorage.setItem('isTimerRunning', JSON.stringify(true));
 
-            setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
+            setModalTitle(`${displayName}님 오늘도 파이팅하세요! 👊`); // 멘트 업데이트
 
         }
       } else {
@@ -171,7 +176,7 @@ function CommuteModal() : JSX.Element {
           setIsCommuteButtonClicked(true);
           localStorage.setItem('isTimerRunning', JSON.stringify(true));
 
-          setModalTitle("김사원님 오늘도 파이팅하세요! 👊"); // 멘트 업데이트
+          setModalTitle(`${displayName}님 오늘도 파이팅하세요! 👊`); // 멘트 업데이트
 
 
         }
@@ -179,6 +184,7 @@ function CommuteModal() : JSX.Element {
         // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
         if (workStartTime === null) {
           setWorkStartTime(now); // 출근 시간 업데이트
+          localStorage.setItem('workStartTime', JSON.stringify(now));
         }
     };
 
@@ -203,9 +209,10 @@ function CommuteModal() : JSX.Element {
         }
         localStorage.setItem('isCommuteButtonClicked', JSON.stringify(false));
         setIsCommuteButtonClicked(false); // seconds가 0일 때 버튼 클릭 상태를 false로 업데이트
+        // localStorage.setItem('workStartTime', JSON.stringify(null));
 
         // 모달 상태를 초기화하여 모달이 닫히도록 설정
-          setModalTitle(`김사원님 오늘도 수고하셨습니다. 👏`);
+          setModalTitle(`${displayName}님 오늘도 수고하셨습니다. 👏`);
           
         }
     };
@@ -291,7 +298,25 @@ function CommuteModal() : JSX.Element {
     //   localStorage.setItem('workStartTime', JSON.stringify(timerState.workStartTime));
 
     // }, [isTimerRunning, seconds, workStartTime]); // 의존성 배열, 하나라도 변경될 때마다 저장됨
-  
+    
+    useEffect(() => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user !== null) {
+          const displayName = user.displayName; // 사용자 이름 가져오기
+          setDisplayName(displayName ?? '사용자'); // 사용자 이름 업데이트
+    
+          // 출근 시간 업데이트
+          const now = new Date();
+          setWorkStartTime(now);
+          localStorage.setItem('workStartTime', JSON.stringify(now));
+    
+          // displayName을 modalTitle에 적용
+          setModalTitle(`${displayName}님 업무 시작 전 입니다. 👀`);
+        } else {
+          console.log('로그아웃됨');
+        }
+      });
+    }, []);
 
   return (
     <ThemeProvider theme={theme}>

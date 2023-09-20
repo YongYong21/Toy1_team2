@@ -5,20 +5,23 @@ export const HeaderButton = styled.button`
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
   font-weight: 600;
   
-  border-radius: 12px;
+  border-radius: 50px;
 
   width: 100px;
   height: 39px;
-  margin : 7px 16px 7px 7px;
+  margin : 9px 16px 4px 7px;
+  padding: 4px 8px;
 
   background-color: ${props => props.theme.blue200};
-  color:  ${props => props.theme.gray700};
+  color:  ${props => props.theme.gray800};
 
   line-height: 160%;
   text-align: center; /* 텍스트를 가운데 정렬 */
 
+  float: right;
+
   &:hover {
-      background-color: ${props => props.theme.gray300};
+      background-color: ${props => props.theme.blue300};
     }
 `;
 
