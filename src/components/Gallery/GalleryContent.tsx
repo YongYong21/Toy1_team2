@@ -11,6 +11,7 @@ import {
 } from '../../styles/Gallery/GalleryContent';
 import GalleryList from './GalleryList';
 import UploadModal from './UploadModal';
+import { useAuthState } from '../../contexts/AuthContext';
 
 export interface ImageData {
   id: string;
@@ -25,6 +26,7 @@ export default function GalleryContent(): JSX.Element {
   const bucket = firestore.collection(id);
   const [title, setTitle] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const authState = useAuthState();
 
   /** 데이터 삭제 */
   const deleteData = async (doc: ImageData): Promise<void> => {
@@ -139,7 +141,17 @@ export default function GalleryContent(): JSX.Element {
     <FlexBox>
       <TitleWrap>
         <Title>{title}</Title>
-        <AddButton onClick={openModal}>추가하기</AddButton>
+        <AddButton
+          onClick={() => {
+            if (authState.state === 'loaded' && authState.isAuthentication) {
+              openModal();
+            } else {
+              alert('먼저 로그인 해주세요!');
+            }
+          }}
+        >
+          추가하기
+        </AddButton>
         <UploadModal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
