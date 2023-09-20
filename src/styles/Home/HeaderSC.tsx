@@ -109,16 +109,11 @@ export const ProfileName = styled.span`
   margin-right: 8px;
 `;
 
-interface myProps {
-  photoURL: string;
-}
-
-export const ProfileImage = styled.div<myProps>`
+export const ProfileImage = styled.div`
   width: 32px;
   height: 32px;
   background-color: #777;
   border-radius: 50%;
-  background-image: url(${(props) => props.photoURL});
   background-size: cover;
 `;
 
@@ -140,5 +135,45 @@ export const BtnSm = styled.button`
   color: ${theme.white};
   &:hover {
     background-color: ${theme.blue800};
+  }
+`;
+
+export const LogoutDiv = styled.div`
+  width: 100px;
+  height: 24px;
+  background-color: white;
+  position: absolute;
+  top: 60px;
+  right: 28px;
+  z-index: 100;
+`;
+
+export const HdMenu = styled.div`
+  position: absolute;
+  bottom: -56px;
+  width: 100%;
+  border: 2px solid ${theme.gray500};
+  border-radius: 8px;
+  background-color: ${theme.white};
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  padding: 4px;
+`;
+
+export const HdMenuUl = styled.ul``;
+export const HdMenuLi = styled.li`
+  border-radius: 8px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: no-wrap;
+  background-color: ${theme.white};
+  color: ${theme.gray700};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${theme.blue100};
+    color: ${theme.gray900};
   }
 `;

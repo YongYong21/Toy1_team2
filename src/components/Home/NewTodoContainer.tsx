@@ -39,7 +39,7 @@ JSX.Element {
         //  엔터를 눌렀으면
         //  심플하게 [내용 ,아이디]로 인자를 구성
         const temp = todo.slice();
-        temp.unshift([newDo, new Date().getTime(), docs[0]]);
+        temp.unshift([newDo, Date.now(), docs[0]]);
         setTodo(temp);
 
         //  stringify해서 localStorage에 다 저장
@@ -65,7 +65,7 @@ JSX.Element {
   const handleBlurSubmitNew = //
     (e: React.FocusEvent<HTMLInputElement>): void => {
       const temp = todo.slice();
-      temp.unshift([newDo, new Date().getTime(), docs[0]]);
+      temp.unshift([newDo, Date.now(), docs[0]]);
       setTodo(temp);
 
       //  stringify해서 localStorage에 다 저장
