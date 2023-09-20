@@ -141,17 +141,18 @@ export default function GalleryContent(): JSX.Element {
     <FlexBox>
       <TitleWrap>
         <Title>{title}</Title>
-        <AddButton
-          onClick={() => {
-            if (authState.state === 'loaded' && authState.isAuthentication) {
+        {authState.state === 'loaded' && authState.isAuthentication ? (
+          <AddButton
+            onClick={() => {
               openModal();
-            } else {
-              alert('먼저 로그인 해주세요!');
-            }
-          }}
-        >
-          추가하기
-        </AddButton>
+            }}
+          >
+            추가하기
+          </AddButton>
+        ) : (
+          ''
+        )}
+
         <UploadModal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
