@@ -43,8 +43,8 @@ export const LoadingSpinner = styled.div`
 
 export const AddButton = styled.button`
   width: 7.8rem;
+  height: 3rem;
 
-  margin: 2px 0;
   padding: 12px 32px;
 
   border-radius: 8px;
