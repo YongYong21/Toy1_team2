@@ -16,7 +16,7 @@ export const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin: 5rem auto 0;
+  margin: 1rem auto 0;
 
   width: 90%;
 `;
