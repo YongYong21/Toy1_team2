@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from '../components/Aside/Sidebar';
-import Content from '../components/Contents';
+import Sidebar from '../../components/Aside/Sidebar';
+import Content from '../../components/Wiki/Contents';
 
 import styled from 'styled-components';
 

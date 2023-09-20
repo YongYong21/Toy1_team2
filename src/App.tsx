@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import Wiki from './pages/Wiki';
-import WikiEdit from './pages/WikiEdit';
+import Wiki from './pages/Wiki/Wiki';
+import WikiEdit from './pages/Wiki/WikiEdit';
 import { Header } from './components/Home/Header';
 
 export default function App(): JSX.Element {

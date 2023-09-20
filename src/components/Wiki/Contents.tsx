@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { firestore } from '../api/firebase';
+import { firestore } from '../../api/firebase';
 import { useParams, Link } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { theme } from '../styles/Theme';
+import { theme } from '../../styles/Theme';
 
 const ContentsContainer = styled.div`
   min-width: 1080px;

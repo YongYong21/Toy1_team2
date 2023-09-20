@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from '../components/Aside/Sidebar';
-import EditContent from '../components/EditContents';
+import Sidebar from '../../components/Aside/Sidebar';
+import EditContent from '../../components/Wiki/EditContents';
 import styled from 'styled-components';
 
 const FlexBox = styled.div`
