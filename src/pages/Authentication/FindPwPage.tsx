@@ -1,5 +1,5 @@
 import React from 'react';
-import FindPwForm from '../../components/Auth/FindPw';
+import FindPwForm from '../../components/Authentication/FindPw';
 
 const FindPwPage: React.FC = () => {
   return (
