@@ -178,7 +178,6 @@ function CommuteModal() : JSX.Element {
 
           setModalTitle(`${displayName}님 오늘도 파이팅하세요! 👊`); // 멘트 업데이트
 
-
         }
       }
         // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
@@ -263,41 +262,13 @@ function CommuteModal() : JSX.Element {
         const secondsAsNumber = JSON.parse(secondsInLocalStorage);
         setSeconds(secondsAsNumber);
       }
-
-      // const isTimerRunningString = localStorage.getItem('isTimerRunning');
-      // if (isTimerRunningString !== null) {
-      //   const isTimerRunningFromStorage = JSON.parse(isTimerRunningString);
-      //   setIsTimerRunning(isTimerRunningFromStorage);
-      // }
     
       const workStartTimeString = localStorage.getItem('workStartTime');
       if (workStartTimeString !== null) {
         const workStartTimeFromStorage = new Date(JSON.parse(workStartTimeString));
         setWorkStartTime(workStartTimeFromStorage);
       }
-      // const TimerStateString = localStorage.getItem('TimerState'); // 변수 이름을 TimerStateString으로 변경
-      // if (TimerStateString != null) {
-      //   const timerState = JSON.parse(TimerStateString); // timerState로 변수 이름 변경
-      //   setIsTimerRunning(timerState.IsTimerRunning);
-      //   setSeconds(timerState.seconds);
-      //   setWorkStartTime(timerState.workStartTime); // workStartTime 값을 복원
-      // }
   }, []);
-
-
-    // 타이머 상태가 변경될 때 로컬 스토리지에 저장
-    // useEffect(() => {
-    //   const timerState = {
-    //     isTimerRunning,
-    //     seconds,
-    //     workStartTime // nullish coalescing 연산자 사용
-    //   };
-
-    //   localStorage.setItem('isTimerRunning', JSON.stringify(timerState.isTimerRunning));
-    //   localStorage.setItem('seconds', JSON.stringify(timerState.seconds));
-    //   localStorage.setItem('workStartTime', JSON.stringify(timerState.workStartTime));
-
-    // }, [isTimerRunning, seconds, workStartTime]); // 의존성 배열, 하나라도 변경될 때마다 저장됨
     
     useEffect(() => {
       firebase.auth().onAuthStateChanged((user) => {
