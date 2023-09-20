@@ -50,7 +50,7 @@ export const CompanyContent = styled.div`
   }
 `;
 
-export const Logos = styled.div`
+export const Logos = styled.a`
   margin-top: 24px;
 `;
 
