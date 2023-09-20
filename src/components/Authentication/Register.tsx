@@ -185,7 +185,7 @@ const RegisterForm: React.FC = () => {
               setToastMessage('이미 가입되어 있는 계정입니다.');
               break;
             default:
-              setToastMessage('Firebase에서 알 수 없는 오류가 발생했습니다.');
+              setToastMessage('알 수 없는 오류가 발생했습니다.');
           }
         }
       }
