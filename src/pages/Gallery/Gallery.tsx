@@ -10,7 +10,7 @@ const FlexBox = styled.div`
 export default function Gallery(): JSX.Element {
   return (
     <FlexBox>
-      <Sidebar url="gallery" collectionName="wiki-gallery-test"></Sidebar>
+      <Sidebar url="gallery" collectionName="gallery"></Sidebar>
       <GalleryContent></GalleryContent>
     </FlexBox>
   );
