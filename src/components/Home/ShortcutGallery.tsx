@@ -21,7 +21,7 @@ export interface ImageData {
 export function ShortcutGallery(): JSX.Element {
   const navigate = useNavigate();
   const [images, setImages] = useState<ImageData[]>([]);
-  const bucket = firestore.collection('wiki-test');
+  const bucket = firestore.collection('facility');
 
   /** 데이터 가져오기 */
   useEffect((): void => {
@@ -32,12 +32,14 @@ export function ShortcutGallery(): JSX.Element {
 
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
-            const data = doc.data();
-            imageList.push({
-              id: doc.id,
-              imageUrl: data.imageUrl,
-              name: data.name,
-            });
+            if (doc.id !== 'title') {
+              const data = doc.data();
+              imageList.push({
+                id: doc.id,
+                imageUrl: data.imageUrl,
+                name: data.name,
+              });
+            }
           }
         });
         setImages(imageList);

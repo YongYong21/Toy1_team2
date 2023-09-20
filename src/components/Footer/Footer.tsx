@@ -74,7 +74,7 @@ export function Footer(): JSX.Element {
       blog: 'https://bumang.tistory.com/',
       gitRepo: 'https://github.com/Bumang-Cyber?tab=repositories',
       etc: {
-        etcName: 'UX Portfolio',
+        etcName: 'Behance',
         etcLink: 'https://www.behance.net/calmness078ad4',
       },
     },
@@ -114,14 +114,6 @@ export function Footer(): JSX.Element {
               return (
                 <CbtorDiv key={i}>
                   <CbtorsHeader>{cbtor.name}</CbtorsHeader>
-                  {cbtor.eMail !== '' && (
-                    <CbtorsContents //
-                      href={cbtor.eMail}
-                      target="_blank"
-                    >
-                      E-Mail
-                    </CbtorsContents>
-                  )}
                   {cbtor.blog !== '' && (
                     <CbtorsContents //
                       href={cbtor.blog}
@@ -130,12 +122,20 @@ export function Footer(): JSX.Element {
                       Blog
                     </CbtorsContents>
                   )}
+                  {cbtor.eMail !== '' && (
+                    <CbtorsContents //
+                      href={cbtor.eMail}
+                      target="_blank"
+                    >
+                      E-Mail
+                    </CbtorsContents>
+                  )}
                   {cbtor.gitRepo !== '' && (
                     <CbtorsContents //
                       href={cbtor.gitRepo}
                       target="_blank"
                     >
-                      GitRepository
+                      GitRepo
                     </CbtorsContents>
                   )}
                   {cbtor.etc.etcName !== '' && (
