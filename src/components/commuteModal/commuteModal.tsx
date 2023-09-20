@@ -302,8 +302,7 @@ function CommuteModal() : JSX.Element {
 
           {isModalOpen && (
             <ModalWrapper onClick={toggleModal}>
-              {/* <ModalContent onClick={(e) => { e.stopPropagation(); }}> */}
-              <ModalContent>
+              <ModalContent onClick={(e) => { e.stopPropagation(); }}>
                 <div className='triangle'></div>
 
                 <ModalHeaderContainer>
