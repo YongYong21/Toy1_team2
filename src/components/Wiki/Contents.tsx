@@ -1,179 +1,29 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
+
 import firebase, { firestore } from '../../api/firebase';
 import { useParams, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { theme } from '../../styles/Theme';
+import {
+  ContentsContainer,
+  TitleDiv,
+  TimeStampWrap,
+  TimeStampDiv,
+  EditBtn,
+  CancelBtn,
+  AddBtn,
+  ContentsDiv,
+  PostDiv,
+  PostTitleDiv,
+  DimDiv,
+  PostModal,
+  PostTitleContainer,
+  LabelDiv,
+  Label,
+  ButtonContainer,
+} from '../../styles/Wiki/ContentsSC';
 import { useAuthState } from '../../contexts/AuthContext';
 import { AiOutlineClose } from 'react-icons/ai';
 
-const ContentsContainer = styled.div`
-  min-width: 1080px;
-  width: 1280px;
-  padding: 20px 30px 0px;
-  margin-left: 256px;
-`;
-const TitleDiv = styled.div`
-  font-size: ${theme.textStyles.subtitle1.fontSize};
-  line-height: ${theme.textStyles.subtitle1.lineHeight};
-  padding: 8px;
-  margin-bottom: 16px;
-`;
-const TimeStampWrap = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-  justify-content: space-between;
-  align-items: center;
-`;
-const TimeStampDiv = styled.div`
-  width: 80%;
-  height: 30px;
-  font-size: 16px;
-  padding: 8px;
-`;
-const EditBtn = styled.button`
-  color: white;
-  min-width: 92px;
-  height: 48px;
-  font-size: ${theme.textStyles.button.fontSize};
-  line-height: ${theme.textStyles.button.lineHeight};
-  background-color: ${theme.blue700};
-  border-radius: 12px;
-  padding: 12px 32px;
-  transition: all 0.3s;
-  &:hover {
-    background-color: ${theme.blue800};
-    color: #fefefe;
-  }
-`;
-const CancelBtn = styled.button`
-  color: ${theme.gray700};
-  min-width: 92px;
-  height: 48px;
-  font-size: ${theme.textStyles.button.fontSize};
-  line-height: ${theme.textStyles.button.lineHeight};
-  background-color: ${theme.gray200};
-  border-radius: 12px;
-  padding: 12px 32px;
-  transition: all 0.3s;
-  &:hover {
-    background-color: ${theme.gray400};
-  }
-`;
-const AddBtn = styled.button`
-  color: white;
-  min-width: 92px;
-  height: 48px;
-  margin-right: auto;
-  font-size: ${theme.textStyles.button.fontSize};
-  line-height: ${theme.textStyles.button.lineHeight};
-  background-color: ${theme.blue700};
-  border-radius: 12px;
-  padding: 12px 32px;
-  transition: all 0.3s;
-  &:hover {
-    background-color: ${theme.blue800};
-    color: #fefefe;
-  }
-  float: right;
-`;
-const ContentsDiv = styled.div`
-  padding: 8px;
-  ul {
-    list-style-type: disc;
-  }
-  ol {
-    list-style-type: decimal;
-  }
-  &:hover {
-  }
-`;
-const PostDiv = styled.div`
-  width: 70%;
-  margin: 0px 16px 16px;
-  padding: 16px;
-  border: 1px solid black;
-  border-radius: 8px;
-  & > div {
-    margin-bottom: 16px;
-  }
-  & > div:first-child {
-    font-size: ${theme.textStyles.subtitle3.fontSize};
-    line-height: ${theme.textStyles.subtitle3.lineHeight};
-  }
-`;
-const PostTitleDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${theme.textStyles.subtitle1.fontSize};
-  line-height: ${theme.textStyles.subtitle1.lineHeight};
-  svg {
-    cursor: pointer;
-  }
-`;
-const DimDiv = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-`;
-const PostModal = styled.div`
-  width: 800px;
-  background-color: white;
-  position: fixed;
-  margin: 32px auto;
-  textarea {
-    resize: none;
-  }
-`;
-const PostTitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${theme.textStyles.subtitle2.fontSize};
-  line-height: ${theme.textStyles.subtitle2.lineHeight};
-  padding: 16px;
-  border: 1px solid ${theme.gray300};
-  svg {
-    cursor: pointer;
-  }
-`;
-const LabelDiv = styled.div`
-  padding: 16px;
-  div {
-    margin-bottom: 8px;
-    font-size: ${theme.textStyles.body1.fontSize};
-    line-height: ${theme.textStyles.body1.lineHeight};
-  }
-`;
-const Label = styled.label`
-  input {
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    padding: 8px;
-    outline-color: ${theme.blue600};
-  }
-
-  textarea {
-    border: 1px solid #ccc;
-    padding: 8px;
-    width: 100%;
-    height: 150px;
-    outline-color: ${theme.blue600};
-  }
-`;
-const ButtonContainer = styled.div`
-  margin: 32px 0;
-
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-`;
 interface ItemType {
   text: string;
   content: string;
