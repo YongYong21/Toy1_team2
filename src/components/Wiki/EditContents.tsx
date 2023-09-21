@@ -1,97 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { firestore } from '../../api/firebase';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { theme } from '../../styles/Theme';
 import { useAuthState } from '../../contexts/AuthContext';
 
-const FlexDiv = styled.div`
-  width: 100%;
-  display: flex;
-  margin-left: 256px;
-  ul {
-    list-style-type: disc;
-  }
-  ol {
-    list-style-type: decimal;
-  }
-  textarea {
-    resize: none;
-  }
-`;
-const ContentsContainer = styled.div`
-  width: 85vh;
-  position: relative;
-  padding: 20px 30px 0px;
-`;
-const CenterBorder = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 2px;
-  background-color: ${theme.gray500};
-`;
-const TitleDiv = styled.div`
-  height: 52px;
-  font-size: 36px;
-  padding: 8px;
-  margin-bottom: 16px;
-`;
-const TimeStampWrap = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-`;
-const TimeStampDiv = styled.div`
-  height: 30px;
-  font-size: 16px;
-  padding: 8px;
-`;
+import {
+  FlexDiv,
+  ContentsContainer,
+  CenterBorder,
+  TitleDiv,
+  TimeStampWrap,
+  TimeStampDiv,
+  ContentsDiv,
+  StyledTextarea,
+  ButtonDiv,
+  EditBtn,
+} from '../../styles/Wiki/EditContentsSC';
 
-const ContentsDiv = styled.div`
-  height: 75vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 8px;
-`;
-const StyledTextarea = styled.textarea`
-  min-width: 100%;
-  height: 70vh;
-  padding: 10px;
-  font-size: 16px;
-`;
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
-`;
-const EditBtn = styled.button`
-  min-width: 92px;
-  height: 48px;
-  font-size: ${theme.textStyles.button.fontSize};
-  line-height: ${theme.textStyles.button.lineHeight};
-  border-radius: 12px;
-  padding: 12px 32px;
-  transition: all 0.3s;
-  /* 첫 번째 버튼 스타일 */
-  &.btn1 {
-    color: white;
-    background-color: ${theme.blue700};
-    &:hover {
-      background-color: ${theme.blue800};
-    }
-  }
-
-  /* 두 번째 버튼 스타일 */
-  &.btn2 {
-    color: ${theme.gray700};
-    background-color: ${theme.gray200};
-    &:hover {
-      background-color: ${theme.gray400};
-    }
-  }
-`;
 interface ItemType {
   text: string;
   content: string;
@@ -140,12 +65,15 @@ function EditContent(): JSX.Element {
           console.error('Error fetching menu data:', error);
         });
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
-      alert('글수정 기능은 로그인을 해야합니다.');
+      alert('해당 기능은 로그인을 해야합니다.');
       navigate(newURL);
     }
   }, [authState, id]);
 
-  // 마크다운 프리뷰
+  /**
+   * @param {string} markdownText - 마크다운 텍스트
+   * @returns {JSX.Element} - 마크다운 뷰어 컴포넌트
+   */
   const MarkdownViewer = ({
     markdownText,
   }: {
@@ -158,11 +86,12 @@ function EditContent(): JSX.Element {
     );
   };
 
+  /** 글 수정 내용 확인 */
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const newText = e.target.value;
     setMarkdownText(newText);
   };
-
+  /** 글 수정 버튼 클릭 */
   const handleSaveClick = (): void => {
     // 업데이트할 문서의 참조 가져오기
     const docRef = firestore.collection('sidebarMenu').doc(docName);

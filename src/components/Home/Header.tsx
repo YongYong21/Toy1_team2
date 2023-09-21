@@ -20,6 +20,7 @@ import {
   HdMenu,
   HdMenuLi,
   HdMenuUl,
+  HeaderRightLoggedout,
   // LogoutDiv,
 } from '../../styles/Home/HeaderSC';
 
@@ -43,8 +44,6 @@ export function Header(): JSX.Element {
       if (user !== null) {
         const displayName = user.displayName;
         setUsername(displayName ?? '사용자');
-      } else {
-        console.log('Signed Out'); // 로그인 안 됐을 때
       }
     });
   }, []); // 패러미터 []를 사용. 사이트 처음 렌더링 됐을 때 1회만 합니다.
@@ -149,7 +148,6 @@ function LoginContainer({
         .signOut()
         .then(() => {
           // 로그아웃 성공
-          navigate('/login');
           alert('로그아웃되었습니다.');
         })
         .catch((error) => {
@@ -177,7 +175,7 @@ function LoginContainer({
         {prfSelected && (
           <HdMenu>
             <HdMenuUl className="menu-ul">
-              <HdMenuLi onClick={onClickLogoutBtn}>Log Out</HdMenuLi>
+              <HdMenuLi onClick={onClickLogoutBtn}>로그아웃</HdMenuLi>
             </HdMenuUl>
           </HdMenu>
         )}
@@ -187,13 +185,16 @@ function LoginContainer({
   // 로그인이 안 됐다면 로그인 버튼 표출
   else {
     return (
-      <BtnSm
-        onClick={() => {
-          navigate('/login');
-        }}
-      >
-        로그인
-      </BtnSm>
+      <HeaderRightLoggedout>
+        <UnselectedLink to={'/register'}>회원가입</UnselectedLink>
+        <BtnSm
+          onClick={() => {
+            navigate('/login');
+          }}
+        >
+          로그인
+        </BtnSm>
+      </HeaderRightLoggedout>
     );
   }
 }
