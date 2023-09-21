@@ -1,5 +1,14 @@
 import styled, { keyframes } from 'styled-components';
 
+export const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  .for-footer {
+    margin-left: 256px;
+  }
+`;
+
 export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;

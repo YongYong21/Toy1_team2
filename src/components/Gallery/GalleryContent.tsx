@@ -8,10 +8,12 @@ import {
   Main,
   FlexBox,
   LoadingSpinner,
+  Wrap,
 } from '../../styles/Gallery/GalleryContent';
 import GalleryList from './GalleryList';
 import UploadModal from './UploadModal';
 import { useAuthState } from '../../contexts/AuthContext';
+import { Footer } from '../Footer/Footer';
 
 export interface ImageData {
   id: string;
@@ -138,34 +140,39 @@ export default function GalleryContent(): JSX.Element {
   };
 
   return (
-    <FlexBox>
-      <TitleWrap>
-        <Title>{title}</Title>
-        {authState.state === 'loaded' && authState.isAuthentication ? (
-          <AddButton
-            onClick={() => {
-              openModal();
-            }}
-          >
-            추가하기
-          </AddButton>
-        ) : (
-          ''
-        )}
+    <Wrap>
+      <FlexBox>
+        <TitleWrap>
+          <Title>{title}</Title>
+          {authState.state === 'loaded' && authState.isAuthentication ? (
+            <AddButton
+              onClick={() => {
+                openModal();
+              }}
+            >
+              추가하기
+            </AddButton>
+          ) : (
+            ''
+          )}
 
-        <UploadModal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          onUpload={onUpload}
-        />
-      </TitleWrap>
-      <Main>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <GalleryList images={images} deleteData={deleteData} />
-        )}
-      </Main>
-    </FlexBox>
+          <UploadModal
+            isOpen={isModalOpen}
+            onRequestClose={closeModal}
+            onUpload={onUpload}
+          />
+        </TitleWrap>
+        <Main>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <GalleryList images={images} deleteData={deleteData} />
+          )}
+        </Main>
+      </FlexBox>
+      <div className="for-footer">
+        <Footer />
+      </div>
+    </Wrap>
   );
 }
