@@ -17,10 +17,16 @@ import {
 } from '../../styles/Authentication/LoginRegisterSC';
 
 const FindPwForm: React.FC = () => {
-  /* ------------------ Toast 메세지 ------------------ */
-  // Toast 메시지 상태관리
+  /* ------------------ State 관리 ------------------ */
+  const [email, setEmail] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
+
+  // 디바이스 높이를 상태로 저장.
+  const handleResize = (): void => {
+    setDeviceHeight(window.innerHeight);
+  };
 
   // Toast 메시지를 숨기는 함수
   const hideToastMessage: () => void = () => {
@@ -28,6 +34,18 @@ const FindPwForm: React.FC = () => {
     setToastMessage(null);
   };
 
+  // email value값 저장
+  const handleEmailInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setEmail(e.target.value);
+  };
+
+  // email value Clear 버튼 동작 함수
+  const handleClearEmailInput = (): void => {
+    setEmail('');
+  };
+  /* ------------------ Toast 메세지 ------------------ */
   useEffect(() => {
     if (toastMessage !== null) {
       setShowToast(true);
@@ -36,40 +54,14 @@ const FindPwForm: React.FC = () => {
   }, [toastMessage]);
 
   /* ------------------ Container 가운데 정렬 ------------------ */
-
-  // 디바이스 높이를 상태로 저장.
-  const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
   useEffect(() => {
-    // 브라우저 창 크기가 변경될 때마다 디바이스 높이 업데이트
-    const handleResize: () => void = () => {
-      setDeviceHeight(window.innerHeight);
-    };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  // margin-top과 margin-bottom 계산
-  const setMarginTop = (deviceHeight - 471) / 2;
-  const setMarginBottom = (deviceHeight - 471) / 2;
 
-  /* ------------------ Input타입 관련기능 ------------------ */
-
-  const [email, setEmail] = useState('');
-
-  // input value값 저장
-  const handleEmailInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setEmail(e.target.value);
-  };
-
-  // input value값 초기화 기능
-  const handleClearEmailInput: () => void = () => {
-    setEmail('');
-  };
-
-  // 비밀번호 찾기 기능
+  /* -------------------------------- 비밀번호 찾기 기능 -------------------------------- */
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     auth
@@ -79,18 +71,20 @@ const FindPwForm: React.FC = () => {
           '비밀번호 변경 링크를 이메일로 전송했습니다. 이메일을 확인해주세요.',
         );
       })
-      .catch((e) => {
-        switch (e.code) {
-          case 'auth/missing-email':
-            setToastMessage('이메일을 입력해주세요.');
-            break;
-          case 'auth/user-not-found':
-            setToastMessage('존재하지 않는 이메일입니다.');
-            break;
-          default:
-            setToastMessage(
-              '알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.',
-            );
+      .catch((error: any) => {
+        if (typeof error.code === 'string') {
+          switch (error.code) {
+            case 'auth/missing-email':
+              setToastMessage('이메일을 입력해주세요.');
+              break;
+            case 'auth/user-not-found':
+              setToastMessage('존재하지 않는 이메일입니다.');
+              break;
+            default:
+              setToastMessage(
+                '알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.',
+              );
+          }
         }
       });
   };
@@ -98,7 +92,10 @@ const FindPwForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       <FindPwContainer
-        style={{ marginTop: setMarginTop, marginBottom: setMarginBottom }}
+        style={{
+          marginTop: (deviceHeight - 371) / 2,
+          marginBottom: (deviceHeight - 371) / 2,
+        }}
       >
         {showToast && (
           <ToastMessage
