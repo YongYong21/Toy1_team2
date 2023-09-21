@@ -14,9 +14,10 @@ export const FlexBox = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
-  margin-left: 300px;
+  margin-left: 250px;
 
   width: 80%;
+  min-width: 90rem;
 
   padding: 2%;
 `;
@@ -79,7 +80,6 @@ export const Main = styled.div`
   display: flex;
   justify-content: center;
 
-  margin: 0 auto;
   padding: 3rem;
 `;
 
