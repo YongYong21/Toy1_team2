@@ -3,6 +3,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import firebase, { firestore } from '../../api/firebase';
 import { useParams, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
+import { useAuthState } from '../../contexts/AuthContext';
+import { AiOutlineClose } from 'react-icons/ai';
+
 import {
   ContentsContainer,
   TitleDiv,
@@ -21,9 +24,6 @@ import {
   Label,
   ButtonContainer,
 } from '../../styles/Wiki/ContentsSC';
-import { useAuthState } from '../../contexts/AuthContext';
-import { AiOutlineClose } from 'react-icons/ai';
-
 interface ItemType {
   text: string;
   content: string;
@@ -57,6 +57,11 @@ function Contents(): JSX.Element {
   const navigate = useNavigate();
   // URL
   useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
     // 건의사항 페이지면
     if (id === 'suggestions') {
       const docRef = firestore.collection('post');
@@ -112,12 +117,17 @@ function Contents(): JSX.Element {
     if (authState.state === 'loaded' && authState.isAuthentication) {
       navigate(`/wiki/${id}/edit`);
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
-      alert('글수정 기능은 로그인을 해야합니다.');
+      alert('해당 기능은 로그인을 해야합니다.');
     }
   }
   // 글 작성 버튼 클릭
   function handleClickAddBtn(): void {
-    setToggleAddBtn(!toggleAddBtn);
+    // 로그인 확인
+    if (authState.state === 'loaded' && authState.isAuthentication) {
+      setToggleAddBtn(!toggleAddBtn);
+    } else if (authState.state === 'loaded' && !authState.isAuthentication) {
+      alert('해당 기능은 로그인을 해야합니다.');
+    }
   }
   // 모달 타이틀 입력
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -170,7 +180,7 @@ function Contents(): JSX.Element {
           console.error('Error writing document: ', error);
         });
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
-      alert('글수정 기능은 로그인을 해야합니다.');
+      alert('해당 기능은 로그인을 해야합니다.');
     }
   };
   // 모달 취소버튼 클릭
