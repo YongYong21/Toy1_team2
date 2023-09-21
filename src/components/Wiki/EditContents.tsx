@@ -15,7 +15,7 @@ import {
   StyledTextarea,
   ButtonDiv,
   EditBtn,
-} from '../../styles/Wiki/EidtContentsSC';
+} from '../../styles/Wiki/EditContentsSC';
 
 interface ItemType {
   text: string;
