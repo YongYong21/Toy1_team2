@@ -6,15 +6,21 @@ import { MdDone, MdOutlineErrorOutline } from 'react-icons/md';
 // 카드 컴포넌트 (로그인)
 export const LoginContainer = styled.div`
   position: relative;
-  box-shadow: ${(props) => props.theme.shadows.shadow2.shadow};
-  background-color: ${(props) => props.theme.white};
-  margin: 0 auto;
-  padding: 24px;
-  flex-direction: column;
-  align-items: center;
+
   width: 354px;
   height: 470px;
+
+  box-shadow: ${(props) => props.theme.shadows.shadow2.shadow};
+  background-color: ${(props) => props.theme.white};
+
+  margin: 0 auto;
+  padding: 24px;
+
   text-align: center;
+  flex-direction: column;
+
+  align-items: center;
+
   border: 1px solid #cacaca;
   border-radius: 20px;
 `;
@@ -36,22 +42,28 @@ const fadeInOut = keyframes`
 
 // Toast 메세지
 export const ToastMessage = styled.div`
+  position: absolute;
+  display: inline-block;
   z-index: 1000;
-  position: fixed;
-  top: 8%;
-  left: 50%;
+
+  width: auto;
+  top: -55px;
   transform: translateX(-50%);
+
   padding: 10px 16px 10px 45px;
+
   border-radius: 8px;
+
   background-color: rgba(238, 81, 81, 0.8);
   color: white;
-  width: auto;
-  display: inline-block;
+
+  font-size: 14px;
+  line-height: 1.5;
+
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+
   white-space: nowrap;
-  line-height: 1.5;
   animation: ${fadeInOut} 6s ease;
 
   /* 에러 스타일 */
@@ -67,20 +79,24 @@ export const ToastMessage = styled.div`
 
 // Company Space 로고
 export const LogoName = styled.h2`
+  height: 36px;
+
   color: ${(props) => props.theme.blue700};
+
   font-size: ${(props) => props.theme.textStyles.subtitle4.fontSize};
   line-height: ${(props) => props.theme.textStyles.subtitle4.lineHeight};
-  height: 36px;
   letter-spacing: -1px;
-  margin-top: 10px;
   font-weight: 900;
+
+  margin-top: 10px;
 `;
 
 // 로그인, 사원등록 제목
 export const Title = styled.p`
   font-size: ${(props) => props.theme.textStyles.subtitle3.fontSize};
-  line-height: ${(props) => props.theme.textStyles.subtitle3.lineHeight};
   font-weight: 600;
+
+  line-height: ${(props) => props.theme.textStyles.subtitle3.lineHeight};
   margin-bottom: 25px;
 `;
 
@@ -97,26 +113,33 @@ export const InputLabelContainer = styled(InputContainer)`
 
 // input태그 label
 export const InputLabel = styled.label`
-  font-size: ${(props) => props.theme.textStyles.button.fontSize};
-  line-height: ${(props) => props.theme.textStyles.button.lineHeight};
   position: absolute;
   top: -50%;
+
+  font-size: ${(props) => props.theme.textStyles.button.fontSize};
+  line-height: ${(props) => props.theme.textStyles.button.lineHeight};
 `;
 
 // input 태그
 export const Input = styled.input`
+  height: 40px;
+  width: 100%;
+
   border: 1px solid ${(props) => props.theme.gray400};
   font-size: ${(props) => props.theme.textStyles.body2.fontSize};
+
   margin-bottom: 10px;
   padding: 9px 16px;
-  width: 100%;
-  height: 40px;
+
   border-radius: 8px;
   outline: none;
+
   font-family: Pretendard;
+
   &::placeholder {
     color: ${(props) => props.theme.gray500};
   }
+
   &:focus {
     border-color: ${(props) => props.theme.blue700};
   }
@@ -124,14 +147,17 @@ export const Input = styled.input`
 
 // X 아이콘
 export const ClearIcon = styled(FaTimesCircle)`
-  color: ${(props) => props.theme.gray400};
   position: absolute;
   width: 16px;
   top: 40%;
   right: 16px;
   transform: translateY(-50%);
-  cursor: pointer;
+
+  color: ${(props) => props.theme.gray400};
+
   transition: all 0.3s;
+  cursor: pointer;
+
   &:hover {
     color: ${(props) => props.theme.gray500};
   }
@@ -139,14 +165,17 @@ export const ClearIcon = styled(FaTimesCircle)`
 
 // 인증요청 아이콘
 export const AuthIcon = styled(LuMailSearch)`
-  color: ${(props) => props.theme.gray600};
   position: absolute;
   width: 16px;
   top: 40%;
   right: 16px;
   transform: translateY(-50%);
-  cursor: pointer;
+
+  color: ${(props) => props.theme.gray600};
+
   transition: all 0.3s;
+  cursor: pointer;
+
   &:hover {
     color: ${(props) => props.theme.blue700};
   }
@@ -154,14 +183,17 @@ export const AuthIcon = styled(LuMailSearch)`
 
 // 인증완료 아이콘
 export const AuthCheckedIcon = styled(LuMailCheck)`
-  color: ${(props) => props.theme.gray400};
   position: absolute;
   width: 16px;
   top: 40%;
   right: 16px;
   transform: translateY(-50%);
-  cursor: pointer;
+
+  color: ${(props) => props.theme.gray400};
+
   transition: all 0.3s;
+  cursor: pointer;
+
   &:hover {
     color: ${(props) => props.theme.gray500};
   }
@@ -169,60 +201,72 @@ export const AuthCheckedIcon = styled(LuMailCheck)`
 
 // error 아이콘
 export const ErrorIcon = styled(MdOutlineErrorOutline)`
-  color: ${(props) => props.theme.error};
   position: absolute;
   width: 16px;
   top: 40%;
   right: 16px;
   transform: translateY(-50%);
+
+  color: ${(props) => props.theme.error};
+
   transition: all 0.3s;
 `;
 
 // Toast용 error 아이콘
 export const WhiteErrorIcon = styled(ErrorIcon)`
-  color: ${(props) => props.theme.white};
+  top: 50%;
+  left: 16px;
+  right: none;
   width: 24px;
   height: 24px;
-  top: 50%;
-  right: none;
-  left: 16px;
   transform: translateY(-50%);
+
+  color: ${(props) => props.theme.white};
 `;
 
 // success 아이콘
 export const SuccessIcon = styled(MdDone)`
-  color: ${(props) => props.theme.success};
   position: absolute;
-  width: 16px;
   top: 40%;
   right: 16px;
+  width: 16px;
   transform: translateY(-50%);
+
+  color: ${(props) => props.theme.success};
+
   transition: all 0.3s;
 `;
 
 // Toast용 success 아이콘
 export const WhiteSuccessIcon = styled(SuccessIcon)`
-  color: ${(props) => props.theme.white};
+  top: 50%;
+  left: 16px;
+  right: none;
   width: 24px;
   height: 24px;
-  top: 50%;
-  right: none;
-  left: 16px;
+
+  color: ${(props) => props.theme.white};
+
   transform: translateY(-50%);
 `;
 
 // 로그인 및 가입하기 버튼 `btn-bl`
 export const MainButton = styled.button`
-  background-color: ${(props) => props.theme.blue700};
-  color: ${(props) => props.theme.white};
-  margin-bottom: 16px;
   width: 100%;
-  padding: 0px 0;
   height: 40px;
   border-radius: 8px;
+
+  margin-bottom: 16px;
+  padding: 0px 0;
+
+  background-color: ${(props) => props.theme.blue700};
+  color: ${(props) => props.theme.white};
+
   font-family: Pretendard;
   font-size: 16px;
+
   transition: all 0.3s;
+
   &:hover {
     background-color: ${(props) => props.theme.blue800};
   }
@@ -230,30 +274,40 @@ export const MainButton = styled.button`
 
 // 페이지 유도 질문태그
 export const Question = styled.p`
-  width: 100%;
-  height: 48px;
-  font-size: 16px;
-  font-weight: 400;
-  border-top: 1px solid rgba(132, 132, 132, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  height: 48px;
+
+  font-size: 16px;
+  font-weight: 400;
+
+  border-top: 1px solid rgba(132, 132, 132, 0.5);
 `;
 
 // 페이지 유도버튼
 export const NextPage = styled.div`
-  color: ${(props) => props.theme.blue700};
-  margin-bottom: 10px;
-  width: 100%;
-  height: 40px;
-  border: 0px solid;
-  border-radius: 8px;
-  background-color: #e5f0ff;
-  font-size: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  height: 40px;
+
+  margin-bottom: 10px;
+
+  border: 0px solid;
+  border-radius: 8px;
+
+  font-size: 16px;
+
+  background-color: #e5f0ff;
+  color: ${(props) => props.theme.blue700};
+
   transition: all 0.3s;
+
   &:hover {
     background-color: ${(props) => props.theme.blue300};
   }
