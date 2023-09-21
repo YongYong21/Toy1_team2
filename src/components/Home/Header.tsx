@@ -142,6 +142,9 @@ function LoginContainer({
     console.log('onClickLogoutBtn');
     const res = confirm('정말 로그아웃을 하시겠어요?');
     if (res) {
+      // 모든 로컬 스토리지 데이터를 지우기
+      localStorage.clear();
+
       auth
         .signOut()
         .then(() => {
