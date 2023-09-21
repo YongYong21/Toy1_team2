@@ -1,11 +1,7 @@
 import React, { useState, useEffect  } from "react";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../styles/Theme"; // Theme.ts에서 테마를 가져옵니다.
 import firebase from '../../api/firebase';
 import { FaBusinessTime } from 'react-icons/fa';
 
-
-import GlobalStyles from "../../styles/GlobalStyles"; // GlobalStyles.tsx 파일을 불러옵니다.
 import {  
   HeaderButton,
   AppWrapper,
@@ -291,8 +287,6 @@ function CommuteModal() : JSX.Element {
     }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles /> {/* 전역 스타일을 적용합니다. */}
       <>
         <AppWrapper>
           <header>
@@ -365,7 +359,6 @@ function CommuteModal() : JSX.Element {
           )}
         </AppWrapper>
       </>
-    </ThemeProvider>
   );
 };
 
