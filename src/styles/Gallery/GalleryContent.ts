@@ -3,32 +3,29 @@ import styled, { keyframes } from 'styled-components';
 export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
-  .for-footer {
-    margin-left: 256px;
-  }
+  margin-left: 256px;
 `;
 
 export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
+  width: 95%;
+
+  padding: 3%;
   margin: 0 auto;
-  margin-left: 250px;
-
-  width: 80%;
-  min-width: 90rem;
-
-  padding: 2%;
 `;
 
 export const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin: 1rem auto 0;
+  margin: 2rem auto 0;
 
-  width: 90%;
+  width: 85%;
 `;
 
 export const Title = styled.h1`
