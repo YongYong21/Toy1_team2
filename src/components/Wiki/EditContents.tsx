@@ -204,7 +204,20 @@ function EditContent(): JSX.Element {
         console.error('문서 가져오기 중 오류 발생: ', error);
       });
   };
-
+  const handleAddClick = (): void => {
+    const docRef = firestore.collection('post');
+    docRef
+      .add({
+        title: '제목2',
+        contents: '본문2',
+      })
+      .then(() => {
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
+  };
   return (
     <FlexDiv>
       <ContentsContainer>
@@ -225,6 +238,9 @@ function EditContent(): JSX.Element {
           <Link to={newURL}>
             <EditBtn className="btn2">취소</EditBtn>
           </Link>
+          <EditBtn className="btn1" onClick={handleAddClick}>
+            글 작성
+          </EditBtn>
         </ButtonDiv>
       </ContentsContainer>
 
