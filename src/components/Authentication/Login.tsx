@@ -119,8 +119,8 @@ const LoginForm: React.FC = () => {
           );
         }
       }
-    } catch (e) {
-      const errorCode = (e as any).code;
+    } catch (error) {
+      const errorCode = (error as any).code;
       if (typeof errorCode === 'string') {
         switch (errorCode) {
           case 'auth/invalid-email':

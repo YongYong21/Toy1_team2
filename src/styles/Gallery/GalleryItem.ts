@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Item = styled.div`
-  margin: 10px;
+  margin: 8px;
+
   .item-wrap {
     width: 360px;
     height: 360px;
 
-    position: relative;
-
     margin: 10px;
+    padding: 1rem;
 
     border-radius: 8px;
     border: none;
@@ -19,7 +19,7 @@ export const Item = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    gap: 10%;
+    gap: 5%;
   }
 
   .item-wrap:hover {
@@ -50,6 +50,6 @@ export const Item = styled.div`
   }
 
   .image-name {
-    font-size: 1.5rem;
+    font-size: ${(props) => props.theme.textStyles.subtitle4.fontSize};
   }
 `;

@@ -38,6 +38,7 @@ interface PostType {
   author: string;
   id: string;
 }
+
 function Contents(): JSX.Element {
   const { id } = useParams();
   const [data, setData] = useState<ItemType | null>(null);
@@ -56,9 +57,9 @@ function Contents(): JSX.Element {
   const navigate = useNavigate();
   // URL
   useEffect(() => {
+    // 건의사항 페이지면
     if (id === 'suggestions') {
       const docRef = firestore.collection('post');
-
       docRef
         .get()
         .then((querySnapshot) => {
@@ -72,7 +73,7 @@ function Contents(): JSX.Element {
         .catch((error) => {
           console.log('Error getting document:', error);
         });
-
+      // 유저 이름 가져오기
       firebase.auth().onAuthStateChanged((user) => {
         if (user !== null) {
           const displayName = user.displayName;
@@ -82,6 +83,7 @@ function Contents(): JSX.Element {
         }
       });
     } else {
+      // 건의사항 페이지가 아니면 데이터 가져오기
       firestore
         .collection('sidebarMenu')
         .get()
@@ -113,33 +115,23 @@ function Contents(): JSX.Element {
       alert('글수정 기능은 로그인을 해야합니다.');
     }
   }
+  // 글 작성 버튼 클릭
   function handleClickAddBtn(): void {
     setToggleAddBtn(!toggleAddBtn);
   }
-  // 마크다운뷰어
-  const MarkdownViewer = ({
-    markdownText,
-  }: {
-    markdownText: string;
-  }): JSX.Element => {
-    return (
-      <div>
-        <MarkdownPreview source={markdownText} />
-      </div>
-    );
-  };
+  // 모달 타이틀 입력
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPostTitle(e.target.value);
   };
-
+  // 모달 내용 입력
   const handleContentsChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
     setPostContents(e.target.value);
   };
-
-  // 건의사항
-  const handleAddClick = (): void => {
+  // 모달 글작성 클릭
+  const handlePostAddClick = (): void => {
+    // 로그인 했는지 확인
     if (authState.state === 'loaded' && authState.isAuthentication) {
       const now = new Date();
       const year = now.getFullYear();
@@ -152,6 +144,7 @@ function Contents(): JSX.Element {
       const timeId = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
       const docRef = firestore.collection('post');
+      // 추가 함수
       docRef
         .add({
           timeStamp: time,
@@ -180,17 +173,22 @@ function Contents(): JSX.Element {
       alert('글수정 기능은 로그인을 해야합니다.');
     }
   };
-
+  // 모달 취소버튼 클릭
   const handleCancelClick = (): void => {
     setToggleAddBtn(false);
     setPostTitle('');
     setPostContents('');
   };
+  // 모달 배경화면 클릭
   const handleModalClose = (e: React.MouseEvent): void => {
     if (toggleAddBtn && outside.current === e.target) {
       setToggleAddBtn(false);
     }
   };
+  /**
+   * 삭제 버튼 클릭 핸들러
+   * @param {string} id - 삭제할 아이템의 ID
+   */
   const handleDeleteClick = (id: string): void => {
     firestore
       .collection('post')
@@ -217,6 +215,21 @@ function Contents(): JSX.Element {
       .catch((error) => {
         console.log('Error getting documents: ', error);
       });
+  };
+  /**
+   * @param {string} markdownText - 마크다운 텍스트
+   * @returns {JSX.Element} - 마크다운 뷰어 컴포넌트
+   */
+  const MarkdownViewer = ({
+    markdownText,
+  }: {
+    markdownText: string;
+  }): JSX.Element => {
+    return (
+      <div>
+        <MarkdownPreview source={markdownText} />
+      </div>
+    );
   };
   return (
     <>
@@ -250,7 +263,7 @@ function Contents(): JSX.Element {
                 </LabelDiv>
 
                 <ButtonContainer>
-                  <EditBtn onClick={handleAddClick}>글 작성</EditBtn>
+                  <EditBtn onClick={handlePostAddClick}>글 작성</EditBtn>
                   <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
                 </ButtonContainer>
               </PostModal>

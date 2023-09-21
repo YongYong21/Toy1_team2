@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import firebase from '../../api/firebase';
+import CommuteModal from '../Commute/CommuteModal';
+
+import firebase, { auth } from '../../api/firebase';
+import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
 
 import {
   HeaderContainer,
@@ -8,40 +11,44 @@ import {
   HeaderLogo,
   HdUl,
   HeaderRight,
+  HeaderRightProfile,
   ProfileName,
   ProfileImage,
   BtnSm,
   SelectedLink,
   UnselectedLink,
+  HdMenu,
+  HdMenuLi,
+  HdMenuUl,
+  // LogoutDiv,
 } from '../../styles/Home/HeaderSC';
 
 export function Header(): JSX.Element {
   const navigate = useNavigate(); // URL 이동시키는 메소드
   const { pathname } = useLocation(); // 현재 경로
-  const [uid, setUid] = useState<string | null>(null); // 유저ID
   const [username, setUsername] = useState<string>('사용자'); // 유저 이름
-  const [photoURL, setPhotoURL] = useState<string>(''); // 유저 프사
+  // const [photoURL, setPhotoURL] = useState<string>(''); // 유저 프사
+  const [prfSelected, setPrfSelected] = useState<boolean>(false);
+
   const [paths] = useState<string[][]>([
     ['Home', '/'],
-    ['Wiki', '/wiki'],
-    ['Gallery', '/gallery'],
+    ['Wiki', '/wiki/rules'],
+    ['Gallery', '/gallery/facility'],
   ]);
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
+
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user !== null) {
-        const uid = user.uid;
         const displayName = user.displayName;
-        const photoURL = user.photoURL;
-
-        setUid(uid);
         setUsername(displayName ?? '사용자');
-        setPhotoURL(photoURL ?? '');
       } else {
         console.log('Signed Out'); // 로그인 안 됐을 때
       }
     });
   }, []); // 패러미터 []를 사용. 사이트 처음 렌더링 됐을 때 1회만 합니다.
+  
 
   return (
     <HeaderContainer>
@@ -56,13 +63,18 @@ export function Header(): JSX.Element {
         </HeaderLogo>
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
-      {/* 로그인유무에 따른 우측 부분 */}
-      <LoginContainer
-        uid={uid}
-        username={username}
-        setUsername={setUsername}
-        photoURL={photoURL}
-      />
+      <HeaderRight>
+          {/* 로그인유무에 따른 우측 부분 */}
+          {authState.state === 'loaded' && authState.isAuthentication && (
+            <CommuteModalContainer></CommuteModalContainer>
+          )}
+          <LoginContainer
+            username={username}
+            setUsername={setUsername}
+            prfSelected={prfSelected}
+            setPrfSelected={setPrfSelected}
+          />
+      </HeaderRight>
     </HeaderContainer>
   );
 }
@@ -78,8 +90,10 @@ function LinkContainer({
   return (
     <HdUl className="nav">
       {paths.map((path, idx) => {
-        const currentPage = pathname.split('/')[1]; // 현재 주소의 "/"다음부분 딱 하나만 추출
-        if ('/' + currentPage === path[1]) {
+        const currentPage = pathname.split('/')[1]; // 현재 주소의 가운데만 추출
+        const targetPath = path[1].split('/')[1]; // path의 가운데만 추출
+
+        if (currentPage === targetPath) {
           // URL 배열에서 같은걸 찾기
           return (
             <SelectedLink key={idx} to={path[1]}>
@@ -98,32 +112,85 @@ function LinkContainer({
   );
 }
 
+function CommuteModalContainer(): JSX.Element {
+  return (
+    <CommuteModal></CommuteModal>
+  );
+}
+
 function LoginContainer({
   username, //
-  photoURL,
-  uid,
+  prfSelected,
+  setPrfSelected,
 }: {
   username: string;
   setUsername: object;
-  photoURL: string;
-  uid: string | null;
+  prfSelected: boolean;
+  setPrfSelected: React.Dispatch<boolean>;
 }): JSX.Element {
   const navigate = useNavigate();
-  return uid !== null ? ( // 로그인이 됐다면 로그인된 UI 표출
-    <HeaderRight
-    // 프로필 선택하면 포커스, 다른데 선택하면 언포커스
-    >
-      <ProfileName>{username}</ProfileName>
-      <ProfileImage photoURL={photoURL}></ProfileImage>
-    </HeaderRight>
-  ) : (
-    // 로그인이 안 됐다면 로그인 버튼 표출
-    <BtnSm
-      onClick={() => {
-        navigate('/login');
-      }}
-    >
-      로그인
-    </BtnSm>
-  );
+  const authState = useAuthState();
+  useEffect(() => {}, [authState]);
+
+  const onClickMenu = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.stopPropagation();
+    console.log('onClickPrf');
+    setPrfSelected(true);
+  };
+
+  const onClickLogoutBtn = (): void => {
+    console.log('onClickLogoutBtn');
+    const res = confirm('정말 로그아웃을 하시겠어요?');
+    if (res) {
+      auth
+        .signOut()
+        .then(() => {
+          // 로그아웃 성공
+          navigate('/login');
+          alert('로그아웃되었습니다.');
+        })
+        .catch((error) => {
+          console.error('로그아웃 중 에러가 발생했습니다:', error);
+        });
+      setPrfSelected(false);
+    }
+  };
+
+  const onBlurMenu = (): void => {
+    setTimeout(() => {
+      setPrfSelected(false);
+      console.log('onBlurPrfBtn');
+    }, 300);
+  };
+
+  // 로그인이 됐다면 로그인된 UI 표출
+  if (authState.state === 'loaded' && authState.isAuthentication) {
+    return (
+      <div style={{ position: 'relative' }}>
+        <HeaderRightProfile onClick={onClickMenu} onBlur={onBlurMenu}>
+          <ProfileName>{username}</ProfileName>
+          <ProfileImage></ProfileImage>
+        </HeaderRightProfile>
+        {prfSelected && (
+          <HdMenu>
+            <HdMenuUl className="menu-ul">
+              <HdMenuLi onClick={onClickLogoutBtn}>Log Out</HdMenuLi>
+            </HdMenuUl>
+          </HdMenu>
+        )}
+      </div>
+    );
+  }
+  // 로그인이 안 됐다면 로그인 버튼 표출
+  else {
+    return (
+      <BtnSm
+        onClick={() => {
+          navigate('/login');
+        }}
+      >
+        로그인
+      </BtnSm>
+    );
+  }
 }

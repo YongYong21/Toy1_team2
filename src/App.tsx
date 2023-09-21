@@ -9,6 +9,7 @@ import Login from './pages/Authentication/LoginPage';
 import Register from './pages/Authentication/RegisterPage';
 import FindPwPage from './pages/Authentication/FindPwPage';
 import Gallery from './pages/Gallery/Gallery';
+import NotFound from './pages/NotFound/NotFound';
 
 export default function App(): JSX.Element {
   return (
@@ -16,12 +17,15 @@ export default function App(): JSX.Element {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gallery/:id" element={<Gallery />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/findpw" element={<FindPwPage />} />
         <Route path="/Wiki/:id" element={<Wiki></Wiki>}></Route>
         <Route path="/Wiki/:id/edit" element={<WikiEdit></WikiEdit>}></Route>
+        <Route path="/Wiki/:id" element={<Wiki />}></Route>
+        <Route path="/Wiki/:id/edit" element={<WikiEdit />}></Route>
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </AuthContextProvider>
   );

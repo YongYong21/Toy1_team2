@@ -2,9 +2,12 @@ import styled from 'styled-components';
 
 export const Main = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
 
-  width: 100%;
+  max-width: 75rem;
+
+  .no-data {
+    font-size: ${(props) => props.theme.textStyles.body1.fontSize};
+  }
 `;
