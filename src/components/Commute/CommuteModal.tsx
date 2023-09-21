@@ -173,15 +173,18 @@ function CommuteModal() : JSX.Element {
           setIsCommuteButtonClicked(true);
           localStorage.setItem('isTimerRunning', JSON.stringify(true));
 
+          setWorkStartTime(now);
+          localStorage.setItem('workStartTime', JSON.stringify(now));
+
           setModalTitle(`${displayName}님 오늘도 파이팅하세요! 👊`); // 멘트 업데이트
 
         }
       }
-        // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-        if (workStartTime === null) {
-          setWorkStartTime(now); // 출근 시간 업데이트
-          localStorage.setItem('workStartTime', JSON.stringify(now));
-        }
+        // // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
+        // if (workStartTime === null) {
+        //   setWorkStartTime(now); // 출근 시간 업데이트
+        //   localStorage.setItem('workStartTime', JSON.stringify(now));
+        // }
     };
 
     // reset 타이머 (퇴근)
@@ -198,6 +201,8 @@ function CommuteModal() : JSX.Element {
 
         setIsTimerRunning(false);
         localStorage.setItem('isTimerRunning', JSON.stringify(false));
+
+        localStorage.setItem('workStartTime', JSON.stringify(null));
 
         if (timer != null) {
           clearInterval(timer);
@@ -259,17 +264,17 @@ function CommuteModal() : JSX.Element {
         const secondsAsNumber = JSON.parse(secondsInLocalStorage);
         setSeconds(secondsAsNumber);
       }
-    
-      const workStartTimeString = localStorage.getItem('workStartTime');
-      if (workStartTimeString !== null) {
-        const workStartTimeFromStorage = new Date(JSON.parse(workStartTimeString));
-        setWorkStartTime(workStartTimeFromStorage);
-      }
 
       const isTimerRunningString = localStorage.getItem('isTimerRunning');
       if (isTimerRunningString !== null) {
         const isTimerRunningFromStorage = JSON.parse(isTimerRunningString);
         setIsTimerRunning(isTimerRunningFromStorage);
+      }
+
+      const workStartTimeString = localStorage.getItem('workStartTime');
+      if (workStartTimeString !== null) {
+        const workStartTimeFromStorage = new Date(JSON.parse(workStartTimeString));
+        setWorkStartTime(workStartTimeFromStorage);
       }
   }, []);
 
@@ -296,10 +301,10 @@ function CommuteModal() : JSX.Element {
           const displayName = user.displayName; // 사용자 이름 가져오기
           setDisplayName(displayName ?? '사용자'); // 사용자 이름 업데이트
     
-          // 출근 시간 업데이트
-          const now = new Date();
-          setWorkStartTime(now);
-          localStorage.setItem('workStartTime', JSON.stringify(now));
+          // // 출근 시간 업데이트
+          // const now = new Date();
+          // setWorkStartTime(now);
+          // localStorage.setItem('workStartTime', JSON.stringify(now));
     
           // displayName을 modalTitle에 적용
           setModalTitle(`${displayName}님 업무 시작 전 입니다. 👀`);
