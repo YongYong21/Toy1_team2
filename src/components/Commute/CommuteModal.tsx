@@ -104,18 +104,10 @@ function CommuteModal() : JSX.Element {
       if (!isTimerRunning) { // Timer가 true일 때
         setIsTimerRunning(true);
         setIsCommuteButtonClicked(true);
-        // setTimer(
-        //   setInterval(() => {
-        //     setSeconds((prevSeconds) => {
-        //       const newSeconds = prevSeconds + 1;
-        //       localStorage.setItem('seconds', JSON.stringify(newSeconds)); // 타이머 초를 저장
-        //       return newSeconds;
-        //     });
-        //   }, 1000)
-        // );
-      } else if (isTimerRunning) { // Timer가 false일 때
-        if (seconds > 0) {
 
+      } else if (isTimerRunning) { // Timer가 false일 때
+        
+        if (seconds > 0) {
           setIsTimerRunning(false);
           setIsCommuteButtonClicked(true);
 
@@ -180,11 +172,6 @@ function CommuteModal() : JSX.Element {
 
         }
       }
-        // // 출근 시간은 한 번 설정한 후 변경하지 않습니다.
-        // if (workStartTime === null) {
-        //   setWorkStartTime(now); // 출근 시간 업데이트
-        //   localStorage.setItem('workStartTime', JSON.stringify(now));
-        // }
     };
 
     // reset 타이머 (퇴근)
@@ -196,6 +183,7 @@ function CommuteModal() : JSX.Element {
       const confirmation = window.confirm(`현재 시각은 ${currentTime}입니다. 퇴근하시겠습니까? \n근무 시간: ${formatTimeFromSeconds(seconds)}`);
       if (confirmation) {
         setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
+
         // 로컬 스토리지에서 seconds를 초기화
         localStorage.setItem('seconds', JSON.stringify(0));
 
@@ -300,11 +288,6 @@ function CommuteModal() : JSX.Element {
         if (user !== null) {
           const displayName = user.displayName; // 사용자 이름 가져오기
           setDisplayName(displayName ?? '사용자'); // 사용자 이름 업데이트
-    
-          // // 출근 시간 업데이트
-          // const now = new Date();
-          // setWorkStartTime(now);
-          // localStorage.setItem('workStartTime', JSON.stringify(now));
     
           // displayName을 modalTitle에 적용
           setModalTitle(`${displayName}님 업무 시작 전 입니다. 👀`);
