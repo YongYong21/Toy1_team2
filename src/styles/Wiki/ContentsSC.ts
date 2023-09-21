@@ -137,13 +137,17 @@ const DimDiv = styled.div`
   width: 100%;
   height: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   position: fixed;
 
   background-color: rgba(0, 0, 0, 0.3);
+`;
+const PostModalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+  display: flex;
+  justify-content: center;
 `;
 const PostModal = styled.div`
   width: 800px;
@@ -223,4 +227,5 @@ export {
   LabelDiv,
   Label,
   ButtonContainer,
+  PostModalContainer,
 };

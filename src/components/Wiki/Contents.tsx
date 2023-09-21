@@ -23,6 +23,7 @@ import {
   LabelDiv,
   Label,
   ButtonContainer,
+  PostModalContainer,
 } from '../../styles/Wiki/ContentsSC';
 interface ItemType {
   text: string;
@@ -246,38 +247,43 @@ function Contents(): JSX.Element {
       {postState ? (
         <>
           {toggleAddBtn ? (
-            <DimDiv ref={outside} onClick={handleModalClose}>
-              <PostModal>
-                <PostTitleContainer>
-                  건의사항
-                  <AiOutlineClose onClick={handleCancelClick}></AiOutlineClose>
-                </PostTitleContainer>
-                <LabelDiv>
-                  <Label>
-                    <div>제목:</div>
-                    <input
-                      type="text"
-                      value={postTitle}
-                      onChange={handleTitleChange}
-                    />
-                  </Label>
-                  <br />
-                  <div>작성자: {username}</div>
-                  <Label>
-                    <div>내용:</div>
-                    <textarea
-                      value={postContents}
-                      onChange={handleContentsChange}
-                    />
-                  </Label>
-                </LabelDiv>
+            <>
+              <DimDiv ref={outside} onClick={handleModalClose}></DimDiv>
+              <PostModalContainer>
+                <PostModal>
+                  <PostTitleContainer>
+                    건의사항
+                    <AiOutlineClose
+                      onClick={handleCancelClick}
+                    ></AiOutlineClose>
+                  </PostTitleContainer>
+                  <LabelDiv>
+                    <Label>
+                      <div>제목:</div>
+                      <input
+                        type="text"
+                        value={postTitle}
+                        onChange={handleTitleChange}
+                      />
+                    </Label>
+                    <br />
+                    <div>작성자: {username}</div>
+                    <Label>
+                      <div>내용:</div>
+                      <textarea
+                        value={postContents}
+                        onChange={handleContentsChange}
+                      />
+                    </Label>
+                  </LabelDiv>
 
-                <ButtonContainer>
-                  <EditBtn onClick={handlePostAddClick}>글 작성</EditBtn>
-                  <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
-                </ButtonContainer>
-              </PostModal>
-            </DimDiv>
+                  <ButtonContainer>
+                    <EditBtn onClick={handlePostAddClick}>글 작성</EditBtn>
+                    <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
+                  </ButtonContainer>
+                </PostModal>
+              </PostModalContainer>
+            </>
           ) : (
             ''
           )}
