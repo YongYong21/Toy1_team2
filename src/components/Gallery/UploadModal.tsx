@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { MdClear } from 'react-icons/md';
 import { modalStyle, ModalContent } from '../../styles/Gallery/GalleryModal';
 import { DeleteButton, AddButton } from '../../styles/Gallery/GalleryContent';
-import previewImg from '../../assets/previewImg.jpg';
+import previewImg from '../../assets/images/previewImg.jpg';
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -54,6 +54,13 @@ const UploadModal: React.FC<UploadModalProps> = ({
     onUpload(selectedFile, name);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      // Enter 키가 눌렸을 때 handleUpload 호출
+      handleUpload();
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -65,7 +72,6 @@ const UploadModal: React.FC<UploadModalProps> = ({
       <DeleteButton className="delete-btn" onClick={onRequestClose}>
         <MdClear />
       </DeleteButton>
-
       <ModalContent>
         <h1 className="title">이미지 업로드 📸</h1>
         <div className="main">
@@ -84,7 +90,12 @@ const UploadModal: React.FC<UploadModalProps> = ({
           </div>
           <div className="input-name-wrap">
             <h1 className="input-text">이름을 작성해주세요</h1>
-            <input type="text" value={name} onChange={handleNameChange} />
+            <input
+              type="text"
+              value={name}
+              onChange={handleNameChange}
+              onKeyDown={handleKeyDown}
+            />
           </div>
         </div>
       </ModalContent>
