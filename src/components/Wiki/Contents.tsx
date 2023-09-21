@@ -23,7 +23,7 @@ import {
   LabelDiv,
   Label,
   ButtonContainer,
-  PostModalContainer,
+  ModalContainer,
 } from '../../styles/Wiki/ContentsSC';
 interface ItemType {
   text: string;
@@ -54,7 +54,7 @@ function Contents(): JSX.Element {
   const [username, setUsername] = useState<string>('사용자');
   const [toggleAddBtn, setToggleAddBtn] = useState(false);
 
-  const outside = useRef(null);
+  const outside = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   // URL
   useEffect(() => {
@@ -191,7 +191,7 @@ function Contents(): JSX.Element {
     setPostContents('');
   };
   // 모달 배경화면 클릭
-  const handleModalClose = (e: React.MouseEvent): void => {
+  const handleModalClose = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (toggleAddBtn && outside.current === e.target) {
       setToggleAddBtn(false);
     }
@@ -248,11 +248,11 @@ function Contents(): JSX.Element {
         <>
           {toggleAddBtn ? (
             <>
-              <DimDiv ref={outside} onClick={handleModalClose}></DimDiv>
-              <PostModalContainer>
+              <ModalContainer>
+                <DimDiv ref={outside} onClick={handleModalClose}></DimDiv>
                 <PostModal>
                   <PostTitleContainer>
-                    건의사항
+                    <h1>건의사항</h1>
                     <AiOutlineClose
                       onClick={handleCancelClick}
                     ></AiOutlineClose>
@@ -282,7 +282,7 @@ function Contents(): JSX.Element {
                     <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
                   </ButtonContainer>
                 </PostModal>
-              </PostModalContainer>
+              </ModalContainer>
             </>
           ) : (
             ''
@@ -312,7 +312,9 @@ function Contents(): JSX.Element {
         </>
       ) : (
         <ContentsContainer>
-          <TitleDiv>{data?.text}</TitleDiv>
+          <TitleDiv>
+            <h1>{data?.text}</h1>
+          </TitleDiv>
           <TimeStampWrap>
             <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
             <EditBtn onClick={handleClickEditBtn}>글 수정</EditBtn>

@@ -12,8 +12,20 @@ const TitleDiv = styled.div`
   padding: 8px;
   margin-bottom: 16px;
 
-  font-size: ${theme.textStyles.subtitle1.fontSize};
-  line-height: ${theme.textStyles.subtitle1.lineHeight};
+  h1 {
+    font-size: ${theme.textStyles.subtitle1.fontSize};
+    line-height: ${theme.textStyles.subtitle1.lineHeight};
+  }
+`;
+const ModalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const TimeStampWrap = styled.div`
   display: flex;
@@ -126,9 +138,7 @@ const PostTitleDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  font-size: ${theme.textStyles.subtitle1.fontSize};
-  line-height: ${theme.textStyles.subtitle1.lineHeight};
+  font-weight: 500;
   svg {
     cursor: pointer;
   }
@@ -138,26 +148,23 @@ const DimDiv = styled.div`
   height: 100%;
 
   position: fixed;
-
-  background-color: rgba(0, 0, 0, 0.3);
-`;
-const PostModalContainer = styled.div`
-  width: 100%;
-  height: 100%;
-
-  position: fixed;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
 `;
+
 const PostModal = styled.div`
   width: 800px;
 
   margin: 32px auto;
+  padding: 32px;
 
   position: fixed;
 
-  background-color: white;
+  border-radius: 16px;
 
+  background-color: white;
   textarea {
     resize: none;
   }
@@ -168,24 +175,34 @@ const PostTitleContainer = styled.div`
   align-items: center;
 
   padding: 16px;
-  border: 1px solid ${theme.gray300};
+  border-bottom: 1px solid ${theme.gray300};
 
-  font-size: ${theme.textStyles.subtitle2.fontSize};
-  line-height: ${theme.textStyles.subtitle2.lineHeight};
+  font-size: 32px;
+
+  h1 {
+    font-size: ${theme.textStyles.subtitle1.fontSize};
+    font-weight: 600;
+  }
 
   svg {
     cursor: pointer;
+    color: ${theme.blue600};
   }
 `;
 const LabelDiv = styled.div`
   padding: 16px;
   div {
     margin-bottom: 8px;
-    font-size: ${theme.textStyles.body1.fontSize};
-    line-height: ${theme.textStyles.body1.lineHeight};
+    font-weight: 500;
   }
 `;
 const Label = styled.label`
+  div {
+    margin-bottom: 8px;
+    font-size: ${theme.textStyles.subtitle4.fontSize};
+    line-height: ${theme.textStyles.subtitle4.lineHeight};
+    font-weight: 500;
+  }
   input {
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -212,6 +229,7 @@ const ButtonContainer = styled.div`
 
 export {
   ContentsContainer,
+  ModalContainer,
   TitleDiv,
   TimeStampWrap,
   TimeStampDiv,
@@ -227,5 +245,4 @@ export {
   LabelDiv,
   Label,
   ButtonContainer,
-  PostModalContainer,
 };
