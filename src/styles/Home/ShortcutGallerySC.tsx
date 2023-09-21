@@ -10,14 +10,18 @@ export const SectionContainer = styled.div`
 
 export const ImgsContainer = styled.div`
   display: flex;
-  padding: 24px;
-  padding-top: 56px;
+  padding: 56px 24px 0 24px;
   width: 100%;
-  height: 100%;
-  backgroung-color: red;
+  height: 104%;
   gap: 16px;
   flex-wrap: wrap;
-  overflow: scroll;
+  overflow-y: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const ImgItems = styled.div`

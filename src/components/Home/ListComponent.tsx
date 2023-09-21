@@ -14,11 +14,11 @@ import {
 import { DocsComponent } from './DocsComponent';
 
 interface ListComponentProps {
-  listEl: [string, number, string];
-  todo: Array<[string, number, string]>;
-  setTodo: React.Dispatch<Array<[string, number, string]>>;
-  done: Array<[string, number, string]>;
-  setDone: React.Dispatch<Array<[string, number, string]>>;
+  listEl: [string, number, string, string];
+  todo: Array<[string, number, string, string]>;
+  setTodo: React.Dispatch<Array<[string, number, string, string]>>;
+  done: Array<[string, number, string, string]>;
+  setDone: React.Dispatch<Array<[string, number, string, string]>>;
   TabMenu: number[];
   deleteTodo: boolean[];
   setDeleteTodo: React.Dispatch<boolean[]>;
@@ -62,9 +62,9 @@ JSX.Element {
 
     //  ID에 매칭되는 놈 찾아서 done으로 보내는 과정
     const matched = todo.find(
-      (v: [string, number, string]) => v[1].toString() === dataset,
-    ) as [string, number, string];
-    const doneCopy: Array<[string, number, string]> = done.slice();
+      (v: [string, number, string, string]) => v[1].toString() === dataset,
+    ) as [string, number, string, string];
+    const doneCopy: Array<[string, number, string, string]> = done.slice();
     doneCopy.unshift(matched);
     const strfiedDone = JSON.stringify(doneCopy);
     localStorage.setItem('done', strfiedDone);
@@ -72,7 +72,7 @@ JSX.Element {
 
     //  ID에 매칭되는 놈 찾아서 todo에서 제거시키는 과정
     const subtracted = todo.filter(
-      (v: [string, number, string]) => v[1].toString() !== dataset,
+      (v: [string, number, string, string]) => v[1].toString() !== dataset,
     );
     const strfiedTodo = JSON.stringify(subtracted);
     localStorage.setItem('todo', strfiedTodo);
@@ -86,9 +86,9 @@ JSX.Element {
 
     //  ID에 매칭되는 놈 찾아서 todo로 보내는 과정
     const matched = done.find(
-      (v: [string, number, string]) => v[1].toString() === dataset,
-    ) as [string, number, string];
-    const todoCopy: Array<[string, number, string]> = todo.slice();
+      (v: [string, number, string, string]) => v[1].toString() === dataset,
+    ) as [string, number, string, string];
+    const todoCopy: Array<[string, number, string, string]> = todo.slice();
     todoCopy.unshift(matched);
     const strfiedTodo = JSON.stringify(todoCopy);
     localStorage.setItem('todo', strfiedTodo);
@@ -96,7 +96,7 @@ JSX.Element {
 
     //  ID에 매칭되는 놈 찾아서 done에서 제거시키는 과정
     const subtracted = done.filter(
-      (v: [string, number, string]) => v[1].toString() !== dataset,
+      (v: [string, number, string, string]) => v[1].toString() !== dataset,
     );
     const strfiedDone = JSON.stringify(subtracted);
     localStorage.setItem('done', strfiedDone);
