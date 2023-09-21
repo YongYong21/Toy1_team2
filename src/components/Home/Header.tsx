@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import CommuteModal from '../Commute/CommuteModal';
+
 import firebase, { auth } from '../../api/firebase';
+import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
 
 import {
   HeaderContainer,
@@ -8,6 +11,7 @@ import {
   HeaderLogo,
   HdUl,
   HeaderRight,
+  HeaderRightProfile,
   ProfileName,
   ProfileImage,
   BtnSm,
@@ -18,7 +22,6 @@ import {
   HdMenuUl,
   // LogoutDiv,
 } from '../../styles/Home/HeaderSC';
-import { useAuthState } from '../../contexts/AuthContext';
 
 export function Header(): JSX.Element {
   const navigate = useNavigate(); // URL 이동시키는 메소드
@@ -32,6 +35,8 @@ export function Header(): JSX.Element {
     ['Wiki', '/wiki/rules'],
     ['Gallery', '/gallery/facility'],
   ]);
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
+
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -43,6 +48,7 @@ export function Header(): JSX.Element {
       }
     });
   }, []); // 패러미터 []를 사용. 사이트 처음 렌더링 됐을 때 1회만 합니다.
+  
 
   return (
     <HeaderContainer>
@@ -57,13 +63,18 @@ export function Header(): JSX.Element {
         </HeaderLogo>
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
-      {/* 로그인유무에 따른 우측 부분 */}
-      <LoginContainer
-        username={username}
-        setUsername={setUsername}
-        prfSelected={prfSelected}
-        setPrfSelected={setPrfSelected}
-      />
+      <HeaderRight>
+          {/* 로그인유무에 따른 우측 부분 */}
+          {authState.state === 'loaded' && authState.isAuthentication && (
+            <CommuteModalContainer></CommuteModalContainer>
+          )}
+          <LoginContainer
+            username={username}
+            setUsername={setUsername}
+            prfSelected={prfSelected}
+            setPrfSelected={setPrfSelected}
+          />
+      </HeaderRight>
     </HeaderContainer>
   );
 }
@@ -98,6 +109,12 @@ function LinkContainer({
         }
       })}
     </HdUl>
+  );
+}
+
+function CommuteModalContainer(): JSX.Element {
+  return (
+    <CommuteModal></CommuteModal>
   );
 }
 
@@ -150,10 +167,10 @@ function LoginContainer({
   if (authState.state === 'loaded' && authState.isAuthentication) {
     return (
       <div style={{ position: 'relative' }}>
-        <HeaderRight onClick={onClickMenu} onBlur={onBlurMenu}>
+        <HeaderRightProfile onClick={onClickMenu} onBlur={onBlurMenu}>
           <ProfileName>{username}</ProfileName>
           <ProfileImage></ProfileImage>
-        </HeaderRight>
+        </HeaderRightProfile>
         {prfSelected && (
           <HdMenu>
             <HdMenuUl className="menu-ul">
