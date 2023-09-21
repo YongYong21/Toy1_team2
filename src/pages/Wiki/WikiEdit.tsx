@@ -21,7 +21,6 @@ export default function WikiEdit(): JSX.Element {
     'ongoing',
     'scheduled',
     'completed',
-    'suggestions',
   ];
   const navigate = useNavigate();
   const { id } = useParams();
