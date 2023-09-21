@@ -174,16 +174,19 @@ const RegisterForm: React.FC = () => {
         localStorage.setItem('registrationSuccess', 'true');
         await signOut(auth);
         navigate('/login');
-      } catch (e) {
-        switch (e) {
-          case 'auth/invalid-email':
-            setToastMessage('잘못된 이메일 주소입니다.');
-            break;
-          case 'auth/email-already-in-use':
-            setToastMessage('이미 가입되어 있는 계정입니다.');
-            break;
-          default:
-            setToastMessage('알 수 없는 오류가 발생했습니다.');
+      } catch (error) {
+        const errorCode = (error as any).code;
+        if (typeof errorCode === 'string') {
+          switch (errorCode) {
+            case 'auth/invalid-email':
+              setToastMessage('잘못된 이메일 주소입니다.');
+              break;
+            case 'auth/email-already-in-use':
+              setToastMessage('이미 가입되어 있는 계정입니다.');
+              break;
+            default:
+              setToastMessage('알 수 없는 오류가 발생했습니다.');
+          }
         }
       }
     } else {
