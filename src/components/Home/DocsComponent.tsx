@@ -3,10 +3,10 @@ import { DocsComponentUl } from '../../styles/Home/DailyBriefSC';
 
 interface DocsProps {
   docs: string[];
-  todo: Array<[string, number, string]>;
-  setTodo: React.Dispatch<Array<[string, number, string]>>;
-  done: Array<[string, number, string]>;
-  setDone: React.Dispatch<Array<[string, number, string]>>;
+  todo: Array<[string, number, string, string]>;
+  setTodo: React.Dispatch<Array<[string, number, string, string]>>;
+  done: Array<[string, number, string, string]>;
+  setDone: React.Dispatch<Array<[string, number, string, string]>>;
 }
 
 export function DocsComponent({

@@ -50,7 +50,6 @@ export function ShortcutGallery(): JSX.Element {
       }
     };
 
-    console.log('렌더링');
     void fetchData();
   }, []);
 
