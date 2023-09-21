@@ -5,6 +5,8 @@ export const Main = styled.div`
   justify-content: flex-start;
   flex-wrap: wrap;
 
+  max-width: 75rem;
+
   .no-data {
     font-size: ${(props) => props.theme.textStyles.body1.fontSize};
   }
