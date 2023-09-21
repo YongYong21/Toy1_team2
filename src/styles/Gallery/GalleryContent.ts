@@ -1,13 +1,23 @@
 import styled, { keyframes } from 'styled-components';
 
+export const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  .for-footer {
+    margin-left: 256px;
+  }
+`;
+
 export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
 
   margin: 0 auto;
-  margin-left: 300px;
+  margin-left: 250px;
 
   width: 80%;
+  min-width: 90rem;
 
   padding: 2%;
 `;
@@ -16,7 +26,7 @@ export const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin: 5rem auto 0;
+  margin: 1rem auto 0;
 
   width: 90%;
 `;
@@ -43,8 +53,8 @@ export const LoadingSpinner = styled.div`
 
 export const AddButton = styled.button`
   width: 7.8rem;
+  height: 3rem;
 
-  margin: 2px 0;
   padding: 12px 32px;
 
   border-radius: 8px;
@@ -70,7 +80,6 @@ export const Main = styled.div`
   display: flex;
   justify-content: center;
 
-  margin: 0 auto;
   padding: 3rem;
 `;
 
