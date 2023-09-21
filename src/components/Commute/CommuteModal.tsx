@@ -100,19 +100,19 @@ function CommuteModal() : JSX.Element {
 
     const toggleTimer = (): void => {
       localStorage.setItem('isCommuteButtonClicked', JSON.stringify(true));
-
+      
       if (!isTimerRunning) { // Timer가 true일 때
         setIsTimerRunning(true);
         setIsCommuteButtonClicked(true);
-        setTimer(
-          setInterval(() => {
-            setSeconds((prevSeconds) => {
-              const newSeconds = prevSeconds + 1;
-              localStorage.setItem('seconds', JSON.stringify(newSeconds)); // 타이머 초를 저장
-              return newSeconds;
-            });
-          }, 1000)
-        );
+        // setTimer(
+        //   setInterval(() => {
+        //     setSeconds((prevSeconds) => {
+        //       const newSeconds = prevSeconds + 1;
+        //       localStorage.setItem('seconds', JSON.stringify(newSeconds)); // 타이머 초를 저장
+        //       return newSeconds;
+        //     });
+        //   }, 1000)
+        // );
       } else if (isTimerRunning) { // Timer가 false일 때
         if (seconds > 0) {
 
@@ -192,16 +192,16 @@ function CommuteModal() : JSX.Element {
       
       const confirmation = window.confirm(`현재 시각은 ${currentTime}입니다. 퇴근하시겠습니까? \n근무 시간: ${formatTimeFromSeconds(seconds)}`);
       if (confirmation) {
+        setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
+        // 로컬 스토리지에서 seconds를 초기화
+        localStorage.setItem('seconds', JSON.stringify(0));
+
         setIsTimerRunning(false);
+        localStorage.setItem('isTimerRunning', JSON.stringify(false));
+
         if (timer != null) {
           clearInterval(timer);
           setTimer(null);
-          setSeconds(0); // 타이머를 리셋하고 초를 0으로 초기화
-
-          // 로컬 스토리지에서 seconds를 초기화
-          localStorage.setItem('seconds', JSON.stringify(0));
-
-          localStorage.setItem('isTimerRunning', JSON.stringify(false));
         }
         localStorage.setItem('isCommuteButtonClicked', JSON.stringify(false));
         setIsCommuteButtonClicked(false); // seconds가 0일 때 버튼 클릭 상태를 false로 업데이트
@@ -265,7 +265,30 @@ function CommuteModal() : JSX.Element {
         const workStartTimeFromStorage = new Date(JSON.parse(workStartTimeString));
         setWorkStartTime(workStartTimeFromStorage);
       }
+
+      const isTimerRunningString = localStorage.getItem('isTimerRunning');
+      if (isTimerRunningString !== null) {
+        const isTimerRunningFromStorage = JSON.parse(isTimerRunningString);
+        setIsTimerRunning(isTimerRunningFromStorage);
+      }
   }, []);
+
+  // 새로 고침해도 시간이 가게 됨!
+  useEffect(() => {
+    if (isTimerRunning) {
+      const timerId = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          const newSeconds = prevSeconds + 1;
+          localStorage.setItem('seconds', JSON.stringify(newSeconds)); // 타이머 초를 저장
+          return newSeconds;
+        });
+      }, 1000);
+  
+      return () => {
+        clearInterval(timerId); // 컴포넌트가 언마운트되면 타이머 해제
+      };
+    }
+  }, [isTimerRunning]);
     
     useEffect(() => {
       firebase.auth().onAuthStateChanged((user) => {
