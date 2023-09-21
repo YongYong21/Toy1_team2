@@ -117,7 +117,8 @@ export const ProfileName = styled.span`
 export const ProfileImage = styled.div`
   width: 32px;
   height: 32px;
-  background-color: #777;
+  background-color: ${theme.gray300};
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/wiki-app-46908.appspot.com/o/rocket3xDarker.png?alt=media&token=e9c4fac1-f4dc-4250-abd8-50ab28ef0809');
   border-radius: 50%;
   background-size: cover;
 `;
