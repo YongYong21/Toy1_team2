@@ -12,7 +12,7 @@ export const HeaderButton = styled.button`
   margin : 9px 36px 4px 7px;
   padding: 4px 8px;
 
-  background-color: #415575;
+  background-color: #325183;
   color:  ${props => props.theme.white};
 
   line-height: 160%;
@@ -21,7 +21,7 @@ export const HeaderButton = styled.button`
   float: right;
 
   &:hover {
-      background-color: #325183;
+      background-color: ${({ theme }) => theme.blue800};
     }
 `;
 
