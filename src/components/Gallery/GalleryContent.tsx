@@ -22,12 +22,17 @@ export interface ImageData {
 }
 
 export default function GalleryContent(): JSX.Element {
-  const { id } = useParams() as { id: string };
+  // state
   const [images, setImages] = useState<ImageData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const bucket = firestore.collection(id);
   const [title, setTitle] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // firebase 관련
+  const { id } = useParams() as { id: string };
+  const bucket = firestore.collection(id);
+
+  // 로그인 상태 관련
   const authState = useAuthState();
 
   /** 데이터 삭제 */
