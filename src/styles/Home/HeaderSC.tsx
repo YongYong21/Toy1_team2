@@ -83,7 +83,12 @@ export const SelectedLink = styled(NavLink)`
   }
 `;
 
-export const HeaderRight = styled.button`
+export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const HeaderRightProfile = styled.button`
   display: flex;
   border: 1px solid ${theme.blue300};
   background-color: ${theme.blue100};
