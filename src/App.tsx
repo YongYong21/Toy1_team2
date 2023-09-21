@@ -9,7 +9,7 @@ import Login from './pages/Authentication/LoginPage';
 import Register from './pages/Authentication/RegisterPage';
 import FindPwPage from './pages/Authentication/FindPwPage';
 import Gallery from './pages/Gallery/Gallery';
-import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound/NotFound';
 
 export default function App(): JSX.Element {
   return (
