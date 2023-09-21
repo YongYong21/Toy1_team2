@@ -63,7 +63,7 @@ function EditContent(): JSX.Element {
           console.error('Error fetching menu data:', error);
         });
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
-      alert('글수정 기능은 로그인을 해야합니다.');
+      alert('해당 기능은 로그인을 해야합니다.');
       navigate(newURL);
     }
   }, [authState, id]);
