@@ -1,25 +1,23 @@
 import styled from 'styled-components';
 
 export const Item = styled.div`
-  margin: 8px;
+  margin: 15px;
 
   .item-wrap {
-    width: 360px;
-    height: 360px;
+    width: 330px;
+    height: 330px;
 
     margin: 10px;
-    padding: 1rem;
 
     border-radius: 8px;
     border: none;
 
-    box-shadow: 2px 2px 50px 7px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 2px 50px 7px rgba(0, 0, 0, 0.1);
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    gap: 5%;
   }
 
   .item-wrap:hover {
