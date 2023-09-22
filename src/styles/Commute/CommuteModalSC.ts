@@ -1,19 +1,19 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const HeaderButton = styled.button`
   font-family: 'Pretendard', sans-serif;
   font-size: ${({ theme }) => theme.textStyles.button.fontSize};
   font-weight: 500;
-  
+
   border-radius: 50px;
 
   width: 120px;
   height: 39px;
-  margin : 9px 36px 4px 7px;
+  margin: 9px 36px 4px 7px;
   padding: 4px 8px;
 
   background-color: #325183;
-  color:  ${props => props.theme.white};
+  color: ${(props) => props.theme.white};
 
   line-height: 160%;
   text-align: center; /* 텍스트를 가운데 정렬 */
@@ -21,8 +21,8 @@ export const HeaderButton = styled.button`
   float: right;
 
   &:hover {
-      background-color: ${({ theme }) => theme.blue800};
-    }
+    background-color: ${({ theme }) => theme.blue800};
+  }
 `;
 
 export const AppWrapper = styled.div`
@@ -35,16 +35,16 @@ export const AppWrapper = styled.div`
 `;
 
 export const ModalWrapper = styled.div`
-    position: absolute;
-    top: 50px;
-    right: 0;
-    left: 0;
-    bottom: 0;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 0;
+  bottom: 0;
 
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  z-index: 1;
 `;
 
 export const ModalHeaderContainer = styled.div`
@@ -56,20 +56,20 @@ export const DateText = styled.p`
   flex: 1;
   font-weight: 500;
   font-size: ${({ theme }) => theme.textStyles.body1.fontSize};
-  
+
   margin: 0 0 4px 12px;
 
   color: ${({ theme }) => theme.gray600};
 `;
 
 export const ModalTitleText = styled.p`
-    font-family: 'Pretendard', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    margin: 0 0 3px 8px;
+  font-family: 'Pretendard', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  margin: 0 0 3px 8px;
 
-    font-size: ${({ theme }) => theme.textStyles.subtitle4.fontSize};
-    line-height: ${({ theme }) => theme.textStyles.subtitle4.lineHeight};
+  font-size: ${({ theme }) => theme.textStyles.subtitle4.fontSize};
+  line-height: ${({ theme }) => theme.textStyles.subtitle4.lineHeight};
 `;
 
 export const CloseButton = styled.button`
@@ -94,7 +94,7 @@ export const ModalContent = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.shadow2.shadow};
   .triangle {
     width: 27px;
-    background-color: ${({ theme }) => theme.gray100};;
+    background-color: ${({ theme }) => theme.gray100};
     height: 30px;
     border-radius: 3px;
 
@@ -102,7 +102,7 @@ export const ModalContent = styled.div`
     right: 210px;
     top: 18px;
     position: absolute;
-}
+  }
 `;
 
 export const TimeText = styled.span`
@@ -113,7 +113,7 @@ export const TimeText = styled.span`
   color: ${({ theme }) => theme.gray600};
 `;
 
-TimeText.shouldForwardProp = (prop) => prop !== "isTimerRunning"; // isTimerRunning 프롭 필터링
+TimeText.shouldForwardProp = (prop) => prop !== 'isTimerRunning'; // isTimerRunning 프롭 필터링
 
 export const TimerTextContainer = styled.div`
   display: flex;
@@ -141,8 +141,8 @@ interface TimerTextProps {
 export const TimerText = styled.span<TimerTextProps>`
   font-size: 64px; /* 큰 폰트 크기로 설정 */
   align-self: center; /* 가운데 정렬 */
-  
-  color: ${(props) => props.$isTimerRunning ? props.theme.error : 'black'};
+
+  color: ${(props) => (props.$isTimerRunning ? props.theme.error : 'black')};
   font-family: 'Pretendard', sans-serif;
   font-weight: 700;
   padding: 30px 0 50px 0;
@@ -233,22 +233,24 @@ export const ButtonContainer = styled.div`
 
 /* Button */
 export const CommuteButton = styled.button`
-    background: ${({ theme }) => theme.blue700};
-    border-radius: 12px;
-    color: white;
+  background: ${({ theme }) => theme.blue700};
+  border-radius: 12px;
+  color: white;
 
-    width: 439px;
-    height: 48px;
-    margin: 14px 0 0 0px;
+  width: 439px;
+  height: 48px;
+  margin: 14px 0 0 0px;
 
-    transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 
-    font-family: 'Pretendard', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: ${({ theme }) => theme.textStyles.button.fontSize};
-    line-height: ${({ theme }) => theme.textStyles.button.lineHeight};
-    text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: ${({ theme }) => theme.textStyles.button.fontSize};
+  line-height: ${({ theme }) => theme.textStyles.button.lineHeight};
+  text-align: center;
 
   &:hover {
     background: ${({ theme }) => theme.blue800};
@@ -256,22 +258,24 @@ export const CommuteButton = styled.button`
 `;
 
 export const PauseButton = styled.button`
-    background: ${({ theme }) => theme.blue300};
-    border-radius: 12px;
-    color: ${({ theme }) => theme.blue700};
+  background: ${({ theme }) => theme.blue300};
+  border-radius: 12px;
+  color: ${({ theme }) => theme.blue700};
 
-    width: 439px;
-    height: 48px;
-    margin: 14px 10px 0 0;
+  width: 439px;
+  height: 48px;
+  margin: 14px 10px 0 0;
 
-    transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 
-    font-family: 'Pretendard', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: ${({ theme }) => theme.textStyles.button.fontSize};
-    line-height: ${({ theme }) => theme.textStyles.button.lineHeight};
-    text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: ${({ theme }) => theme.textStyles.button.fontSize};
+  line-height: ${({ theme }) => theme.textStyles.button.lineHeight};
+  text-align: center;
 
   &:hover {
     background: ${({ theme }) => theme.blue400};

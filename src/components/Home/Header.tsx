@@ -38,7 +38,6 @@ export function Header(): JSX.Element {
   ]);
   const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
 
-
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user !== null) {
@@ -47,7 +46,6 @@ export function Header(): JSX.Element {
       }
     });
   }, []); // 패러미터 []를 사용. 사이트 처음 렌더링 됐을 때 1회만 합니다.
-  
 
   return (
     <HeaderContainer>
@@ -63,16 +61,16 @@ export function Header(): JSX.Element {
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
       <HeaderRight>
-          {/* 로그인유무에 따른 우측 부분 */}
-          {authState.state === 'loaded' && authState.isAuthentication && (
-            <CommuteModalContainer></CommuteModalContainer>
-          )}
-          <LoginContainer
-            username={username}
-            setUsername={setUsername}
-            prfSelected={prfSelected}
-            setPrfSelected={setPrfSelected}
-          />
+        {/* 로그인유무에 따른 우측 부분 */}
+        {authState.state === 'loaded' && authState.isAuthentication && (
+          <CommuteModalContainer></CommuteModalContainer>
+        )}
+        <LoginContainer
+          username={username}
+          setUsername={setUsername}
+          prfSelected={prfSelected}
+          setPrfSelected={setPrfSelected}
+        />
       </HeaderRight>
     </HeaderContainer>
   );
@@ -112,9 +110,7 @@ function LinkContainer({
 }
 
 function CommuteModalContainer(): JSX.Element {
-  return (
-    <CommuteModal></CommuteModal>
-  );
+  return <CommuteModal></CommuteModal>;
 }
 
 function LoginContainer({
