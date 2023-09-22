@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 import {
   FlexDiv,

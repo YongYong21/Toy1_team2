@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthContextProvider } from './contexts/AuthContext';
+import { AuthContextProvider } from './shared/contexts/AuthContext';
 import { Routes, Route } from 'react-router-dom';
 import Wiki from './pages/Wiki/Wiki';
 import WikiEdit from './pages/Wiki/WikiEdit';

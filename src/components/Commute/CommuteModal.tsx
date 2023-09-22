@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import firebase from '../../api/firebase';
+import firebase from '../../shared/api/firebase';
 import { FaBusinessTime } from 'react-icons/fa';
 
 import {

@@ -3,7 +3,7 @@ import { type ImageData } from './GalleryContent';
 import { Item } from '../../styles/Gallery/GalleryItem';
 import { MdClear } from 'react-icons/md';
 import { DeleteButton } from '../../styles/Gallery/GalleryContent';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 interface GalleryItemProps {
   image: ImageData;

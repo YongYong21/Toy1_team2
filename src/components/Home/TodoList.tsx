@@ -17,7 +17,7 @@ import { Height30 } from '../../styles/Home/ShortcutSC';
 import { NewTodoContainer } from './NewTodoContainer';
 import { ListComponent } from './ListComponent';
 
-import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
+import { useAuthState } from '../../shared/contexts/AuthContext'; // 인증 상태 가져오기
 
 interface TaskProps {
   todo: Array<[string, number, string, string]>;

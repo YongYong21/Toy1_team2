@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CommuteModal from '../Commute/CommuteModal';
 
-import firebase, { auth } from '../../api/firebase';
-import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
+import firebase, { auth } from '../../shared/api/firebase';
+import { useAuthState } from '../../shared/contexts/AuthContext'; // 인증 상태 가져오기
 
 import {
   HeaderContainer,

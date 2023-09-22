@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import firebase, { firestore } from '../../api/firebase';
+import firebase, { firestore } from '../../shared/api/firebase';
 import { useParams, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import {

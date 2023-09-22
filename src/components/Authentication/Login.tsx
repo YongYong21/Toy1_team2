@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../../api/firebase';
+import { auth } from '../../shared/api/firebase';
 import {
   LoginContainer,
   ToastMessage,
