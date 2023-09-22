@@ -32,12 +32,8 @@ function EditContent(): JSX.Element {
 
   // authState
   const authState = useAuthState();
-  const currentURL = window.location.href;
 
   // URL
-  const newURL = currentURL
-    .replace(/\/edit$/, '')
-    .replace('http://localhost:3000', '');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,7 +62,7 @@ function EditContent(): JSX.Element {
         });
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
       alert('해당 기능은 로그인을 해야합니다.');
-      navigate(newURL);
+      navigate(`/wiki/${id}`);
     }
   }, [authState, id]);
 
@@ -119,7 +115,7 @@ function EditContent(): JSX.Element {
               items,
             })
             .then(() => {
-              navigate(newURL);
+              navigate(`/wiki/${id}`);
             })
             .catch((error) => {
               console.error('content 수정 중 오류 발생: ', error);
@@ -150,7 +146,7 @@ function EditContent(): JSX.Element {
           <EditBtn className="btn1" onClick={handleSaveClick}>
             글 수정
           </EditBtn>
-          <Link to={newURL}>
+          <Link to={`/wiki/${id}`}>
             <EditBtn className="btn2">취소</EditBtn>
           </Link>
         </ButtonDiv>
