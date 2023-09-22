@@ -153,7 +153,7 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
         if (
           birthYear === thisYear &&
           birthMonth === thisMonth &&
-          birthDate >= thisDate
+          birthDate <= thisDate
         ) {
           todoCnt += 1;
         }
@@ -168,7 +168,7 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
         if (
           birthYear === thisYear &&
           birthMonth === thisMonth &&
-          birthDate >= thisDate
+          birthDate <= thisDate
         ) {
           doneCnt += 1;
         }
@@ -199,10 +199,16 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
           <CurrentDate>
             {month}월 {date}일 {days}요일
           </CurrentDate>
-          <CurrentUser>
-            안녕하세요,&nbsp;
-            <UN>{username.length > 8 ? username.slice(0, 8) : username}</UN>님
-          </CurrentUser>
+          {username === '사용자' ? (
+            <CurrentUser>
+              효율적인 <UN>일정관리</UN>를 시작해보세요.
+            </CurrentUser>
+          ) : (
+            <CurrentUser>
+              안녕하세요,&nbsp;
+              <UN>{username.length > 8 ? username.slice(0, 8) : username}</UN>님
+            </CurrentUser>
+          )}
         </GreetingArea>
         <BriefArea>
           <SelectPeriod onClick={onClickPeriodBtn} onBlur={onBlurPeriodBtn}>
@@ -222,12 +228,12 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
             <BoardEl>
               <Check></Check>
               <WorkType>완료된 작업</WorkType>
-              <WorkAmount>{nums[0]}</WorkAmount>
+              <WorkAmount>{nums[1]}</WorkAmount>
             </BoardEl>
             <BoardEl>
               <EditNote></EditNote>
               <WorkType>진행할 작업</WorkType>
-              <WorkAmount>{nums[1]}</WorkAmount>
+              <WorkAmount>{nums[0]}</WorkAmount>
             </BoardEl>
           </BoardArea>
         </BriefArea>

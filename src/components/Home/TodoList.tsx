@@ -17,6 +17,8 @@ import { Height30 } from '../../styles/Home/ShortcutSC';
 import { NewTodoContainer } from './NewTodoContainer';
 import { ListComponent } from './ListComponent';
 
+import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
+
 interface TaskProps {
   todo: Array<[string, number, string, string]>;
   setTodo: React.Dispatch<Array<[string, number, string, string]>>;
@@ -38,6 +40,8 @@ export function TodoList({
   tglEditTodo,
   setTglEditTodo,
 }: TaskProps): JSX.Element {
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
+
   const [toggleNew, setToggleNew] = useState(false); //  새로운 toDo생성 UI 표출/닫힘
   const [newDo, setNewDo] = useState(''); //   새로운 할 일 인자
 
@@ -95,6 +99,9 @@ export function TodoList({
         {TabMenu[0] === 1 && (
           <BtnSmLi
             onClick={() => {
+              if (authState.state !== 'loaded' || !authState.isAuthentication) {
+                return;
+              }
               setToggleNew(!toggleNew);
             }}
           >
