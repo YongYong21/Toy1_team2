@@ -7,7 +7,7 @@ import {
   ShortcutCol,
 } from '../../styles/Home/ShortcutSC';
 import { useNavigate } from 'react-router-dom';
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 
 import {
   TabBtn,
@@ -22,7 +22,7 @@ import {
   FloatBtn,
 } from '../../styles/Home/TodoListSC';
 import { ShortcutGallery } from './ShortcutGallery';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 interface TaskProps {
   todo: Array<[string, number, string, string]>;

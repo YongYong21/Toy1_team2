@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AngleUp, AngleDown } from '../../styles/Home/HeaderSC';
-import firebase from '../../api/firebase';
+import firebase from '../../shared/api/firebase';
 
 import {
   BriefContainer,

@@ -5,7 +5,7 @@ import {
   NewInputContainer,
   ToggleDocsBtn,
 } from '../../styles/Home/TodoListSC';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 interface NewTodoProps {
   setToggleNew: React.Dispatch<boolean>;

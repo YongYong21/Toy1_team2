@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 import { Link, useParams } from 'react-router-dom';
 import { theme } from '../../styles/Theme';
 

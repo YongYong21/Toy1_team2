@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { firestore, storage } from '../../api/firebase';
+import { firestore, storage } from '../../shared/api/firebase';
 import { useParams } from 'react-router-dom';
 import {
   AddButton,
@@ -12,7 +12,7 @@ import {
 } from '../../styles/Gallery/GalleryContent';
 import GalleryList from './GalleryList';
 import UploadModal from './UploadModal';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 import { Footer } from '../Footer/Footer';
 
 export interface ImageData {

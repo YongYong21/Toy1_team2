@@ -13,7 +13,7 @@ import {
 } from '../../styles/Home/TodoListSC';
 
 import { DocsComponent } from './DocsComponent';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 interface ListComponentProps {
   listEl: [string, number, string, string];

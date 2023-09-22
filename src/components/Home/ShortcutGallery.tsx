@@ -9,7 +9,7 @@ import {
   RightArrow,
   SectionContainer,
 } from '../../styles/Home/ShortcutGallerySC';
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 import { useEffect, useState } from 'react';
 
 export interface ImageData {
