@@ -80,6 +80,9 @@ const FindPwForm: React.FC = () => {
             case 'auth/user-not-found':
               setToastMessage('존재하지 않는 이메일입니다.');
               break;
+            case 'auth/invalid-email':
+              setToastMessage('잘못된 이메일 주소입니다.');
+              break;
             default:
               setToastMessage(
                 '알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.',
