@@ -166,7 +166,7 @@ function Contents(): JSX.Element {
       }
 
       if (errorTitleMessage || errorContentsMessage) {
-        alert('값을 입력하지 않는 부분이 있습니다.');
+        alert('값을 입력하지 않은 부분이 있습니다.');
         return;
       }
       const docRef = firestore.collection('post');
