@@ -25,54 +25,31 @@ import {
 } from '../../styles/Authentication/LoginRegisterSC';
 
 const RegisterForm: React.FC = () => {
-  /* ------------------ Toast 메세지 ------------------ */
-  // Toast 메시지 상태관리
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState(false);
-
-  // Toast 메시지를 숨기는 함수
-  const hideToastMessage: () => void = () => {
-    setShowToast(false);
-    setToastMessage(null);
-  };
-
-  useEffect(() => {
-    if (toastMessage !== null) {
-      setShowToast(true);
-      setTimeout(hideToastMessage, 6000);
-    }
-  }, [toastMessage]);
-
-  /* ------------------ Form 위치 ------------------ */
-
-  // 디바이스 높이를 상태로 저장.
-  const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
-
-  useEffect(() => {
-    // 브라우저 창 크기가 변경될 때마다 디바이스 높이 업데이트
-    const handleResize: () => void = () => {
-      setDeviceHeight(window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-  // margin-top과 margin-bottom 계산
-  const setMarginTop = (deviceHeight - 671) / 2;
-  const setMarginBottom = (deviceHeight - 671) / 2;
-
-  /* -------------------- useState -------------------- */
-
+  /* -------------------- State 관리 -------------------- */
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwdChk, setPwdChk] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [passwordValid, setPasswordValid] = useState(2);
   const [passwordMatch, setPasswordMatch] = useState(2);
   const [inputLabelText1, setInputLabelText1] = useState('비밀번호');
   const [inputLabelText2, setInputLabelText2] = useState('비밀번호 확인');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [deviceHeight, setDeviceHeight] = useState(window.innerHeight);
+  const navigate = useNavigate();
+
+  // 디바이스 높이를 상태로 저장.
+  const handleResize = (): void => {
+    setDeviceHeight(window.innerHeight);
+  };
+
+  // Toast 메시지를 숨기는 함수
+  const hideToastMessage = (): void => {
+    setShowToast(false);
+    setToastMessage(null);
+  };
 
   // input value값 저장
   const handleEmailInputChange = (
@@ -81,23 +58,14 @@ const RegisterForm: React.FC = () => {
     setEmail(e.target.value);
   };
 
-  /* -------------------- 비밀번호 유효성 검사 -------------------- */
-
-  // 1. 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함.
-  const validatePassword = (password: string): boolean => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    return passwordRegex.test(password); // boolean 반환
-  };
-
   const handlePasswordInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     const newPassword = e.target.value.trim();
     setPwd(newPassword);
-    const isPasswordValid = validatePassword(newPassword);
 
-    // 비밀번호 확인 Label 변경
+    // 비밀번호 확인 Label 변경 (유효성 검사)
+    const isPasswordValid = validatePassword(newPassword);
     if (newPassword !== '') {
       if (isPasswordValid) {
         setPasswordValid(1);
@@ -112,7 +80,27 @@ const RegisterForm: React.FC = () => {
     }
   };
 
-  // 2. useEffect로 비밀번호, 비밀번호 확인값 상태 동기화.
+  const handlePasswordChkInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    const newPasswordChk = e.target.value.trim();
+    setPwdChk(newPasswordChk);
+  };
+
+  const handleNameInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setName(e.target.value);
+  };
+
+  const handleClassInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setPhone(e.target.value);
+  };
+
+  /* ------------------ 비밀번호 일치여부 ------------------ */
+  // 비밀번호, 비밀번호 확인값 상태 동기화.
   useEffect(() => {
     if (pwdChk !== '') {
       // 비밀번호와 비밀번호 확인 값이 일치하는지 확인
@@ -129,27 +117,32 @@ const RegisterForm: React.FC = () => {
     }
   }, [pwd, pwdChk]);
 
-  const handlePasswordChkInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    const newPasswordChk = e.target.value.trim();
-    setPwdChk(newPasswordChk);
-  };
-  // ----------------------------------------
+  /* ------------------ Toast 메세지 ------------------ */
+  useEffect(() => {
+    if (toastMessage !== null) {
+      setShowToast(true);
+      setTimeout(hideToastMessage, 6000);
+    }
+  }, [toastMessage]);
 
-  const handleNameInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setName(e.target.value);
-  };
-  const handleClassInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setPhone(e.target.value);
+  /* ------------------ Container 가운데 정렬 ------------------ */
+  useEffect(() => {
+    // 브라우저 창 크기가 변경될 때마다 디바이스 높이 업데이트
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  /* -------------------------------- 회원가입 관련 기능 -------------------------------- */
+  // 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함.
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    return passwordRegex.test(password); // boolean 반환
   };
 
-  const navigate = useNavigate();
-  // 회원가입 수행 버튼
+  // 회원가입 유효성 검사
   const onSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
@@ -197,7 +190,10 @@ const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       <RegisterContainer
-        style={{ marginTop: setMarginTop, marginBottom: setMarginBottom }}
+        style={{
+          marginTop: (deviceHeight - 595) / 2,
+          marginBottom: (deviceHeight - 707) / 2,
+        }}
       >
         {showToast && (
           <ToastMessage

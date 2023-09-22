@@ -23,6 +23,7 @@ import {
   LabelDiv,
   Label,
   ButtonContainer,
+  ModalContainer,
 } from '../../styles/Wiki/ContentsSC';
 interface ItemType {
   text: string;
@@ -53,7 +54,7 @@ function Contents(): JSX.Element {
   const [username, setUsername] = useState<string>('사용자');
   const [toggleAddBtn, setToggleAddBtn] = useState(false);
 
-  const outside = useRef(null);
+  const outside = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   // URL
   useEffect(() => {
@@ -190,7 +191,7 @@ function Contents(): JSX.Element {
     setPostContents('');
   };
   // 모달 배경화면 클릭
-  const handleModalClose = (e: React.MouseEvent): void => {
+  const handleModalClose = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (toggleAddBtn && outside.current === e.target) {
       setToggleAddBtn(false);
     }
@@ -246,38 +247,43 @@ function Contents(): JSX.Element {
       {postState ? (
         <>
           {toggleAddBtn ? (
-            <DimDiv ref={outside} onClick={handleModalClose}>
-              <PostModal>
-                <PostTitleContainer>
-                  건의사항
-                  <AiOutlineClose onClick={handleCancelClick}></AiOutlineClose>
-                </PostTitleContainer>
-                <LabelDiv>
-                  <Label>
-                    <div>제목:</div>
-                    <input
-                      type="text"
-                      value={postTitle}
-                      onChange={handleTitleChange}
-                    />
-                  </Label>
-                  <br />
-                  <div>작성자: {username}</div>
-                  <Label>
-                    <div>내용:</div>
-                    <textarea
-                      value={postContents}
-                      onChange={handleContentsChange}
-                    />
-                  </Label>
-                </LabelDiv>
+            <>
+              <ModalContainer>
+                <DimDiv ref={outside} onClick={handleModalClose}></DimDiv>
+                <PostModal>
+                  <PostTitleContainer>
+                    <h1>건의사항</h1>
+                    <AiOutlineClose
+                      onClick={handleCancelClick}
+                    ></AiOutlineClose>
+                  </PostTitleContainer>
+                  <LabelDiv>
+                    <Label>
+                      <div>제목:</div>
+                      <input
+                        type="text"
+                        value={postTitle}
+                        onChange={handleTitleChange}
+                      />
+                    </Label>
+                    <br />
+                    <div>작성자: {username}</div>
+                    <Label>
+                      <div>내용:</div>
+                      <textarea
+                        value={postContents}
+                        onChange={handleContentsChange}
+                      />
+                    </Label>
+                  </LabelDiv>
 
-                <ButtonContainer>
-                  <EditBtn onClick={handlePostAddClick}>글 작성</EditBtn>
-                  <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
-                </ButtonContainer>
-              </PostModal>
-            </DimDiv>
+                  <ButtonContainer>
+                    <EditBtn onClick={handlePostAddClick}>글 작성</EditBtn>
+                    <CancelBtn onClick={handleCancelClick}>취소하기</CancelBtn>
+                  </ButtonContainer>
+                </PostModal>
+              </ModalContainer>
+            </>
           ) : (
             ''
           )}
@@ -306,7 +312,9 @@ function Contents(): JSX.Element {
         </>
       ) : (
         <ContentsContainer>
-          <TitleDiv>{data?.text}</TitleDiv>
+          <TitleDiv>
+            <h1>{data?.text}</h1>
+          </TitleDiv>
           <TimeStampWrap>
             <TimeStampDiv>글작성 날짜: {data?.timeStamp}</TimeStampDiv>
             <EditBtn onClick={handleClickEditBtn}>글 수정</EditBtn>

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import {
   ShortcutContainer,
   Height30,
@@ -6,6 +7,7 @@ import {
   ShortcutCol,
 } from '../../styles/Home/ShortcutSC';
 import { useNavigate } from 'react-router-dom';
+import { firestore } from '../../api/firebase';
 
 import {
   TabBtn,
@@ -22,10 +24,17 @@ import {
 import { ShortcutGallery } from './ShortcutGallery';
 
 interface TaskProps {
-  todo: Array<[string, number, string]>;
-  setTodo: React.Dispatch<Array<[string, number, string]>>;
+  todo: Array<[string, number, string, string]>;
+  setTodo: React.Dispatch<Array<[string, number, string, string]>>;
   setTabMenu: React.Dispatch<number[]>;
   setTglEditTodo: React.Dispatch<boolean[]>;
+}
+
+interface wikiProps {
+  id: string;
+  content: string;
+  timeStamp: string;
+  title: string;
 }
 
 export function Shortcut({
@@ -41,44 +50,69 @@ export function Shortcut({
   const wikiPosts = [
     {
       title: '회사 내규',
-      recentEdit: '2023.09.13.',
       url: 'rules',
     },
     {
       title: '팀 소개',
-      recentEdit: '2023.09.13.',
       url: 'information',
     },
     {
       title: '조직도',
-      recentEdit: '2023.09.13.',
       url: 'team',
     },
     {
       title: '진행중인 프로젝트',
-      recentEdit: '2023.09.13.',
       url: 'ongoing',
     },
     {
       title: '예정된 프로젝트',
-      recentEdit: '2023.09.13.',
       url: 'scheduled',
     },
     {
       title: '완료된 프로젝트',
-      recentEdit: '2023.09.13.',
       url: 'completed',
     },
     {
       title: '신입사원 필독서',
-      recentEdit: '2023.09.13.',
       url: 'read',
     },
     {
       title: '온보딩 주제',
-      recentEdit: '2023.09.13.',
+      url: 'must-read',
     },
   ];
+  const [dbWiki, setDbWiki] = useState<wikiProps[]>([]);
+
+  useEffect((): void => {
+    const bucket = firestore.collection('Wiki');
+
+    const fetchData = async (): Promise<void> => {
+      try {
+        const querySnapshot = await bucket.get();
+        const docList: wikiProps[] = [];
+
+        querySnapshot.forEach((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            const temp = data.timeStamp.split(' ')[0];
+            const spl = temp.split('-').slice(0, 3).join('.');
+
+            docList.push({
+              id: doc.id,
+              content: data.content,
+              timeStamp: spl,
+              title: data.title,
+            });
+          }
+        });
+        setDbWiki(docList);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    void fetchData();
+  }, []);
 
   const makeNewTodo = //
     (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -88,7 +122,13 @@ export function Shortcut({
 
       setTabMenu([1, 0]);
       const newTodo = todo.slice();
-      newTodo.unshift(['', new Date().getTime(), tarText]);
+      newTodo.unshift([
+        //
+        '',
+        new Date().getTime(),
+        tarText,
+        `${new Date().getFullYear()} ${new Date().getMonth()} ${new Date().getDate()} ${new Date().getDay()}`,
+      ]);
       setTodo(newTodo);
       setTglEditTodo([true]);
 
@@ -142,7 +182,11 @@ export function Shortcut({
                     할 일 추가
                   </FloatBtn>
                 </ShortcutCell>
-                <ShortcutCell>{wiki.recentEdit}</ShortcutCell>
+                <ShortcutCell>
+                  {dbWiki[idx] !== undefined
+                    ? dbWiki[idx].timeStamp
+                    : '2023.09.16'}
+                </ShortcutCell>
               </Tr>
             );
           })}

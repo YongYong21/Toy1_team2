@@ -6,8 +6,7 @@ export const FooterContainer = styled.div`
   height: 280px;
   width: 100%;
   background-color: ${theme.gray100};
-  display: flex;
-  justify-content: center;
+  padding-left: 80px;
   overflow: hidden;
   @media (max-width: 1256px) {
     height: 360px;
@@ -15,7 +14,6 @@ export const FooterContainer = styled.div`
 `;
 
 export const InnerDiv = styled.div`
-  width: 1256px;
   padding: 32px 40px 0 40px;
   display: flex;
   gap: 88px;

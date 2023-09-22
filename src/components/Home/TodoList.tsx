@@ -18,10 +18,10 @@ import { NewTodoContainer } from './NewTodoContainer';
 import { ListComponent } from './ListComponent';
 
 interface TaskProps {
-  todo: Array<[string, number, string]>;
-  setTodo: React.Dispatch<Array<[string, number, string]>>;
-  done: Array<[string, number, string]>;
-  setDone: React.Dispatch<Array<[string, number, string]>>;
+  todo: Array<[string, number, string, string]>;
+  setTodo: React.Dispatch<Array<[string, number, string, string]>>;
+  done: Array<[string, number, string, string]>;
+  setDone: React.Dispatch<Array<[string, number, string, string]>>;
   TabMenu: number[];
   setTabMenu: React.Dispatch<number[]>;
   tglEditTodo: boolean[];
@@ -63,7 +63,9 @@ export function TodoList({
     // localStorage에서 할 일 목록 불러오기 & setTodo()로 설정
     const gotTodo = localStorage.getItem('todo');
     if (gotTodo !== null) {
-      const parsedTodo = JSON.parse(gotTodo) as Array<[string, number, string]>;
+      const parsedTodo = JSON.parse(gotTodo) as Array<
+        [string, number, string, string]
+      >;
       setTodo(parsedTodo);
     }
 

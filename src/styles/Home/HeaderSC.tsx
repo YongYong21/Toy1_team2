@@ -182,3 +182,8 @@ export const HdMenuLi = styled.li`
     color: ${theme.gray900};
   }
 `;
+
+export const HeaderRightLoggedout = styled.div`
+  display: flex;
+  gap: 12px;
+`;

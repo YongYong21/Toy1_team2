@@ -24,21 +24,23 @@ import {
 } from '../../styles/Home/DailyBriefSC';
 
 interface TaskProps {
-  todo: Array<[string, number, string]>;
-  done: Array<[string, number, string]>;
+  todo: Array<[string, number, string, string]>;
+  done: Array<[string, number, string, string]>;
 }
 
-export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
-  const dayObj = {
-    0: '일',
-    1: '월',
-    2: '화',
-    3: '수',
-    4: '목',
-    5: '금',
-    6: '토',
-  };
+const dayObj = {
+  0: '일',
+  1: '월',
+  2: '화',
+  3: '수',
+  4: '목',
+  5: '금',
+  6: '토',
+};
 
+const monthObj = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
   const [days, setDays] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [month, setMonth] = useState<string>('');
@@ -46,6 +48,7 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
   const [username, setUsername] = useState('');
   const [focused, setFocused] = useState(false);
   const [period, setPeriod] = useState('이번 주');
+  const [nums, setNums] = useState([todo.length, done.length]);
 
   useEffect(() => {
     const thisMonth = new Date().getMonth();
@@ -64,6 +67,92 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
       }
     });
   }, []);
+
+  useEffect(() => {
+    sortTodo();
+  }, [todo]);
+  useEffect(() => {
+    sortTodo();
+  }, [period]);
+
+  const sortTodo = (): void => {
+    const thisYear = new Date().getFullYear();
+    const thisMonth = new Date().getMonth() + 1;
+    const thisDate = new Date().getDate();
+    let thisDay = new Date().getDay();
+
+    let todoCnt = 0;
+    let doneCnt = 0;
+
+    if (period === '전체') {
+      setNums([todo.length, done.length]);
+    } else if (period === '이번 달') {
+      todo.forEach((task) => {
+        const whenItIsMade = task[3].split(' ');
+        const birthYear = Number(whenItIsMade[0]);
+        const birthMonth = Number(whenItIsMade[1]) + 1;
+
+        if (birthYear === thisYear && birthMonth === thisMonth) {
+          todoCnt += 1;
+        }
+      });
+
+      done.forEach((task) => {
+        const whenItIsMade = task[3].split(' ');
+        const birthYear = Number(whenItIsMade[0]);
+        const birthMonth = Number(whenItIsMade[1]) + 1;
+
+        if (birthYear === thisYear && birthMonth === thisMonth) {
+          doneCnt += 1;
+        }
+      });
+
+      setNums([todoCnt, doneCnt]);
+    } else if (period === '이번 주') {
+      // 일요일: 0인데 7로 변환
+      if (thisDay === 0) {
+        thisDay = 7;
+      }
+
+      // 이번주 월요일을 구하기
+      let mondayOfThisWeek = thisDate - thisDay + 1;
+
+      if (mondayOfThisWeek <= 0) {
+        mondayOfThisWeek = monthObj[thisMonth] - mondayOfThisWeek;
+      }
+
+      todo.forEach((task) => {
+        const whenItIsMade = task[3].split(' ');
+        const birthYear = Number(whenItIsMade[0]);
+        const birthMonth = Number(whenItIsMade[1]) + 1;
+        const birthDate = Number(whenItIsMade[2]);
+
+        if (
+          birthYear === thisYear &&
+          birthMonth === thisMonth &&
+          birthDate >= thisDate
+        ) {
+          todoCnt += 1;
+        }
+      });
+
+      done.forEach((task) => {
+        const whenItIsMade = task[3].split(' ');
+        const birthYear = Number(whenItIsMade[0]);
+        const birthMonth = Number(whenItIsMade[1]) + 1;
+        const birthDate = Number(whenItIsMade[2]);
+
+        if (
+          birthYear === thisYear &&
+          birthMonth === thisMonth &&
+          birthDate >= thisDate
+        ) {
+          doneCnt += 1;
+        }
+      });
+      setNums([todoCnt, doneCnt]);
+    }
+  };
 
   const onClickMenu = (e: React.MouseEvent<HTMLUListElement>): void => {
     e.stopPropagation();
@@ -110,12 +199,12 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
             <BoardEl>
               <Check></Check>
               <WorkType>완료된 작업</WorkType>
-              <WorkAmount>{done.length}</WorkAmount>
+              <WorkAmount>{nums[0]}</WorkAmount>
             </BoardEl>
             <BoardEl>
               <EditNote></EditNote>
               <WorkType>진행할 작업</WorkType>
-              <WorkAmount>{todo.length}</WorkAmount>
+              <WorkAmount>{nums[1]}</WorkAmount>
             </BoardEl>
           </BoardArea>
         </BriefArea>
