@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../../shared/api/firebase';
+import { auth, firestore } from '../../shared/api/firebase';
 import {
   LoginContainer,
   ToastMessage,
@@ -90,6 +90,27 @@ const LoginForm: React.FC = () => {
     }
   }, []);
 
+  // 이메일 인증이 완료된 후 사용자 데이터 업데이트 함수
+  const updateUserEmailVerificationStatus = async (
+    email: string,
+  ): Promise<void> => {
+    const userDocRef = firestore.collection('users').doc(email);
+    try {
+      // Firestore에서 해당 사용자의 문서 가져오기
+      const userDoc = await userDocRef.get();
+      if (userDoc.exists) {
+        // 문서가 존재하는 경우, isEmailVerified 필드를 true로 업데이트
+        await userDocRef.update({
+          isEmailVerified: true,
+        });
+      } else {
+        console.error('Error!사용자 데이터를 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      console.error('사용자 데이터 업데이트 중 오류 발생:', error);
+    }
+  };
+
   // 로그인 기능
   const onSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -101,6 +122,7 @@ const LoginForm: React.FC = () => {
       if (user !== null) {
         const { emailVerified } = user; // 사용자의 이메일 인증 여부 추출
         if (emailVerified) {
+          await updateUserEmailVerificationStatus(email);
           // 이메일 인증이 완료 된 경우
           setToastMessage('로그인 완료! 메인페이지로 이동합니다.');
           setTimeout(() => {
