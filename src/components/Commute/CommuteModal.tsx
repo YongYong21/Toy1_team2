@@ -308,8 +308,6 @@ function CommuteModal(): JSX.Element {
 
         // displayName을 modalTitle에 적용
         setModalTitle(`${displayName}님 업무 시작 전 입니다. 👀`);
-      } else {
-        console.log('로그아웃됨');
       }
     });
   }, []);
