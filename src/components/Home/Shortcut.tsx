@@ -64,8 +64,6 @@ export function Shortcut({
             const tar = data.items;
 
             tar.forEach((parsed: any) => {
-              // console.log(parsed);
-              console.log(parsed.text, 'parsed.text');
               if (parsed.timeStamp !== undefined) {
                 const temp = parsed.timeStamp.split(' ')[0];
                 const spl = temp.split('-').slice(0, 3).join('.');
