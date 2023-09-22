@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CommuteModal from '../Commute/CommuteModal';
 
-import firebase, { auth } from '../../api/firebase';
-import { useAuthState } from '../../contexts/AuthContext'; // 인증 상태 가져오기
+import firebase, { auth } from '../../shared/api/firebase';
+import { useAuthState } from '../../shared/contexts/AuthContext'; // 인증 상태 가져오기
 
 import {
   HeaderContainer,
@@ -38,7 +38,6 @@ export function Header(): JSX.Element {
   ]);
   const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
 
-
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user !== null) {
@@ -47,7 +46,6 @@ export function Header(): JSX.Element {
       }
     });
   }, []); // 패러미터 []를 사용. 사이트 처음 렌더링 됐을 때 1회만 합니다.
-  
 
   return (
     <HeaderContainer>
@@ -63,16 +61,16 @@ export function Header(): JSX.Element {
         <LinkContainer pathname={pathname} paths={paths} />
       </HeaderLeft>
       <HeaderRight>
-          {/* 로그인유무에 따른 우측 부분 */}
-          {authState.state === 'loaded' && authState.isAuthentication && (
-            <CommuteModalContainer></CommuteModalContainer>
-          )}
-          <LoginContainer
-            username={username}
-            setUsername={setUsername}
-            prfSelected={prfSelected}
-            setPrfSelected={setPrfSelected}
-          />
+        {/* 로그인유무에 따른 우측 부분 */}
+        {authState.state === 'loaded' && authState.isAuthentication && (
+          <CommuteModalContainer></CommuteModalContainer>
+        )}
+        <LoginContainer
+          username={username}
+          setUsername={setUsername}
+          prfSelected={prfSelected}
+          setPrfSelected={setPrfSelected}
+        />
       </HeaderRight>
     </HeaderContainer>
   );
@@ -112,9 +110,7 @@ function LinkContainer({
 }
 
 function CommuteModalContainer(): JSX.Element {
-  return (
-    <CommuteModal></CommuteModal>
-  );
+  return <CommuteModal></CommuteModal>;
 }
 
 function LoginContainer({
@@ -146,6 +142,8 @@ function LoginContainer({
         .then(() => {
           // 로그아웃 성공
           alert('로그아웃되었습니다.');
+          // 모든 로컬 스토리지 데이터를 지우기
+          localStorage.clear();
         })
         .catch((error) => {
           console.error('로그아웃 중 에러가 발생했습니다:', error);

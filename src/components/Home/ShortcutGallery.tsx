@@ -9,7 +9,7 @@ import {
   RightArrow,
   SectionContainer,
 } from '../../styles/Home/ShortcutGallerySC';
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 import { useEffect, useState } from 'react';
 
 export interface ImageData {
@@ -61,13 +61,13 @@ export function ShortcutGallery(): JSX.Element {
   return (
     <SectionContainer>
       <ImgHeader>
-        협력사 이미지
+        회사시설 이미지
         <RightArrow onClick={onNaviagate} />
       </ImgHeader>
       <ImgsContainer>
         {images.length === 0 && (
           <NoImg>
-            이런, 협력사 이미지가 없습니다.
+            이런, 사내시설 이미지가 없네요.
             <BtnSmLiShortcut //
               onClick={onNaviagate}
             >

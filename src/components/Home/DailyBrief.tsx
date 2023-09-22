@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AngleUp, AngleDown } from '../../styles/Home/HeaderSC';
-import firebase from '../../api/firebase';
+import firebase from '../../shared/api/firebase';
 
 import {
   BriefContainer,
@@ -75,6 +75,25 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
     sortTodo();
   }, [period]);
 
+  const isThereCreatedDay = (
+    tasks: Array<[string, number, string, string]>,
+  ): boolean => {
+    let flag = true;
+    const temp = tasks.slice();
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i][3] === undefined) {
+        temp[i][3] = '2023 8 21 4';
+        flag = false;
+      }
+    }
+    if (!flag) {
+      const strfied = JSON.stringify(temp);
+      localStorage.setItem('todo', strfied);
+      setNums([todo.length, done.length]);
+    }
+    return flag;
+  };
+
   const sortTodo = (): void => {
     const thisYear = new Date().getFullYear();
     const thisMonth = new Date().getMonth() + 1;
@@ -87,6 +106,10 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
     if (period === '전체') {
       setNums([todo.length, done.length]);
     } else if (period === '이번 달') {
+      // 생성일이 없으면 일단 '오늘'로 채워넣고 로컬스토리지 저장하는 함수
+      isThereCreatedDay(todo);
+      isThereCreatedDay(done);
+
       todo.forEach((task) => {
         const whenItIsMade = task[3].split(' ');
         const birthYear = Number(whenItIsMade[0]);
@@ -130,7 +153,7 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
         if (
           birthYear === thisYear &&
           birthMonth === thisMonth &&
-          birthDate >= thisDate
+          birthDate <= thisDate
         ) {
           todoCnt += 1;
         }
@@ -145,7 +168,7 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
         if (
           birthYear === thisYear &&
           birthMonth === thisMonth &&
-          birthDate >= thisDate
+          birthDate <= thisDate
         ) {
           doneCnt += 1;
         }
@@ -176,10 +199,16 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
           <CurrentDate>
             {month}월 {date}일 {days}요일
           </CurrentDate>
-          <CurrentUser>
-            안녕하세요,&nbsp;
-            <UN>{username.length > 8 ? username.slice(0, 8) : username}</UN>님
-          </CurrentUser>
+          {username === '사용자' ? (
+            <CurrentUser>
+              효율적인 <UN>일정관리</UN>를 시작해보세요.
+            </CurrentUser>
+          ) : (
+            <CurrentUser>
+              안녕하세요,&nbsp;
+              <UN>{username.length > 8 ? username.slice(0, 8) : username}</UN>님
+            </CurrentUser>
+          )}
         </GreetingArea>
         <BriefArea>
           <SelectPeriod onClick={onClickPeriodBtn} onBlur={onBlurPeriodBtn}>
@@ -199,12 +228,12 @@ export function DailyBrief({ todo, done }: TaskProps): JSX.Element {
             <BoardEl>
               <Check></Check>
               <WorkType>완료된 작업</WorkType>
-              <WorkAmount>{nums[0]}</WorkAmount>
+              <WorkAmount>{nums[1]}</WorkAmount>
             </BoardEl>
             <BoardEl>
               <EditNote></EditNote>
               <WorkType>진행할 작업</WorkType>
-              <WorkAmount>{nums[1]}</WorkAmount>
+              <WorkAmount>{nums[0]}</WorkAmount>
             </BoardEl>
           </BoardArea>
         </BriefArea>

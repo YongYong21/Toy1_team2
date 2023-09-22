@@ -5,7 +5,7 @@ import {
   sendEmailVerification,
   signOut,
 } from 'firebase/auth';
-import { auth } from '../../api/firebase';
+import { auth } from '../../shared/api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   RegisterContainer,
@@ -175,7 +175,7 @@ const RegisterForm: React.FC = () => {
               setToastMessage('잘못된 이메일 주소입니다.');
               break;
             case 'auth/email-already-in-use':
-              setToastMessage('이미 가입되어 있는 계정입니다.');
+              setToastMessage('이미 사용중인 이메일입니다.');
               break;
             default:
               setToastMessage('알 수 없는 오류가 발생했습니다.');

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../../api/firebase';
+import { auth } from '../../shared/api/firebase';
 import {
   FindPwContainer,
   ToastMessage,
@@ -79,6 +79,9 @@ const FindPwForm: React.FC = () => {
               break;
             case 'auth/user-not-found':
               setToastMessage('존재하지 않는 이메일입니다.');
+              break;
+            case 'auth/invalid-email':
+              setToastMessage('잘못된 이메일 주소입니다.');
               break;
             default:
               setToastMessage(
