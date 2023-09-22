@@ -7,7 +7,7 @@ import {
   ShortcutCol,
 } from '../../styles/Home/ShortcutSC';
 import { useNavigate } from 'react-router-dom';
-import { firestore } from '../../api/firebase';
+import { firestore } from '../../shared/api/firebase';
 
 import {
   TabBtn,
@@ -22,7 +22,7 @@ import {
   FloatBtn,
 } from '../../styles/Home/TodoListSC';
 import { ShortcutGallery } from './ShortcutGallery';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 
 interface TaskProps {
   todo: Array<[string, number, string, string]>;
@@ -32,10 +32,10 @@ interface TaskProps {
 }
 
 interface wikiProps {
-  id: string;
   content: string;
   timeStamp: string;
-  title: string;
+  text: string;
+  url: string;
 }
 
 export function Shortcut({
@@ -48,44 +48,10 @@ export function Shortcut({
   const [clkTab, setClkTab] = useState([1, 0]);
   const navigate = useNavigate();
 
-  const wikiPosts = [
-    {
-      title: '회사 내규',
-      url: 'rules',
-    },
-    {
-      title: '팀 소개',
-      url: 'information',
-    },
-    {
-      title: '조직도',
-      url: 'team',
-    },
-    {
-      title: '진행중인 프로젝트',
-      url: 'ongoing',
-    },
-    {
-      title: '예정된 프로젝트',
-      url: 'scheduled',
-    },
-    {
-      title: '완료된 프로젝트',
-      url: 'completed',
-    },
-    {
-      title: '신입사원 필독서',
-      url: 'read',
-    },
-    {
-      title: '온보딩 주제',
-      url: 'must-read',
-    },
-  ];
   const [dbWiki, setDbWiki] = useState<wikiProps[]>([]);
 
   useEffect((): void => {
-    const bucket = firestore.collection('Wiki');
+    const bucket = firestore.collection('sidebarMenu');
 
     const fetchData = async (): Promise<void> => {
       try {
@@ -95,14 +61,29 @@ export function Shortcut({
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
             const data = doc.data();
-            const temp = data.timeStamp.split(' ')[0];
-            const spl = temp.split('-').slice(0, 3).join('.');
+            const tar = data.items;
 
-            docList.push({
-              id: doc.id,
-              content: data.content,
-              timeStamp: spl,
-              title: data.title,
+            tar.forEach((parsed: any) => {
+              // console.log(parsed);
+              console.log(parsed.text, 'parsed.text');
+              if (parsed.timeStamp !== undefined) {
+                const temp = parsed.timeStamp.split(' ')[0];
+                const spl = temp.split('-').slice(0, 3).join('.');
+                docList.push({
+                  content: parsed.content,
+                  timeStamp: spl,
+                  text: parsed.text,
+                  url: parsed.url,
+                });
+              } else {
+                const spl = '2023.09.22';
+                docList.push({
+                  content: parsed.content,
+                  timeStamp: spl,
+                  text: parsed.text,
+                  url: parsed.url,
+                });
+              }
             });
           }
         });
@@ -172,7 +153,7 @@ export function Shortcut({
       )}
       {clkTab[0] === 1 && (
         <Tb>
-          {wikiPosts.map((wiki, idx) => {
+          {dbWiki.map((wiki, idx) => {
             return (
               <Tr key={idx}>
                 <ShortcutCell
@@ -181,15 +162,13 @@ export function Shortcut({
                   }}
                 >
                   <DocText />
-                  {wiki.title}
-                  <FloatBtn data-id={wiki.title} onClick={makeNewTodo}>
+                  {wiki !== undefined ? wiki.text : `문서 ${idx}`}
+                  <FloatBtn data-id={wiki.text} onClick={makeNewTodo}>
                     할 일 추가
                   </FloatBtn>
                 </ShortcutCell>
                 <ShortcutCell>
-                  {dbWiki[idx] !== undefined
-                    ? dbWiki[idx].timeStamp
-                    : '2023.09.16'}
+                  {wiki !== undefined ? wiki.timeStamp : '2023.09.16'}
                 </ShortcutCell>
               </Tr>
             );

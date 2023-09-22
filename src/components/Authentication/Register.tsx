@@ -5,7 +5,7 @@ import {
   sendEmailVerification,
   signOut,
 } from 'firebase/auth';
-import { auth } from '../../api/firebase';
+import { auth } from '../../shared/api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   RegisterContainer,

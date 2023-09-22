@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import firebase, { firestore } from '../../api/firebase';
+import firebase, { firestore } from '../../shared/api/firebase';
 import { useParams, useNavigate } from 'react-router-dom';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '../../shared/contexts/AuthContext';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import {
@@ -84,8 +84,6 @@ function Contents(): JSX.Element {
         if (user !== null) {
           const displayName = user.displayName;
           setUsername(displayName ?? '사용자');
-        } else {
-          console.log('Signed Out'); // 로그인 안 됐을 때
         }
       });
     } else {
@@ -217,31 +215,33 @@ function Contents(): JSX.Element {
    */
   const handleDeleteClick = (id: string): void => {
     if (authState.state === 'loaded' && authState.isAuthentication) {
-      firestore
-        .collection('post')
-        .where('id', '==', id)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            firestore
-              .collection('post')
-              .doc(doc.id)
-              .delete()
-              .then(() => {
-                const updatedPosts = post.filter(
-                  (postItem) => postItem.id !== id,
-                );
-                setPost(updatedPosts);
-                console.log('Document successfully deleted!');
-              })
-              .catch((error) => {
-                console.error('Error removing document: ', error);
-              });
+      const checkDelete = window.confirm('삭제하시겠습니까?');
+      if (checkDelete) {
+        firestore
+          .collection('post')
+          .where('id', '==', id)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              firestore
+                .collection('post')
+                .doc(doc.id)
+                .delete()
+                .then(() => {
+                  const updatedPosts = post.filter(
+                    (postItem) => postItem.id !== id,
+                  );
+                  setPost(updatedPosts);
+                })
+                .catch((error) => {
+                  console.error('Error removing document: ', error);
+                });
+            });
+          })
+          .catch((error) => {
+            console.log('Error getting documents: ', error);
           });
-        })
-        .catch((error) => {
-          console.log('Error getting documents: ', error);
-        });
+      }
     } else if (authState.state === 'loaded' && !authState.isAuthentication) {
       alert('해당 기능은 로그인을 해야합니다.');
     }

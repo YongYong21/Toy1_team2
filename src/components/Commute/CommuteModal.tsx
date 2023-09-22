@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import firebase from '../../api/firebase';
+import firebase from '../../shared/api/firebase';
 import { FaBusinessTime } from 'react-icons/fa';
 
 import {
@@ -308,8 +308,6 @@ function CommuteModal(): JSX.Element {
 
         // displayName을 modalTitle에 적용
         setModalTitle(`${displayName}님 업무 시작 전 입니다. 👀`);
-      } else {
-        console.log('로그아웃됨');
       }
     });
   }, []);

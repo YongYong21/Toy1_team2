@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../../api/firebase';
+import { auth } from '../../shared/api/firebase';
 import {
   FindPwContainer,
   ToastMessage,
