@@ -57,7 +57,7 @@ export const DateText = styled.p`
   font-weight: 500;
   font-size: ${({ theme }) => theme.textStyles.body1.fontSize};
   
-  margin-bottom: 4px;
+  margin: 0 0 4px 12px;
 
   color: ${({ theme }) => theme.gray600};
 `;
@@ -66,7 +66,7 @@ export const ModalTitleText = styled.p`
     font-family: 'Pretendard', sans-serif;
     font-style: normal;
     font-weight: 700;
-    margin-bottom: 3px;
+    margin: 0 0 3px 8px;
 
     font-size: ${({ theme }) => theme.textStyles.subtitle4.fontSize};
     line-height: ${({ theme }) => theme.textStyles.subtitle4.lineHeight};
@@ -106,7 +106,7 @@ export const ModalContent = styled.div`
 `;
 
 export const TimeText = styled.span`
-  margin-bottom: 8px;
+  margin: 0 0 8px 8px;
 
   font-weight: 500;
   font-size: ${({ theme }) => theme.textStyles.body1.fontSize};
@@ -118,6 +118,8 @@ TimeText.shouldForwardProp = (prop) => prop !== "isTimerRunning"; // isTimerRunn
 export const TimerTextContainer = styled.div`
   display: flex;
   flex-direction: column;
+
+  margin-top: 3px;
 
   background: ${({ theme }) => theme.gray300};
   border-radius: 12px;
@@ -237,7 +239,7 @@ export const CommuteButton = styled.button`
 
     width: 439px;
     height: 48px;
-    margin: 14px 0 0 5px;
+    margin: 14px 0 0 0px;
 
     transition: background-color 0.3s, color 0.3s;
 
@@ -260,7 +262,7 @@ export const PauseButton = styled.button`
 
     width: 439px;
     height: 48px;
-    margin: 14px 5px 0 0;
+    margin: 14px 10px 0 0;
 
     transition: background-color 0.3s, color 0.3s;
 

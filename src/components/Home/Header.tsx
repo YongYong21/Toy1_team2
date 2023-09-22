@@ -146,6 +146,8 @@ function LoginContainer({
         .then(() => {
           // 로그아웃 성공
           alert('로그아웃되었습니다.');
+          // 모든 로컬 스토리지 데이터를 지우기
+          localStorage.clear();
         })
         .catch((error) => {
           console.error('로그아웃 중 에러가 발생했습니다:', error);
