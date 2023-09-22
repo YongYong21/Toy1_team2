@@ -232,7 +232,6 @@ function Contents(): JSX.Element {
                   (postItem) => postItem.id !== id,
                 );
                 setPost(updatedPosts);
-                console.log('Document successfully deleted!');
               })
               .catch((error) => {
                 console.error('Error removing document: ', error);

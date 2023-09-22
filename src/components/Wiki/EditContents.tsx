@@ -120,7 +120,6 @@ function EditContent(): JSX.Element {
             })
             .then(() => {
               navigate(newURL);
-              console.log('content 수정 완료');
             })
             .catch((error) => {
               console.error('content 수정 중 오류 발생: ', error);
