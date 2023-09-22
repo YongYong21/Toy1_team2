@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../../shared/api/firebase';
+import { auth, firestore } from '../../shared/api/firebase';
+import { getDoc, doc } from 'firebase/firestore';
 import {
   FindPwContainer,
   ToastMessage,
@@ -61,27 +62,37 @@ const FindPwForm: React.FC = () => {
     };
   }, []);
 
+  /* -------------------------------- 이메일 인증 여부를 확인하는 함수 -------------------------------- */
+  const checkEmailVerificationStatus = async (
+    email: string,
+  ): Promise<boolean> => {
+    const userDocRef = doc(firestore, 'users', email);
+    const usersDoc = await getDoc(userDocRef);
+    const usersDocData = usersDoc.data();
+    return usersDocData?.isEmailVerified; // 이메일 인증 여부 반환
+  };
+
   /* -------------------------------- 비밀번호 찾기 기능 -------------------------------- */
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const onSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
-    auth
-      .sendPasswordResetEmail(email)
-      .then(() => {
+    const isEmailVerified = await checkEmailVerificationStatus(email);
+    if (isEmailVerified) {
+      try {
+        await auth.sendPasswordResetEmail(email);
         setToastMessage(
           '비밀번호 변경 링크를 이메일로 전송했습니다. 이메일을 확인해주세요.',
         );
-      })
-      .catch((error: any) => {
-        if (typeof error.code === 'string') {
-          switch (error.code) {
+      } catch (error) {
+        const errorCode = (error as any).code;
+        if (typeof errorCode === 'string') {
+          switch (errorCode) {
             case 'auth/missing-email':
               setToastMessage('이메일을 입력해주세요.');
               break;
             case 'auth/user-not-found':
               setToastMessage('존재하지 않는 이메일입니다.');
-              break;
-            case 'auth/invalid-email':
-              setToastMessage('잘못된 이메일 주소입니다.');
               break;
             default:
               setToastMessage(
@@ -89,7 +100,12 @@ const FindPwForm: React.FC = () => {
               );
           }
         }
-      });
+      }
+    } else {
+      setToastMessage(
+        '인증되지 않은 이메일입니다. 먼저 이메일 인증을 완료후 로그인을 진행해야 합니다.',
+      );
+    }
   };
 
   return (

@@ -5,7 +5,7 @@ import {
   sendEmailVerification,
   signOut,
 } from 'firebase/auth';
-import { auth } from '../../shared/api/firebase';
+import { auth, firestore } from '../../shared/api/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   RegisterContainer,
@@ -164,6 +164,14 @@ const RegisterForm: React.FC = () => {
           displayName: name, // 이름 업데이트
         });
         await sendEmailVerification(user);
+
+        // Firestore에 사용자 데이터 저장
+        const userDocRef = firestore.collection('users').doc(email);
+        await userDocRef.set({
+          userEmail: email,
+          isEmailVerified: false, // 처음에는 이메일 미인증 상태로 저장
+        });
+
         localStorage.setItem('registrationSuccess', 'true');
         await signOut(auth);
         navigate('/login');
