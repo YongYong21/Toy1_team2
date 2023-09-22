@@ -22,6 +22,7 @@ import {
   FloatBtn,
 } from '../../styles/Home/TodoListSC';
 import { ShortcutGallery } from './ShortcutGallery';
+import { useAuthState } from '../../contexts/AuthContext';
 
 interface TaskProps {
   todo: Array<[string, number, string, string]>;
@@ -43,7 +44,7 @@ export function Shortcut({
   setTabMenu,
   setTglEditTodo,
 }: TaskProps): JSX.Element {
-  // const [addFocus, setAddFocus] = useState(false);
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
   const [clkTab, setClkTab] = useState([1, 0]);
   const navigate = useNavigate();
 
@@ -117,6 +118,9 @@ export function Shortcut({
   const makeNewTodo = //
     (e: React.MouseEvent<HTMLButtonElement>): void => {
       e.stopPropagation();
+      if (authState.state !== 'loaded' || !authState.isAuthentication) {
+        return;
+      }
       const tar = e.target as HTMLElement;
       const tarText = tar.dataset.id as string;
 

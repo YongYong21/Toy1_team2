@@ -11,7 +11,9 @@ import {
   TodoTitle,
   ToggleDocsBtn,
 } from '../../styles/Home/TodoListSC';
+
 import { DocsComponent } from './DocsComponent';
+import { useAuthState } from '../../contexts/AuthContext';
 
 interface ListComponentProps {
   listEl: [string, number, string, string];
@@ -55,8 +57,13 @@ export function ListComponent({
   docs,
 }: ListComponentProps): //
 JSX.Element {
+  const authState = useAuthState(); // 인증 컨텍스트에서 인증 상태 가져오기
+
   // 체크버튼 눌렀을 때 todo에서 doned으로 스위치하는 함수
   const switchTodoToDone = (e: React.MouseEvent<HTMLElement>): void => {
+    if (authState.state !== 'loaded' || !authState.isAuthentication) {
+      return;
+    }
     const tar = e.currentTarget as HTMLElement; // 현재 이벤트 타겟
     const dataset = tar.dataset.id; // HTML DataSet을 iD에 넣어 활용
 
@@ -81,6 +88,9 @@ JSX.Element {
 
   // 체크버튼 눌렀을 때 done에서 todo으로 스위치하는 함수
   const switchDoneToTodo = (e: React.MouseEvent<HTMLDivElement>): void => {
+    if (authState.state !== 'loaded' || !authState.isAuthentication) {
+      return;
+    }
     const tar = e.currentTarget as HTMLElement; // 현재 이벤트 타겟
     const dataset = tar.dataset.id; // HTML DataSet을 iD에 넣어 활용
 
@@ -106,6 +116,9 @@ JSX.Element {
   //  '삭제 툴팁' 키고 끄기 함수
   const ToggleDeleteBtn = //
     (e: React.FocusEvent<HTMLButtonElement>, eType: string): void => {
+      if (authState.state !== 'loaded' || !authState.isAuthentication) {
+        return;
+      }
       const tar = e.target;
       const tarId = tar.dataset.id;
 
@@ -161,6 +174,9 @@ JSX.Element {
   // 수정 상태로 전환하기 함수
   const ToggleEditTitle = //
     (e: React.MouseEvent<HTMLElement>): void => {
+      if (authState.state !== 'loaded' || !authState.isAuthentication) {
+        return;
+      }
       const tar = e.target as HTMLInputElement;
       const tarId = tar.dataset.id;
 
@@ -265,6 +281,9 @@ JSX.Element {
 
   // 문서 열기 함수
   const toggleDocsList = (): void => {
+    if (authState.state !== 'loaded' || !authState.isAuthentication) {
+      return;
+    }
     if (tglTodoDocs[idx]) {
       setTglTodoDocs([]);
     } else {

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import {
   Cell,
   NewInput,
   NewInputContainer,
   ToggleDocsBtn,
 } from '../../styles/Home/TodoListSC';
+import { useAuthState } from '../../contexts/AuthContext';
 
 interface NewTodoProps {
   setToggleNew: React.Dispatch<boolean>;
@@ -33,14 +35,19 @@ export function NewTodoContainer({
   docs,
 }: NewTodoProps): //
 JSX.Element {
+  const authState = useAuthState();
+  useEffect(() => {}, [authState]);
+
   const handleEnterSubmit = //
     (e: React.KeyboardEvent<HTMLInputElement>): void => {
+      if (authState.state !== 'loaded' || !authState.isAuthentication) {
+        return;
+      }
       if (e.key === 'Enter') {
         //  엔터를 눌렀으면
         //  심플하게 [내용 ,아이디]로 인자를 구성
         const temp = todo.slice();
         temp.unshift([
-          //
           newDo,
           Date.now(),
           docs[0],
@@ -70,6 +77,9 @@ JSX.Element {
 
   const handleBlurSubmitNew = //
     (e: React.FocusEvent<HTMLInputElement>): void => {
+      if (authState.state !== 'loaded' || !authState.isAuthentication) {
+        return;
+      }
       const temp = todo.slice();
       temp.unshift([
         newDo,

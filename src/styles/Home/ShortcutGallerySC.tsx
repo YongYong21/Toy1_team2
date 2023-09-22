@@ -10,12 +10,15 @@ export const SectionContainer = styled.div`
 
 export const ImgsContainer = styled.div`
   display: flex;
-  padding: 56px 24px 0 24px;
-  width: 100%;
-  height: 104%;
   gap: 16px;
   flex-wrap: wrap;
+
+  width: 100%;
+  height: 104%;
+
   overflow-y: scroll;
+
+  padding: 56px 24px 0 24px;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -25,16 +28,21 @@ export const ImgsContainer = styled.div`
 `;
 
 export const ImgItems = styled.div`
+  position: relative;
+
   width: 170px;
   height: 170px;
   border-radius: 8px;
+
   background-size: cover;
   background-color: ${theme.gray200};
-  position: relative;
+
   box-shadow: 0 0px 16px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
   box-sizing: border-box;
+
   cursor: pointer;
+  transition: transform 0.2s;
+
   &:hover {
     transform: translateY(-4px);
   }
@@ -43,65 +51,80 @@ export const ImgItems = styled.div`
 export const ImgTitle = styled.div`
   position: absolute;
   bottom: 0;
-  height: 56px;
-  width: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 5%, black 95%);
-  color: ${theme.white};
+
   display: flex;
   align-items: end;
-  padding: 0 0 12px 16px;
+
+  height: 56px;
+  width: 100%;
+
+  color: ${theme.white};
+
   border-radius: 0 0 8px 8px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 5%, black 95%);
+
+  padding: 0 0 12px 16px;
 `;
 
 export const NoImg = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
   justify-content: center;
+
+  display: flex;
+  width: 100%;
+  height: 100%;
+
   font-size: ${theme.textStyles.subtitle5.fontSize};
   color: ${theme.gray600};
   padding-top: 40px;
 `;
 
 export const ImgHeader = styled.div`
-  font-size: ${theme.textStyles.body2.fontSize};
-  font-weight: 500;
-  height: 40px;
-  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${theme.gray200};
-  color: ${theme.gray700};
+
   position: absolute;
   z-index: 5;
+
   width: 100%;
+  height: 40px;
+  background-color: ${theme.gray200};
+
+  font-size: ${theme.textStyles.body2.fontSize};
+  font-weight: 500;
+  color: ${theme.gray700};
+
+  padding: 0 24px;
 `;
 
 export const BtnSmLiShortcut = styled.button`
-  font-size: ${theme.textStyles.button.fontSize};
-  padding: 6px 16px;
-  border-radius: 8px;
-  color: ${theme.blue700};
-  &:hover {
-    background-color: ${theme.blue100};
-  }
   display: flex;
   align-items: center;
   gap: 4px;
+
+  font-size: ${theme.textStyles.button.fontSize};
+  color: ${theme.blue700};
+
   padding: 6px 8px;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: ${theme.blue100};
+  }
 `;
 
 export const RightArrow = styled(BiChevronRight)`
   font-size: 20px;
-  padding: 8px;
+
   box-sizing: content-box;
+  cursor: pointer;
+  padding: 8px;
+
   &:hover {
     color: ${theme.blue700};
     backgrond-color: ${theme.blue200};
   }
-  cursor: pointer;
 `;
