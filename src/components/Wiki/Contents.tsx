@@ -154,6 +154,21 @@ function Contents(): JSX.Element {
       const time = `${year}-${month}-${day} ${hours}:${minutes}`;
       const timeId = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
+      let errorTitleMessage = false;
+      let errorContentsMessage = false;
+
+      if (postTitle === '') {
+        errorTitleMessage = true;
+      }
+
+      if (postContents === '') {
+        errorContentsMessage = true;
+      }
+
+      if (errorTitleMessage || errorContentsMessage) {
+        alert('값을 입력하지 않은 부분이 있습니다.');
+        return;
+      }
       const docRef = firestore.collection('post');
       // 추가 함수
       docRef
@@ -201,31 +216,35 @@ function Contents(): JSX.Element {
    * @param {string} id - 삭제할 아이템의 ID
    */
   const handleDeleteClick = (id: string): void => {
-    firestore
-      .collection('post')
-      .where('id', '==', id)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          firestore
-            .collection('post')
-            .doc(doc.id)
-            .delete()
-            .then(() => {
-              const updatedPosts = post.filter(
-                (postItem) => postItem.id !== id,
-              );
-              setPost(updatedPosts);
-              console.log('Document successfully deleted!');
-            })
-            .catch((error) => {
-              console.error('Error removing document: ', error);
-            });
+    if (authState.state === 'loaded' && authState.isAuthentication) {
+      firestore
+        .collection('post')
+        .where('id', '==', id)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            firestore
+              .collection('post')
+              .doc(doc.id)
+              .delete()
+              .then(() => {
+                const updatedPosts = post.filter(
+                  (postItem) => postItem.id !== id,
+                );
+                setPost(updatedPosts);
+                console.log('Document successfully deleted!');
+              })
+              .catch((error) => {
+                console.error('Error removing document: ', error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.log('Error getting documents: ', error);
         });
-      })
-      .catch((error) => {
-        console.log('Error getting documents: ', error);
-      });
+    } else if (authState.state === 'loaded' && !authState.isAuthentication) {
+      alert('해당 기능은 로그인을 해야합니다.');
+    }
   };
   /**
    * @param {string} markdownText - 마크다운 텍스트
@@ -242,6 +261,7 @@ function Contents(): JSX.Element {
       </div>
     );
   };
+
   return (
     <>
       {postState ? (
@@ -288,8 +308,11 @@ function Contents(): JSX.Element {
             ''
           )}
           <ContentsContainer>
-            {post.length === 0 ? <h1>건의사항 글이 없습니다.</h1> : ''}
+            <TitleDiv>
+              <h1>건의사항</h1>
+            </TitleDiv>
             <AddBtn onClick={handleClickAddBtn}>글 작성</AddBtn>
+            {post.length === 0 ? <h1>건의사항 글이 없습니다.</h1> : ''}
             {post.map((v: any, i: number) => {
               return (
                 <PostDiv key={i}>

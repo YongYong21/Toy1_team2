@@ -11,6 +11,9 @@ const FlexBox = styled.div`
   margin-bottom: 56px;
   display: flex;
 `;
+const FooterContainer = styled.div`
+  margin-left: 256px;
+`;
 export default function Wiki(): JSX.Element {
   const url = 'wiki';
   const collectionName = 'sidebarMenu';
@@ -41,7 +44,9 @@ export default function Wiki(): JSX.Element {
         <Sidebar url={url} collectionName={collectionName}></Sidebar>
         <Content></Content>
       </FlexBox>
-      <Footer />
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </>
   );
 }
