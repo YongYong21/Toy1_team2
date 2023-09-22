@@ -24,12 +24,10 @@ export default function WikiEdit(): JSX.Element {
   ];
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
   useEffect(() => {
     if (typeof id === 'string' && !page.includes(id)) {
       navigate('/404');
     }
-    console.log(id);
   }, [id, navigate]);
 
   return (
