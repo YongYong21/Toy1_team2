@@ -43,8 +43,6 @@ export function ShortcutGallery(): JSX.Element {
           }
         });
         setImages(imageList);
-        console.log(imageList, 'imageList');
-        console.log(images, 'images');
       } catch (error) {
         console.error('Error fetching data: ', error);
       }

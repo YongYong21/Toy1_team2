@@ -129,12 +129,10 @@ function LoginContainer({
 
   const onClickMenu = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    console.log('onClickPrf');
     setPrfSelected(true);
   };
 
   const onClickLogoutBtn = (): void => {
-    console.log('onClickLogoutBtn');
     const res = confirm('정말 로그아웃을 하시겠어요?');
     if (res) {
       auth
@@ -155,7 +153,6 @@ function LoginContainer({
   const onBlurMenu = (): void => {
     setTimeout(() => {
       setPrfSelected(false);
-      console.log('onBlurPrfBtn');
     }, 300);
   };
 
