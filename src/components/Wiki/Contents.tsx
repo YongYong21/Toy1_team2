@@ -216,31 +216,35 @@ function Contents(): JSX.Element {
    * @param {string} id - 삭제할 아이템의 ID
    */
   const handleDeleteClick = (id: string): void => {
-    firestore
-      .collection('post')
-      .where('id', '==', id)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          firestore
-            .collection('post')
-            .doc(doc.id)
-            .delete()
-            .then(() => {
-              const updatedPosts = post.filter(
-                (postItem) => postItem.id !== id,
-              );
-              setPost(updatedPosts);
-              console.log('Document successfully deleted!');
-            })
-            .catch((error) => {
-              console.error('Error removing document: ', error);
-            });
+    if (authState.state === 'loaded' && authState.isAuthentication) {
+      firestore
+        .collection('post')
+        .where('id', '==', id)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            firestore
+              .collection('post')
+              .doc(doc.id)
+              .delete()
+              .then(() => {
+                const updatedPosts = post.filter(
+                  (postItem) => postItem.id !== id,
+                );
+                setPost(updatedPosts);
+                console.log('Document successfully deleted!');
+              })
+              .catch((error) => {
+                console.error('Error removing document: ', error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.log('Error getting documents: ', error);
         });
-      })
-      .catch((error) => {
-        console.log('Error getting documents: ', error);
-      });
+    } else if (authState.state === 'loaded' && !authState.isAuthentication) {
+      alert('해당 기능은 로그인을 해야합니다.');
+    }
   };
   /**
    * @param {string} markdownText - 마크다운 텍스트
